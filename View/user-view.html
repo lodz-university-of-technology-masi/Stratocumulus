@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.item1 { grid-area: uTitle; }
+.item2 { grid-area: mTitle; }
+.item3 { grid-area: uList; }
+.item4 { grid-area: uSum; }
+.item5 { grid-area: uOpt; }
+
+.grid-container {
+  display: grid;
+  grid-template-areas:
+    "uTitle mTitle mTitle"
+    "uList uSum uSum"
+    "uList uOpt uOpt";
+  background-color: #000000;
+  padding: 10px;
+  grid-template-rows: 70px 1fr 70px;  
+  grid-template-columns: 20% 1fr 15%;
+  grid-row-gap: 10px;
+  grid-column-gap: 10px;
+  text-align: center;
+  height: 80vh;
+  margin: auto;
+}
+.button {
+outline: none;
+font-size: 16px;
+cursor: pointer
+align: center;
+}
+
+.block-display button{
+  margin-bottom:5px;
+  display:block;
+}
+
+.grid-container > div {
+  background-color: rgb(255, 255, 255);
+  text-align: center;
+  padding: 20px 0;
+  font-size: 18px;
+}
+</style>
+</head>
+<body>
+<div class="grid-container">
+  <div class="item1">Kandydaci</div>
+  <div class="item2">Informacje o kandydacie</div>
+  <div class="item3">
+  <div class="block-display">
+  <button class="button">Add Whatever</button>
+  <button class="button">Add Whatever</button>
+  <button class="button">Add Whatever</button>
+  <button class="button">Add Whatever</button>
+  </div></div>  
+  <div class="item4">Treœæ</div>
+  <div class="item5">Opcje</div>
+</div>
+
+</body>
+</html>
