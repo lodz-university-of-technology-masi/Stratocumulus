@@ -34,8 +34,8 @@ hr {
   margin-bottom: 25px;
 }
 
-/* Set a style for the submit button */
-.registerbtn {
+/* Set a style for the adding user button */
+.addbutton {
   background-color: #4CAF50;
   color: white;
   padding: 16px 20px;
@@ -46,6 +46,6 @@ hr {
   opacity: 0.9;
 }
 
-.registerbtn:hover {
+.addbutton:hover {
   opacity: 1;
 }

@@ -25,7 +25,7 @@ function saveUserData() {
     var userBirthDate = document.getElementById("userBirth").value;
     var userPhoneNum = document.getElementById("userPhoneNum").value;
 
-    //toDo save data to database...
+    //toDo save updated data to database...
 
 
 }
