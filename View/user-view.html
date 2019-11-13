@@ -1,23 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<style>
+    <meta charset="utf-8">
+    <style>
 .item1 { grid-area: uTitle; }
 .item2 { grid-area: mTitle; }
 .item3 { grid-area: uList; }
 .item4 { grid-area: uSum; }
 .item5 { grid-area: uOpt; }
+.item6 { grid-area: tTitle; }
 
 .grid-container {
   display: grid;
   grid-template-areas:
-    "uTitle mTitle mTitle"
-    "uList uSum uSum"
-    "uList uOpt uOpt";
+    "uTitle tTitle mTitle mTitle"
+    "uList uList uSum uSum"
+    "uList uList uOpt uOpt";
   background-color: #000000;
   padding: 10px;
-  grid-template-rows: 70px 1fr 70px;  
-  grid-template-columns: 20% 1fr 15%;
+  grid-template-rows: 70px 1fr 70px;
+  grid-template-columns:10% 10% 1fr 15%;
   grid-row-gap: 10px;
   grid-column-gap: 10px;
   text-align: center;
@@ -26,9 +28,11 @@
 }
 .button {
 outline: none;
-font-size: 16px;
+font-size: 18px;
 cursor: pointer
-align: center;
+text-align:center;
+margin: 0 auto;
+
 }
 
 .block-display button{
@@ -42,22 +46,29 @@ align: center;
   padding: 20px 0;
   font-size: 18px;
 }
-</style>
-</head>
-<body>
-<div class="grid-container">
-  <div class="item1">Kandydaci</div>
-  <div class="item2">Informacje o kandydacie</div>
-  <div class="item3">
-  <div class="block-display">
-  <button class="button">Add Whatever</button>
-  <button class="button">Add Whatever</button>
-  <button class="button">Add Whatever</button>
-  <button class="button">Add Whatever</button>
-  </div></div>  
-  <div class="item4">Treœæ</div>
-  <div class="item5">Opcje</div>
-</div>
 
-</body>
+.button:hover{
+  background-color: #32CD32;
+  font-size: 20px;
+  transition: 0.5s;
+}
+        </style>
+        </head>
+    <body>
+        <div class="grid-container">
+            <div class="item1">Kandydaci</div>
+            <div class="item6">Testy</div>
+            <div class="item2">Informacje o kandydacie</div>
+            <div class="item3">
+                <div class="block-display">
+                    <button class="button">Add Whatever</button>
+                    <button class="button">Add Whatever</button>
+                    <button class="button">Add Whatever</button>
+                    <button class="button">Add Whatever</button>
+                </div>
+            </div>
+            <div class="item4">TreÅ›Ä‡</div>
+            <div class="item5">Opcje</div>
+        </div>
+    </body>
 </html>

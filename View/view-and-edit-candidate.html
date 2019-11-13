@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1", charset="utf-8">
+    <link rel="stylesheet" href="view-and-edit-candidate.css">
+    <script src="view-and-edit-candidate.js"></script>
+</head>
+<body onload="showUserData()">
+
+<form action="saveUserData()">
+    <div class="container">
+        <h1>Edytuj kandydata</h1>
+        <hr>
+
+        <label for="name"><b>Imię kandydata</b></label>
+        <input type="text" placeholder="Wprowadź imię" name="name" id="userName" required>
+
+        <label for="surname"><b>Nazwisko kandydata</b></label>
+        <input type="text" placeholder="Wprowadź nazwisko" name="surname" id="userSurname" required>
+
+        <label for="birth"><b>Data urodzenia</b></label>
+        <input type="date" placeholder="Wprowadź datę urodzenia" name="birth" id="userBirth">
+
+        <label for="email"><b>Email kandydata</b></label>
+        <input type="text" placeholder="Wprowadź adres Email" name="email" id="userEmail">
+
+        <label for="phonenum"><b>Numer kontaktowy</b></label>
+        <input type="text" placeholder="Wprowadź numer telefonu" name="phonenum" id="userPhoneNum">
+
+<!--        <label for="psw"><b>Hasło</b></label>-->
+<!--        <input type="password" placeholder="Wprowadź hasło" name="psw" required>-->
+
+<!--        <label for="psw-repeat"><b>Ponownie hasło</b></label>-->
+<!--        <input type="password" placeholder="Wprowadź ponownie hasło" name="psw-repeat" required>-->
+        <hr>
+        <button type="button" class="savebutton">Zapisz</button>
+    </div>
+
+</form>
+
+</body>
+</html>

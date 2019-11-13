@@ -1,14 +1,41 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="MainView.css"></head>
+    <link rel="stylesheet" type="text/css" href="MainView.css">
+    <script src="MainView.js"></script>
+</head>
 <body>
+<div class="grid-container">
 
-<navibar></navibar>
-<ul class="navi">
-<li> <button class="button"> USER</button></li>
-    <li><button class="button"> COURSE</button></li>
-    <li style="float:right"><a class="active" href="#about">UZYTKOWNIK</a></li>
-</ul>
+<div class="naviBar">
+        <button class="listButton" onclick="showTests()">Test</button>
+        <button class="listButton" onclick="showUsers()">Kandydat</button>
+        <button class="userButton">User</button>
+</div>
+
+<div class="itemList" >
+    <ul id="UserListId">
+        <li>User1</li>
+        <li>User2</li>
+        <li>User3</li>
+    </ul>
+
+    <ul id="TestListId">
+        <li>Test1</li>
+        <li>Test2</li>
+        <li>Test3</li>
+    </ul>
+
+
+</div>
+
+<div class="contentPane">
+
+    <div class="someText"> TO JEST TEKST LOL</div>
+
+</div>
+
+</div>
+
 </body>
 </html>

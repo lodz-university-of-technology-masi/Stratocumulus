@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1", charset="utf-8">
+    <link rel="stylesheet" href="add-candidate.css">
+    <script src="add-candidate.js"></script>
+</head>
+<body>
+
+<form action="saveToDatabase()">
+    <div class="container">
+        <h1>Dodaj kandydata</h1>
+        <hr>
+        <label for="name"><b>Imię kandydata</b></label>
+        <input type="text" placeholder="Wprowadź imię" name="name" id="userName" required>
+
+        <label for="surname"><b>Nazwisko kandydata</b></label>
+        <input type="text" placeholder="Wprowadź nazwisko" name="surname" id="userSurname" required>
+
+        <label for="email"><b>Email kandydata</b></label>
+        <input type="text" placeholder="Wprowadź adres Email" name="email" id="userEmail" required>
+
+        <label for="psw"><b>Hasło</b></label>
+        <input type="password" placeholder="Wprowadź hasło" name="psw" id="pass" required>
+
+        <label for="psw-repeat"><b>Ponownie hasło</b></label>
+        <input type="password" placeholder="Wprowadź ponownie hasło" name="psw-repeat" id="passRepeat" required>
+        <hr>
+
+        <button type="button" class="addbutton">Dodaj</button>
+    </div>
+
+</form>
+
+</body>
+</html>

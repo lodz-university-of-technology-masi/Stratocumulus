@@ -1,35 +1,64 @@
-ul.navi   {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #333;
-}
+.naviBar { grid-area: naviBar; }
+.itemList { grid-area: itemList; }
+.content {grid-area: contentPane}
 
-ul.navi li {
-    float: left;
-}
+.grid-container {
+    display: grid;
+    grid-template-areas:
+            "naviBar naviBar"
+            "itemList contentPane";
+    margin: 0 0 0 0;
+    grid-template-columns: 300px 1fr;
+    grid-template-rows: auto 1fr;
+    height: 100vh;
 
-ul.navi li a {
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 15px 50px;
-    text-decoration: none;
 }
 
 
-.active {
+div.naviBar {
     background-color: #4CAF50;
 }
 
-.button {
+.naviBar button{
     background-color: #4CAF50; /* Green */
-    border: none;
+    border: 1px solid green;
     color: white;
-    padding: 15px 32px;
+    padding: 15px 20px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
+    cursor: pointer;
 }
+
+.naviBar button.listButton
+{
+    width: 150px;
+}
+
+.naviBar .userButton
+{
+    float:right;
+}
+
+.naviBar .listButton
+{
+    float: left;
+}
+
+.content .someText{
+    float: left;
+}
+
+.contentPane {
+    background-color: #6b4099;
+}
+.itemList {
+    background-color: #32CD32;
+}
+
+#TestListId {
+    display: none;
+}
+
+
