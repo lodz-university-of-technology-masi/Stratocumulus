@@ -1,0 +1,120 @@
+.boxed {
+    border: 1px solid blue;
+    padding: 1%;
+    font-size: 28px;
+    height: 2%;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.boxed-edit-button {
+    box-shadow: 0px 0px 0px 2px #9fb4f2;
+    background: linear-gradient(to bottom, #7892c2 5%, #476e9e 100%);
+    background-color: #7892c2;
+    border-radius: 10px;
+    border: 1px solid #4e6096;
+    display: inline-block;
+    cursor: pointer;
+    color: #ffffff;
+    font-family: Arial;
+    font-size: 19px;
+    padding: 12px 37px;
+    text-decoration: none;
+    text-shadow: 0px 1px 0px #283966;
+    margin-left: 50%;
+}
+
+.boxed-edit-button:hover {
+    background: linear-gradient(to bottom, #476e9e 5%, #7892c2 100%);
+    background-color: #476e9e;
+}
+
+.boxed-edit-button:active {
+    position: relative;
+    top: 1px;
+}
+
+.boxed-delete-button {
+    box-shadow: 0px 0px 0px 2px #9fb4f2;
+    background:linear-gradient(to bottom, #c27878 5%, #9c4646 100%);
+    background-color:#c27878;
+    border-radius:10px;
+    border:1px solid #4e6096;
+    display:inline-block;
+    cursor:pointer;
+    color:#ffffff;
+    margin-left: 5%;
+    font-family:Arial;
+    font-size:19px;
+    padding:12px 37px;
+    text-decoration:none;
+    text-shadow:0px 1px 0px #283966;
+}
+.boxed-delete-button:hover {
+    background:linear-gradient(to bottom, #9c4646 5%, #c27878 100%);
+    background-color:#9c4646;
+}
+.boxed-delete-button:active {
+    position:relative;
+    top:1px;
+}
+
+.testName {
+    margin: 0 auto;
+    font-size: 24px;
+    font-family: Arial;
+    justify-content: space-between;
+    text-align: center;
+    padding: 10px 0;
+    margin-right: 5%;
+}
+
+.saveQuestionButton {
+    box-shadow: 0px 0px 0px 2px #9fb4f2;
+    background:linear-gradient(to bottom, #2a9400 5%, #1db000 100%);
+    background-color:#2a9400;
+    border-radius:10px;
+    border:1px solid #4e6096;
+    display:inline-block;
+    cursor:pointer;
+    color:#ffffff;
+    font-family:Arial;
+    font-size:19px;
+    padding:12px 37px;
+    text-decoration:none;
+    text-shadow:0px 1px 0px #283966;
+    margin: 2%;
+    margin-left: 5%;
+}
+.saveQuestionButton:hover {
+    background:linear-gradient(to bottom, #1db000 5%, #2a9400 100%);
+    background-color:#1db000;
+}
+.saveQuestionButton:active {
+    position:relative;
+    top:1px;
+}
+
+.addNewQuestionButton {
+    box-shadow: 0px 0px 0px 2px #276873;
+    background:linear-gradient(to bottom, #8559b3 5%, #6b4099 100%);
+    background-color:#8559b3;
+    border-radius:10px;
+    border:1px solid #29668f;
+    display:inline-block;
+    cursor:pointer;
+    color:#ffffff;
+    font-family:Arial;
+    margin-left: 60%;
+    font-size:19px;
+    padding:12px 37px;
+    text-decoration:none;
+    text-shadow:0px 1px 0px #3d768a;
+}
+.addNewQuestionButton:hover {
+    background: #6b4099 linear-gradient(to bottom, #6b4099 5%, #8559b3 100%);
+}
+.addNewQuestionButton:active {
+    position:relative;
+    top:1px;
+}
+  
