@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Test</title>
+<link rel="stylesheet" href="solveTest.css">
+
+</head>
+<body>
+  <div id="main"><!-- otworzenie diva main -->
+  <div id="header"><!-- otworzenie diva header -->
+  <h1>Sprawdzian z wiedzy</h1>
+</div><!-- zamkniecie diva header -->
+  <form id="form1">
+
+<h2>1. Ile wynosi wynik działania 2+2?</h2>
+<label for="var_string"><input type="radio" name="variable" value="0" id="var_string" />Wynosi 5</label>
+<label for="var_join"><input type="radio" name="variable" value="0" id="var_join" />Wynosi 6</label>
+<label for="var_info"><input type="radio" name="variable" value="25" id="var_info" />Wynosi 4</label>
+<label for="var_condition"><input type="radio" name="variable" value="0" id="var_condition"/>Wynosi 3</label>
+
+<h2>2. Gdzie konkretnie znajduje się Dependency Injection?</h2>
+<label for="sub_string"><input type="radio" name="sub" value="25" id="sub_string"/>Nie można wskazać konretnie, jest to wzorzec projektowy!</label>
+<label for="sub_join"><input type="radio" name="sub" value="0" id="sub_join"/>Wszędzie i nigdzie</label>
+<label for="sub_info"><input type="radio" name="sub" value="0" id="sub_info" />W konstruktorze</label>
+<label for="sub_condition"><input type="radio" name="sub" value="0" id="sub_condition" />Jaka jest miara konkretności?</label>
+
+<h2>3. Kto był pierwszym królem Polski?</h2>
+<label for="cat_string"><input type="radio" name="con" value="0" id="cat_string" />Mieszko I</label>
+<label for="cat_join"><input type="radio" name="con" value="25" id="cat_join" />Bolesław Chrobry</label>
+<label for="cat_info"><input type="radio" name="con" value="0" id="cat_info" />Mieszko II</label>
+<label for="cat_condition"><input type="radio" name="con" value="0" id="cat_condition" />Kazimierz Wielki</label>
+
+<h2>4. Jaka jest stolica Australii?</h2>
+<label for="if_string"><input type="radio" name="ifstate" value="0" id="if_string" />Sydney</label>
+<label for="if_join"><input type="radio" name="ifstate" value="0" id="if_join" />Melbourne</label>
+<label for="if_info"><input type="radio" name="ifstate" value="0" id="if_info" />Wellington</label>
+<label for="if_condition"><input type="radio" name="ifstate"  value="25" id="if_condition" />Canberra</label>
+
+<button type="submit" value="Submit">Sprawdź</button>
+
+</form>
+
+  <p>Twój wynik wynosi: <span id="grade">__</span></p>
+  <p id="grade2"></p>
+</div><!-- zamkniecie diva main -->
+
+<script src="solveTest.js"></script>
+
+
+</body>
+</html>
