@@ -13,3 +13,20 @@ function showUsers() {
     x.style.display = "none";
     y.style.display = "block";
 }
+
+
+function showAddView() {
+    var y = document.getElementById("UserListId");
+
+    if (y.style.display == "none") {
+        $("#includedContent").load("new-test.html");
+    }
+    else {
+        $("#includedContent").load("add-candidate.html");
+    }
+}
+
+
+
+
+
