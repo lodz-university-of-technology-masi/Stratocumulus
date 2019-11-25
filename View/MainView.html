@@ -2,38 +2,42 @@
 <html>
 <head>
     <link rel="stylesheet" type="text/css" href="MainView.css">
+    <script src="jquery-3.4.1.js"></script>
     <script src="MainView.js"></script>
+
 </head>
 <body>
 <div class="grid-container">
 
-<div class="naviBar">
+    <div class="naviBar">
         <button class="listButton" onclick="showTests()">Test</button>
         <button class="listButton" onclick="showUsers()">Kandydat</button>
         <button class="userButton">User</button>
-</div>
+    </div>
 
-<div class="itemList" >
-    <ul id="UserListId">
-        <li>User1</li>
-        <li>User2</li>
-        <li>User3</li>
-    </ul>
+    <div class="itemList">
+        <ul id="UserListId">
+            <li><a href="example.com">User1</a></li>
+            <li><a href="example.com">User2</a></li>
+            <li><a href="example.com">User3</a></li>
+        </ul>
 
-    <ul id="TestListId">
-        <li>Test1</li>
-        <li>Test2</li>
-        <li>Test3</li>
-    </ul>
+        <ul id="TestListId">
+            <li><a href="example.com">Test1</a></li>
+            <li><a href="example.com">Test2</a></li>
+            <li><a href="example.com">Test3</a></li>
+        </ul>
 
+        <button class="addButton" onclick="addElement()"> add</button>
+        <button id="testButton" > adsada</button>
 
-</div>
+    </div>
 
-<div class="contentPane">
+    <div class="contentPane">
 
-    <div class="someText"> TO JEST TEKST LOL</div>
+        <div id="includedContent"></div>
 
-</div>
+    </div>
 
 </div>
 

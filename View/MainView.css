@@ -2,6 +2,12 @@
 .itemList { grid-area: itemList; }
 .content {grid-area: contentPane}
 
+body,html {
+    margin: 0;
+    padding: 0;
+}
+
+
 .grid-container {
     display: grid;
     grid-template-areas:
