@@ -14,32 +14,6 @@ function showUsers() {
     y.style.display = "block";
 }
 
-function addElement(name, link) {
-    var y = document.getElementById("UserListId");
-
-    if(y.style.display=="none") {
-
-        var hyper = document.createElement("a");
-        var li = document.createElement("li");
-        var textnode = document.createTextNode("name");
-
-        hyper.setAttribute("href", link)
-        hyper.appendChild(textnode);
-        li.appendChild(hyper)
-        document.getElementById("TestListId").appendChild(li);
-    }
-    else {
-        var hyper = document.createElement("a");
-        var li = document.createElement("li");
-        var textnode = document.createTextNode("name");
-
-        hyper.setAttribute("href", link)
-        hyper.appendChild(textnode);
-        li.appendChild(hyper)
-        document.getElementById("UserListId").appendChild(li);
-    }
-
-}
 
 function showAddView() {
     var y = document.getElementById("UserListId");
