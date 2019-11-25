@@ -1,0 +1,119 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: black;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+/* Add padding to containers */
+.container {
+    padding: 0px;
+    background-color: white;
+}
+
+/* Full-width input fields */
+input[type=text], input[type=password] {
+    width: 100%;
+    padding: 15px;
+    margin: 5px 0 22px 0;
+    display: inline-block;
+    border: none;
+    background: #f1f1f1;
+}
+
+input[type=text]:focus, input[type=password]:focus {
+    background-color: #ddd;
+    outline: none;
+}
+
+/* Overwrite default styles of hr */
+hr {
+    border: 1px solid #f1f1f1;
+    margin-bottom: 25px;
+}
+
+/* Set a style for the adding user button */
+.edit_answer_button {
+    background-color: #3d768a;
+    color: white;
+    padding: 16px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 6%;
+    margin-left: 40%;
+    opacity: 0.9;
+}
+
+.edit_answer_button:hover {
+    opacity: 1;
+}
+
+.delete_question_button {
+    background-color: #c27878;
+    color: white;
+    padding: 16px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 6%;
+    margin-left: 50%;
+    opacity: 0.9;
+}
+
+.delete_question_button:hover {
+    opacity: 1;
+}
+
+.question_label {
+    font-size: 24px;
+}
+
+.question_div {
+    width: 100%;
+    padding: 15px;
+    margin: 5px 0 22px 0;
+    margin-top: 20px;
+    display: inline-block;
+    border: none;
+    background: #c3ff9e;
+}
+
+.add_question_button {
+    background-color: #6b4099;
+    color: white;
+    padding: 16px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    margin-left: 10%;
+    width: 40%;
+    opacity: 0.9;
+}
+
+.add_question_button:hover {
+    opacity: 1;
+}
+
+.add_test_button {
+    background-color: green;
+    color: white;
+    padding: 16px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 40%;
+    margin-left: 5%;
+    opacity: 0.9;
+}
+
+.add_test_button:hover {
+    opacity: 1;
+}
+
+.closed_question_answer_input {
+
+}
+  

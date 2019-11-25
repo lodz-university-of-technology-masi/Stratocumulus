@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Stwórz nowy test</title>
+    <link rel="stylesheet"
+          type="text/css"
+          href="edit-question.css"/>
+    <script src="edit-question.js"></script>
+</head>
+<body>
+
+<form>
+    <div class="container">
+        <h1 class="header">Treść pytania:
+            <label>
+                <input class="questionContent" type="text"/>
+            </label>
+        </h1>
+
+        <hr id="questionsHr">
+        </hr>
+
+        <button id="addOpenQuestionButton" type="button" class="addAnswerButton" onclick="addNewClosedQuestion()">Dodaj pytanie otwarte</button>
+        <button id="addClosedQuestionButton" type="button" class="addAnswerButton" onclick="addNewClosedQuestion()">Dodaj pytanie zamknięte</button>
+        <button id="saveQuestionButton" type="button" class="saveTestButton">Zapisz pytanie</button>
+    </div>
+</form>
+</body>
+</html>

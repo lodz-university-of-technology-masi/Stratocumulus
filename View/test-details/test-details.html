@@ -5,29 +5,40 @@
     <title>Stwórz nowy test</title>
     <link rel="stylesheet"
           type="text/css"
-          href="test-details-style.css"/>
-    <script src="test-details-script.js"></script>
+          href="test-details.css"/>
+    <script src="test-details.js"></script>
 </head>
 <body>
-<div class="testName">
-    <label>Nazwa testu:</label>
-    <label>Test na programistę Java</label>
-</div>
-<hr>
-</table>
 
-<hgroup id="group">
-    <div class="boxed">
-        <table style="width:100%; height:100%;">
-            Co to jest 'klasa abstrakcyjna'?
-            <button class="boxed-edit-button" type="button">Edytuj</button>
-            <button class="boxed-delete-button" type="button">Usuń</button>
-        </table>
+<form>
+    <div class="container">
+        <h1>Nazwa testu:</h1>
+        <label>
+            <input type="text"/>
+        </label>
+        <hr id="question_hr">
+        <nobr>
+            <label class="questionLabel">
+                Treść pytania otwartego:
+            </label>
+            <button id="d0" type="button" class="deleteQuestionButton" onclick="deleteQuestion(this)">Usuń</button>
+        </nobr>
+        <input type="text">
+<!--        <input type="text">-->
+<!--        <label class="question_label">-->
+<!--            Warianty odpowiedzi:-->
+<!--        </label>-->
+
+<!--        <input type="text">-->
+<!--        <input type="text">-->
+<!--        <input type="text">-->
+<!--        <input type="text">-->
+        </hr>
+
+        <button type="button" class="add_question_button" onclick="addNewClosedQuestion()">Dodaj pytanie zamknięte</button>
+        <button type="button" class="add_question_button" onclick="addNewOpenQuestion()">Dodaj pytanie otwarte</button>
+        <button type="button" class="add_test_button">Dodaj test</button>
     </div>
-</hgroup>
-
-<button class="addNewQuestionButton" type="button" onclick="addNewQuestion()">Dodaj nowe pytanie</button>
-<button class="saveQuestionButton" type="button">Zapisz test</button>
-
+</form>
 </body>
 </html>
