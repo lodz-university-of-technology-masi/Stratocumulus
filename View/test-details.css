@@ -3,14 +3,20 @@ body {
     background-color: black;
 }
 
+body, html {
+    margin: 0px;
+    padding: 0px;
+}
+
 * {
-    box-sizing: border-box;
 }
 
 /* Add padding to containers */
 .container {
     padding: 0px;
     background-color: white;
+    box-sizing: border-box;
+
 }
 
 /* Full-width input fields */

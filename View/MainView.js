@@ -19,7 +19,7 @@ function showAddView() {
     var y = document.getElementById("UserListId");
 
     if (y.style.display == "none") {
-        $("#includedContent").load("new-test.html");
+        $("#includedContent").load("test-details/test-details.html");
     }
     else {
         $("#includedContent").load("add-candidate.html");
