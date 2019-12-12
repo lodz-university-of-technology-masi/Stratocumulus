@@ -1,12 +1,21 @@
-package request;
+package model;
 
 import java.util.UUID;
 
-public class TestRequest {
+public class Test {
 
     private String id;
     private String name;
     private String language;
+    private String questions;
+
+    public String getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(String questions) {
+        this.questions = questions;
+    }
 
     public String getId() {
         return id;
@@ -30,5 +39,15 @@ public class TestRequest {
 
     public void setLanguage(String language) {
         this.language = language;
+    }
+
+    @Override
+    public String toString() {
+        return "Test{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", language='" + language + '\'' +
+                ", questions=" + questions +
+                '}';
     }
 }

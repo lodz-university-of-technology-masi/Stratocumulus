@@ -9,28 +9,29 @@ import com.amazonaws.services.dynamodbv2.document.PutItemOutcome;
 import com.amazonaws.services.dynamodbv2.document.spec.PutItemSpec;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import request.TestRequest;
+import model.Test;
 
-public class InsertTestHandler implements RequestHandler<TestRequest, String> {
+public class InsertTestHandler implements RequestHandler<Test, String> {
 
-    private final String TABLE_NAME = "Tests";
-    private final Regions REGION = Regions.US_EAST_1;
+    private static final String TABLE_NAME = "Tests";
+    private static final Regions REGION = Regions.US_EAST_1;
     private DynamoDB dynamoDb;
 
     @Override
-    public String handleRequest(TestRequest testRequest, Context context) {
+    public String handleRequest(Test test, Context context) {
         initDynamoDb();
-        insertTest(testRequest);
+        insertTest(test);
 
         return "Inserted successfully";
     }
 
-    private PutItemOutcome insertTest(TestRequest test) {
+    private PutItemOutcome insertTest(Test test) {
         return dynamoDb.getTable(TABLE_NAME).putItem(new PutItemSpec().withItem(
                 new Item()
-                        .withString("Id", test.getId())
-                        .withString("Name", test.getName())
-                        .withString("Language", test.getLanguage())
+                        .withString("id", test.getId())
+                        .withString("name", test.getName())
+                        .withString("language", test.getLanguage())
+                        .withJSON("questions", test.getQuestions())
         ));
     }
 

@@ -10,8 +10,8 @@ Resources:
   InsertTest:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: s3://stratocumulus-bucket/c6c4a8cbbba65e0aa44924e51b35aece
-      Handler: handler.InsertTestHandler
+      CodeUri: s3://stratocumulus-bucket/a621579b3357e614da1323881199ffaa
+      Handler: handler.InsertTestHandler::handleRequest
       Runtime: java8
       MemorySize: 512
       Environment:
