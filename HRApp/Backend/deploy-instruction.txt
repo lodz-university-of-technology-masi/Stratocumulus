@@ -1,0 +1,2 @@
+sam package --output-template-file packaged.yaml --s3-bucket stratocumulus-bucket
+aws cloudformation deploy --template-file packaged.yaml --stack-name dynamodb-lambdas --capabilities CAPABILITY_IAM
