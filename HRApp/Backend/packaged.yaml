@@ -1,0 +1,25 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'Lambdas using DynamoDB
+
+  '
+Globals:
+  Function:
+    Timeout: 20
+Resources:
+  InsertTest:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://stratocumulus-bucket/c6c4a8cbbba65e0aa44924e51b35aece
+      Handler: handler.InsertTestHandler
+      Runtime: java8
+      MemorySize: 512
+      Environment:
+        Variables:
+          PARAM1: VALUE
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            Path: /insert
+            Method: post
