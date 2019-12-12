@@ -1,8 +1,8 @@
-package model;
+package request;
 
 import java.util.UUID;
 
-public class Test {
+public class InsertTestRequest {
 
     private String id;
     private String name;

@@ -10,7 +10,7 @@ Resources:
   InsertTest:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: s3://stratocumulus-bucket/a621579b3357e614da1323881199ffaa
+      CodeUri: s3://stratocumulus-bucket/0cf2bb88fbf21704b6af0b0d72ed034e
       Handler: handler.InsertTestHandler::handleRequest
       Runtime: java8
       MemorySize: 512
@@ -23,3 +23,19 @@ Resources:
           Properties:
             Path: /insert
             Method: post
+  DeleteTest:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://stratocumulus-bucket/cfe9d31170ac0c2bebea5e8175a747c1
+      Handler: handler.DeleteTestHandler::handleRequest
+      Runtime: java8
+      MemorySize: 512
+      Environment:
+        Variables:
+          PARAM1: VALUE
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            Path: /delete
+            Method: delete
