@@ -14,6 +14,7 @@ Resources:
     Properties:
       CodeUri: Lambdas
       Handler: handler.InsertTestHandler::handleRequest
+      Policies: AmazonDynamoDBFullAccess
       Runtime: java8
       MemorySize: 512
       Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
@@ -31,6 +32,7 @@ Resources:
     Properties:
       CodeUri: Lambdas
       Handler: handler.DeleteTestHandler::handleRequest
+      Policies: AmazonDynamoDBFullAccess
       Runtime: java8
       MemorySize: 512
       Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
@@ -48,6 +50,7 @@ Resources:
     Properties:
       CodeUri: Lambdas
       Handler: handler.GetTestHandler::handleRequest
+      Policies: AmazonDynamoDBFullAccess
       Runtime: java8
       MemorySize: 512
       Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
@@ -59,3 +62,21 @@ Resources:
           Properties:
             Path: /get
             Method: get
+
+  UpdateTest:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: Lambdas
+      Handler: handler.UpdateTestHandler::handleRequest
+      Policies: AmazonDynamoDBFullAccess
+      Runtime: java8
+      MemorySize: 512
+      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+        Variables:
+          PARAM1: VALUE
+      Events:
+        HelloWorld:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /update
+            Method: update
