@@ -77,3 +77,5 @@ nb-configuration.xml
 
 # NPM
 node_modules
+
+*/packaged.yaml
