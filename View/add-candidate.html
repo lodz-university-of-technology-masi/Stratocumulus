@@ -2,43 +2,37 @@
 <html lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1", charset="utf-8">
-    <link rel="stylesheet" href="add-candidate.css">
-    <script src="poolConfig.js"></script>
-    <script src="cognito-auth.js"></script>
+    <link rel="stylesheet" href="css/add-candidate.css">
+    <title>Add new candidate</title>
 </head>
 <body>
 
-<!--<form action="saveToDatabase()">-->
 <form id="registrationForm">
     <div class="container">
         <h1>Dodaj kandydata</h1>
         <hr>
-        <label for="userFullName"><b>Imię i nazwisko kandydata</b></label>
-        <input type="text" placeholder="Wprowadź imię i nazwisko" name="fullName" id="userFullName">
-
-<!--        <label for="surname"><b>Nazwisko kandydata</b></label>-->
-<!--        <input type="text" placeholder="Wprowadź nazwisko" name="surname" id="userSurname" required>-->
-
         <label for="userEmail"><b>Email kandydata</b></label>
-        <input type="email" placeholder="Wprowadź adres Email" name="email" id="emailInputRegister" required>
+        <input type="email" placeholder="Wprowadź adres Email" name="email" id="userEmail" required>
+
+        <label for="userFullName"><b>Imię i nazwisko kandydata</b></label>
+        <input type="text" placeholder="Wprowadź imię i nazwisko" name="fullName" id="userFullName" required>
 
         <label for="pass"><b>Hasło</b></label>
-        <input type="password" placeholder="Wprowadź hasło" name="psw" id="passwordInputRegister" required>
+        <input type="password" placeholder="Wprowadź hasło" name="psw" id="pass" required>
 
         <label for="passRepeat"><b>Ponownie hasło</b></label>
-        <input type="password" placeholder="Wprowadź ponownie hasło" name="psw-repeat" id="password2InputRegister" required>
+        <input type="password" placeholder="Wprowadź ponownie hasło" name="psw-repeat" id="passRepeat" required>
         <hr>
 
-<!--        <button type="button" class="addbutton" onclick="addElement()">Dodaj</button>-->
         <input type="submit" class="addbutton" value="Dodaj użytkownia">
     </div>
 
 </form>
-<script src="js/vendor/jquery-3.1.0.js"></script>
 <script src="js/vendor/bootstrap.min.js"></script>
 <script src="js/vendor/aws-cognito-sdk.min.js"></script>
 <script src="js/vendor/amazon-cognito-identity.min.js"></script>
-<script src="js/config.js"></script>
+<script src="js/poolConfig.js"></script>
 <script src="js/cognito-auth.js"></script>
+<script src="js/jquery-3.4.1.js"></script>
 </body>
 </html>
