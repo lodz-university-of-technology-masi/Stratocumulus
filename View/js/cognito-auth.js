@@ -1,3 +1,5 @@
+var TestApp = window.TestApp || {};
+
 (function scopeWrapper($) {
     var signinUrl = 'index.html';
 
@@ -6,18 +8,48 @@
         ClientId: _config.cognito.userPoolClientId
     };
 
-    var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+    var userPool;
+
+    if (!(_config.cognito.userPoolId &&
+        _config.cognito.userPoolClientId &&
+        _config.cognito.region)) {
+        $('#noCognitoMessage').show();
+        return;
+    }
+
+    userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
 
     if (typeof AWSCognito !== 'undefined') {
         AWSCognito.config.region = _config.cognito.region;
     }
+
+    TestApp.signOut = function signOut() {
+        userPool.getCurrentUser().signOut();
+    };
+
+    TestApp.authToken = new Promise(function fetchCurrentAuthToken(resolve, reject) {
+        var cognitoUser = userPool.getCurrentUser();
+
+        if (cognitoUser) {
+            cognitoUser.getSession(function sessionCallback(err, session) {
+                if (err) {
+                    reject(err);
+                } else if (!session.isValid()) {
+                    resolve(null);
+                } else {
+                    resolve(session.getIdToken().getJwtToken());
+                }
+            });
+        } else {
+            resolve(null);
+        }
+    });
 
     /*
      * Cognito User Pool functions
      */
 
     function register(email, name, password, onSuccess, onFailure) {
-        var attributeList = [];
 
         var dataEmail = {
             Name: 'email',
@@ -32,11 +64,7 @@
         var attributeName = new AmazonCognitoIdentity.CognitoUserAttribute(fullName);
         var attributeEmail = new AmazonCognitoIdentity.CognitoUserAttribute(dataEmail);
 
-        attributeList.push(attributeEmail);
-        attributeList.push(attributeName);
-
-
-        userPool.signUp(email, password, attributeList, null,
+        userPool.signUp(email, password, [attributeName, attributeEmail], null,
             function signUpCallback(err, result) {
                 if (!err) {
                     onSuccess(result);
@@ -47,13 +75,60 @@
         );
     }
 
+    function signin(email, password, onSuccess, onFailure) {
+        var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
+            Username: email,
+            Password: password
+        });
+
+        var cognitoUser = createCognitoUser(email);
+        cognitoUser.authenticateUser(authenticationDetails, {
+            onSuccess: onSuccess,
+            onFailure: onFailure
+        });
+    }
+
+    function verify(email, code, onSuccess, onFailure) {
+        createCognitoUser(email).confirmRegistration(code, true, function confirmCallback(err, result) {
+            if (!err) {
+                onSuccess(result);
+            } else {
+                onFailure(err);
+            }
+        });
+    }
+
+    function createCognitoUser(email) {
+        return new AmazonCognitoIdentity.CognitoUser({
+            Username: email,
+            Pool: userPool
+        });
+    }
+
     /*
      *  Event Handlers
      */
 
     $(function onDocReady() {
         $('#registrationForm').submit(handleRegister);
+        $('#signinForm').submit(handleSignin);
+        $('#verifyForm').submit(handleVerify);
     });
+
+    function handleSignin(event) {
+        var email = $('#emailInputSignin').val();
+        var password = $('#passwordInputSignin').val();
+        event.preventDefault();
+        signin(email, password,
+            function signinSuccess() {
+                console.log('Successfully Logged In');
+                window.location.href = 'MainView.html';
+            },
+            function signinError(err) {
+                alert(err);
+            }
+        );
+    }
 
     function handleRegister(event) {
         var email = $('#userEmail').val();
@@ -62,11 +137,15 @@
         var password2 = $('#passRepeat').val();
 
         var onSuccess = function registerSuccess(result) {
+            alert('Konto zostało poprawnie utworzone!\nSprawdź swoją skrzynkę pocztową!');
             var cognitoUser = result.user;
             console.log('user name is ' + cognitoUser.getUsername());
             var confirmation = ('Registration successful. Please check your email inbox or spam folder for your verification code.');
             if (confirmation) {
                 window.location.href = 'index.html';
+            }
+            else{
+                window.location.href = 'user-view.html';
             }
         };
         var onFailure = function registerFailure(err) {
@@ -77,8 +156,25 @@
         if (password === password2) {
             register(email, userName, password, onSuccess, onFailure);
         } else {
-            alert('Passwords do not match');
+            alert('Podane hasła nie są takie same!');
         }
     }
-    
+
+    function handleVerify(event) {
+        var email = $('#emailInputVerify').val();
+        var code = $('#codeInputVerify').val();
+        event.preventDefault();
+        verify(email, code,
+            function verifySuccess(result) {
+                console.log('call result: ' + result);
+                console.log('Successfully verified');
+                alert('Verification successful. You will now be redirected to the login page.');
+                window.location.href = signinUrl;
+            },
+            function verifyError(err) {
+                alert(err);
+            }
+        );
+    }
+
 }(jQuery));
