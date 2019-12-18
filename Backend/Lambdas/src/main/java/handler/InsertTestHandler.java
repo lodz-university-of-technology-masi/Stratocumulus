@@ -27,13 +27,7 @@ public class InsertTestHandler implements RequestHandler<RequestInput, RequestOu
 
         insertToDatabase(test);
 
-        output.setBody(test.toString());
-        output.setStatusCode(200);
-
-//        JSONObject responseJson = new JSONObject(input.getBody());
-//        RequestOutput output = new RequestOutput();
-//        output.setBody(responseJson.toString());
-//        output.setStatusCode(200);
+        output.setBody(responseJson.toString());
 
         return output;
     }
