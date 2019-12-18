@@ -15,60 +15,66 @@ public class Question {
     private List<String> answers; // applicable only for open questions
 
     public Question(JSONObject json) {
-        this.no = json.getString("no");
-        this.type = json.getString("type");
-        this.content = json.getString("content");
-
-        if (json.has("numAnswers") && json.has("answers")) {
-            this.answers = new ArrayList<>();
-
-            this.numAnswers = json.getInt("numAnswers");
-
-            JSONArray answersArray = json.getJSONArray("answers");
-            for (int i = 0; i < answersArray.length(); i++) {
-                this.answers.add(answersArray.getString(i));
-            }
-        }
+        setNo(json);
+        setType(json);
+        setContent(json);
+        setNumAnswers(json);
+        setAnswers(json);
     }
 
     public String getNo() {
         return no;
     }
 
-    public void setNo(String no) {
-        this.no = no;
+    public void setNo(JSONObject json) {
+        if (json.has("no")) {
+            no = json.getString("no");
+        }
     }
 
     public String getType() {
         return type;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setType(JSONObject json) {
+        if (json.has("type")) {
+            type = json.getString("type");
+        }
     }
 
     public String getContent() {
         return content;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setContent(JSONObject json) {
+        if (json.has("content")) {
+            content = json.getString("content");
+        }
     }
 
     public int getNumAnswers() {
         return numAnswers;
     }
 
-    public void setNumAnswers(int numAnswers) {
-        this.numAnswers = numAnswers;
+    public void setNumAnswers(JSONObject json) {
+        if (json.has("numAnswers")) {
+            numAnswers = json.getInt("numAnswers");
+        }
     }
 
     public List<String> getAnswers() {
         return answers;
     }
 
-    public void setAnswers(List<String> answers) {
-        this.answers = answers;
+    public void setAnswers(JSONObject json) {
+        if (json.has("answers")) {
+            this.answers = new ArrayList<>();
+
+            JSONArray answersArray = json.getJSONArray("answers");
+            for (int i = 0; i < answersArray.length(); i++) {
+                this.answers.add(answersArray.getString(i));
+            }
+        }
     }
 
     public JSONObject toJsonObject() {
