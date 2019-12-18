@@ -15,7 +15,7 @@ public class DeleteTestHandler implements RequestHandler<RequestInput, RequestOu
 
     @Override
     public RequestOutput handleRequest(RequestInput requestInput, Context context) {
-        Test test = new Test(requestInput.getBody());
+        Test test = new Test(new JSONObject(requestInput.getQueryStringParameters()).toString());
 
         deleteFromDatabase(test);
 
