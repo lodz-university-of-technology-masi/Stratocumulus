@@ -9,6 +9,18 @@ Globals:
     Timeout: 20
 
 Resources:
+  StratocumulusApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      Auth:
+        AddDefaultAuthorizerToCorsPreflight: False
+        DefaultAuthorizer: AWS_IAM
+      Cors:
+        AllowMethods: "'*'"
+        AllowHeaders: "'*'"
+        AllowOrigin: "'*'"
+      StageName: dev
+
   InsertTest:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
@@ -24,5 +36,11 @@ Resources:
         HelloWorld:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
           Properties:
+            RestApiId: !Ref StratocumulusApi
             Path: /insert
             Method: post
+
+Outputs:
+  Api:
+    Description: "API Gateway"
+    Value: !Sub "https://${StratocumulusApi}.execute-api.${AWS::Region}.amazonaws.com/dev/"
