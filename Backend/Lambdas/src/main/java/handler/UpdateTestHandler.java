@@ -5,6 +5,7 @@ import com.amazonaws.services.dynamodbv2.document.UpdateItemOutcome;
 import com.amazonaws.services.dynamodbv2.document.spec.UpdateItemSpec;
 import com.amazonaws.services.dynamodbv2.document.utils.NameMap;
 import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
+import com.amazonaws.services.dynamodbv2.model.ConditionalCheckFailedException;
 import com.amazonaws.services.dynamodbv2.model.ReturnValue;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
@@ -37,21 +38,27 @@ public class UpdateTestHandler implements RequestHandler<RequestInput, RequestOu
     }
 
     private boolean updateTest(String id, Test test) {
-        UpdateItemOutcome outcome = table.updateItem(new UpdateItemSpec()
-                .withPrimaryKey("id", id)
-                .withUpdateExpression("SET #n = :test_name, " +
-                        "#l = :test_lang, " +
-                        "#q = :questions")
-                .withNameMap(new NameMap()
-                        .with("#n", "name")
-                        .with("#l", "language")
-                        .with("#q", "questions"))
-                .withValueMap(new ValueMap()
-                        .with(":test_name", test.getName())
-                        .with(":test_lang", test.getLanguage())
-                        .with(":questions", test.getQuestionsJson()))
-                .withReturnValues(ReturnValue.ALL_OLD));
+        try {
+            UpdateItemOutcome outcome = table.updateItem(new UpdateItemSpec()
+                    .withConditionExpression("id = :test_id")
+                    .withPrimaryKey("id", id)
+                    .withUpdateExpression("SET #n = :test_name, " +
+                            "#l = :test_lang, " +
+                            "#q = :questions")
+                    .withNameMap(new NameMap()
+                            .with("#n", "name")
+                            .with("#l", "language")
+                            .with("#q", "questions"))
+                    .withValueMap(new ValueMap()
+                            .with(":test_id", id)
+                            .with(":test_name", test.getName())
+                            .with(":test_lang", test.getLanguage())
+                            .with(":questions", test.getQuestionsJson()))
+                    .withReturnValues(ReturnValue.ALL_OLD));
+        } catch (ConditionalCheckFailedException e) {
+            return false;
+        }
 
-        return outcome.getUpdateItemResult().getAttributes() != null;
+        return true;
     }
 }
