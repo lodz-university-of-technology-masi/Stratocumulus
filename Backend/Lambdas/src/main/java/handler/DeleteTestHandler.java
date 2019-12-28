@@ -17,8 +17,8 @@ public class DeleteTestHandler implements RequestHandler<RequestInput, RequestOu
     private Table table = DynamoDBUtils.getDynamoDB().getTable("Tests");
 
     @Override
-    public RequestOutput handleRequest(RequestInput requestInput, Context context) {
-        Test test = new Test(new JSONObject(requestInput.getQueryStringParameters()).toString());
+    public RequestOutput handleRequest(RequestInput input, Context context) {
+        Test test = new Test(new JSONObject(input.getQueryStringParameters()).toString());
 
         boolean result = deleteFromDatabase(test);
 
