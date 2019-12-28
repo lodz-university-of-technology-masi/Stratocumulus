@@ -35,6 +35,6 @@ public class InsertTestHandler implements RequestHandler<RequestInput, RequestOu
                 .withString("id", test.getId())
                 .withString("name", test.getName())
                 .withString("language", test.getLanguage())
-                .withJSON("questions", test.getQuestionsJson()));
+                .withJSON("questions", test.getQuestionsJson().replace("\\", "")));
     }
 }
