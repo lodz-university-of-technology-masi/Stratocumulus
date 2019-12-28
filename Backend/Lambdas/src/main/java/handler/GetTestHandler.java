@@ -13,8 +13,8 @@ public class GetTestHandler implements RequestHandler<RequestInput, RequestOutpu
     private Table table = DynamoDBUtils.getDynamoDB().getTable("Tests");
 
     @Override
-    public RequestOutput handleRequest(RequestInput requestInput, Context context) {
-        String id = requestInput.getQueryStringParameters().get("id");
+    public RequestOutput handleRequest(RequestInput input, Context context) {
+        String id = input.getQueryStringParameters().get("id");
 
         Item foundItem = table.getItem("id", id);
 
