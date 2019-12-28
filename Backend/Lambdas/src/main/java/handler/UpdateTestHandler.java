@@ -1,7 +1,6 @@
 package handler;
 
 import com.amazonaws.services.dynamodbv2.document.Table;
-import com.amazonaws.services.dynamodbv2.document.UpdateItemOutcome;
 import com.amazonaws.services.dynamodbv2.document.spec.UpdateItemSpec;
 import com.amazonaws.services.dynamodbv2.document.utils.NameMap;
 import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
@@ -39,7 +38,7 @@ public class UpdateTestHandler implements RequestHandler<RequestInput, RequestOu
 
     private boolean updateTest(String id, Test test) {
         try {
-            UpdateItemOutcome outcome = table.updateItem(new UpdateItemSpec()
+            table.updateItem(new UpdateItemSpec()
                     .withConditionExpression("id = :test_id")
                     .withPrimaryKey("id", id)
                     .withUpdateExpression("SET #n = :test_name, " +
