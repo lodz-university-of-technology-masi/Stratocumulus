@@ -1,6 +1,9 @@
 package handler;
 
+import com.amazonaws.services.dynamodbv2.document.DeleteItemOutcome;
 import com.amazonaws.services.dynamodbv2.document.Table;
+import com.amazonaws.services.dynamodbv2.document.spec.DeleteItemSpec;
+import com.amazonaws.services.dynamodbv2.model.ReturnValue;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import dynamodb.DynamoDBUtils;
@@ -17,10 +20,10 @@ public class DeleteTestHandler implements RequestHandler<RequestInput, RequestOu
     public RequestOutput handleRequest(RequestInput requestInput, Context context) {
         Test test = new Test(new JSONObject(requestInput.getQueryStringParameters()).toString());
 
-        deleteFromDatabase(test);
+        boolean result = deleteFromDatabase(test);
 
         JSONObject responseJson = new JSONObject()
-                .put("isSuccess", true);
+                .put("result", result);
 
         RequestOutput output = new RequestOutput();
         output.setStatusCode(200);
@@ -29,7 +32,11 @@ public class DeleteTestHandler implements RequestHandler<RequestInput, RequestOu
         return output;
     }
 
-    private void deleteFromDatabase(Test test) {
-        table.deleteItem("id", test.getId());
+    private boolean deleteFromDatabase(Test test) {
+        DeleteItemOutcome outcome = table.deleteItem(new DeleteItemSpec()
+                .withPrimaryKey("id", test.getId())
+                .withReturnValues(ReturnValue.ALL_OLD));
+
+        return outcome.getDeleteItemResult().getAttributes() != null;
     }
 }
