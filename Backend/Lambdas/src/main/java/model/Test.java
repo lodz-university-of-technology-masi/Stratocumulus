@@ -14,21 +14,25 @@ public class Test {
     private String language;
     private List<Question> questions;
 
-    public Test(String json) {
-        JSONObject jsonObject = new JSONObject(json);
+    public Test(String jsonString) {
+        JSONObject json = new JSONObject(jsonString);
 
-        if (jsonObject.has("id")) {
-            id = jsonObject.getString("id");
-        } else {
-            setRandomId();
-        }
-        setName(jsonObject);
-        setLanguage(jsonObject);
-        setQuestions(jsonObject);
+        setId(json);
+        setName(json);
+        setLanguage(json);
+        setQuestions(json);
     }
 
     public String getId() {
         return id;
+    }
+
+    private void setId(JSONObject json) {
+        if (json.has("id")) {
+            id = json.getString("id");
+        } else {
+            setRandomId();
+        }
     }
 
     private void setRandomId() {
@@ -81,8 +85,7 @@ public class Test {
         return array.toString();
     }
 
-    @Override
-    public String toString() {
+    public String toJSON() {
         JSONObject json = new JSONObject()
                 .put("id", id)
                 .put("name", name)

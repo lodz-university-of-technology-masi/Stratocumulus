@@ -1,4 +1,4 @@
-package handler;
+package handler.test;
 
 import com.amazonaws.services.dynamodbv2.document.DeleteItemOutcome;
 import com.amazonaws.services.dynamodbv2.document.Table;

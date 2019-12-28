@@ -1,4 +1,4 @@
-package handler;
+package handler.test;
 
 import com.amazonaws.services.dynamodbv2.document.Item;
 import com.amazonaws.services.dynamodbv2.document.Table;
@@ -20,8 +20,8 @@ public class InsertTestHandler implements RequestHandler<RequestInput, RequestOu
 
         insertToDatabase(test);
 
-        JSONObject responseJson = new JSONObject();
-        responseJson.put("id", test.getId());
+        JSONObject responseJson = new JSONObject()
+                .put("id", test.getId());
 
         RequestOutput output = new RequestOutput();
         output.setStatusCode(200);
