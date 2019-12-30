@@ -10,6 +10,9 @@ import org.json.JSONObject;
 import request.RequestInput;
 import request.RequestOutput;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class InsertTestHandler implements RequestHandler<RequestInput, RequestOutput> {
 
     private Table table = DynamoDBUtils.getDynamoDB().getTable("Tests");
@@ -26,6 +29,11 @@ public class InsertTestHandler implements RequestHandler<RequestInput, RequestOu
         RequestOutput output = new RequestOutput();
         output.setStatusCode(200);
         output.setBody(responseJson.toString());
+
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Access-Control-Allow-Origin", "*");
+
+        output.setHeaders(headers);
 
         return output;
     }

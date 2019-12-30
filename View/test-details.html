@@ -7,6 +7,10 @@
           type="text/css"
           href="css/test-details.css"/>
     <script src="js/test-details.js"></script>
+    <script src="js/jquery-3.4.1.js"></script>
+    <script src="js/vendor/aws-cognito-sdk.min.js"></script>
+    <script src="js/vendor/amazon-cognito-identity.min.js"></script>
+
 </head>
 <body>
 
@@ -17,27 +21,11 @@
             <input type="text"/>
         </label>
         <hr id="question_hr">
-        <!--        <nobr>-->
-        <!--            <label class="questionLabel">-->
-        <!--                Treść pytania otwartego:-->
-        <!--            </label>-->
-        <!--            <button id="d0" type="button" class="deleteQuestionButton" onclick="deleteQuestion(this)">Usuń</button>-->
-        <!--        </nobr>-->
-        <!--        <input type="text">-->
-        <!--        <input type="text">-->
-        <!--        <label class="question_label">-->
-        <!--            Warianty odpowiedzi:-->
-        <!--        </label>-->
-
-        <!--        <input type="text">-->
-        <!--        <input type="text">-->
-        <!--        <input type="text">-->
-        <!--        <input type="text">-->
         </hr>
 
         <button type="button" class="add_question_button" onclick="addNewClosedQuestion()">Dodaj pytanie zamknięte</button>
         <button type="button" class="add_question_button" onclick="addNewOpenQuestion()">Dodaj pytanie otwarte</button>
-        <button type="button" class="add_test_button">Dodaj test</button>
+        <button class="add_test_button" onclick="handleAddTestButton()" type="button">Dodaj test</button>
     </div>
 </form>
 </body>
