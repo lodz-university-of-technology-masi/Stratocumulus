@@ -11,6 +11,9 @@ import org.json.JSONObject;
 import request.RequestInput;
 import request.RequestOutput;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class DynamoDBUtils {
     private static final Regions REGION = Regions.US_EAST_1;
 
@@ -35,6 +38,11 @@ public class DynamoDBUtils {
             }
             output.setBody(testsArray.toString());
         }
+
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Access-Control-Allow-Origin", "*");
+
+        output.setHeaders(headers);
 
         return output;
     }
