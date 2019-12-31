@@ -5,8 +5,8 @@ import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import dynamodb.DynamoDBUtils;
+import handler.RequestUtils;
 import model.CandidateTest;
-import org.json.JSONObject;
 import request.RequestInput;
 import request.RequestOutput;
 
@@ -20,14 +20,7 @@ public class InsertCandidateTestHandler implements RequestHandler<RequestInput, 
 
         insertToDatabase(test);
 
-        JSONObject responseJson = new JSONObject()
-                .put("id", test.getId());
-
-        RequestOutput output = new RequestOutput();
-        output.setStatusCode(200);
-        output.setBody(responseJson.toString());
-
-        return output;
+        return RequestUtils.getIdOutput(test);
     }
 
     private void insertToDatabase(CandidateTest test) {

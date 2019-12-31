@@ -1,5 +1,6 @@
 package request;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,6 +10,11 @@ public class RequestOutput {
     private Map<String, String> headers;
     private Map<String, List<String>> multiValueHeaders;
     private String body;
+
+    public RequestOutput() {
+        headers = new HashMap<>();
+        multiValueHeaders = new HashMap<>();
+    }
 
     public boolean isBase64Encoded() {
         return isBase64Encoded;
@@ -32,6 +38,10 @@ public class RequestOutput {
 
     public void setHeaders(Map<String, String> headers) {
         this.headers = headers;
+    }
+
+    public void setAccessControlAllowOriginHeader() {
+        headers.put("Access-Control-Allow-Origin", "*");
     }
 
     public Map<String, List<String>> getMultiValueHeaders() {

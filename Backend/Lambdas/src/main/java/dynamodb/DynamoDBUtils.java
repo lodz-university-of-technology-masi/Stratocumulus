@@ -3,16 +3,17 @@ package dynamodb;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
+import com.amazonaws.services.dynamodbv2.document.DeleteItemOutcome;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.amazonaws.services.dynamodbv2.document.Item;
 import com.amazonaws.services.dynamodbv2.document.Table;
+import com.amazonaws.services.dynamodbv2.document.spec.DeleteItemSpec;
+import com.amazonaws.services.dynamodbv2.model.ReturnValue;
+import model.Identifiable;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import request.RequestInput;
 import request.RequestOutput;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class DynamoDBUtils {
     private static final Regions REGION = Regions.US_EAST_1;
@@ -23,27 +24,13 @@ public class DynamoDBUtils {
         return new DynamoDB(client);
     }
 
-    public static RequestOutput getItems(RequestInput input, Table table) {
-        RequestOutput output = new RequestOutput();
-        output.setStatusCode(200);
 
-        if (input.getQueryStringParameters() != null && input.getQueryStringParameters().containsKey("id")) {
-            String id = input.getQueryStringParameters().get("id");
-            Item foundItem = table.getItem("id", id);
-            output.setBody(foundItem.toJSON());
-        } else {
-            JSONArray testsArray = new JSONArray();
-            for (Item outcome : table.scan()) {
-                testsArray.put(new JSONObject(outcome.toJSON()));
-            }
-            output.setBody(testsArray.toString());
-        }
 
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Access-Control-Allow-Origin", "*");
+    public static boolean deleteFromDatabase(Table table, Identifiable object) {
+        DeleteItemOutcome outcome = table.deleteItem(new DeleteItemSpec()
+                .withPrimaryKey("id", object.getId())
+                .withReturnValues(ReturnValue.ALL_OLD));
 
-        output.setHeaders(headers);
-
-        return output;
+        return outcome.getDeleteItemResult().getAttributes() != null;
     }
 }

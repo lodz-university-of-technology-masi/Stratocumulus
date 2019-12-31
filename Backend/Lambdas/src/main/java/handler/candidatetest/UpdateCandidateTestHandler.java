@@ -9,8 +9,8 @@ import com.amazonaws.services.dynamodbv2.model.ReturnValue;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import dynamodb.DynamoDBUtils;
+import handler.RequestUtils;
 import model.CandidateTest;
-import org.json.JSONObject;
 import request.RequestInput;
 import request.RequestOutput;
 
@@ -26,14 +26,7 @@ public class UpdateCandidateTestHandler implements RequestHandler<RequestInput, 
 
         boolean result = updateCandidateTest(id, test);
 
-        JSONObject responseJson = new JSONObject()
-                .put("result", result);
-
-        RequestOutput output = new RequestOutput();
-        output.setBody(responseJson.toString());
-        output.setStatusCode(200);
-
-        return output;
+        return RequestUtils.getBooleanRequestOutput(result);
     }
 
     private boolean updateCandidateTest(String id, CandidateTest test) {

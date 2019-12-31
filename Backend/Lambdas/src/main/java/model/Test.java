@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class Test {
+public class Test implements Identifiable {
 
     private String id;
     private String name;
@@ -23,6 +23,7 @@ public class Test {
         setQuestions(json);
     }
 
+    @Override
     public String getId() {
         return id;
     }

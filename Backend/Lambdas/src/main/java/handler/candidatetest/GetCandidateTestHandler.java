@@ -7,7 +7,7 @@ import dynamodb.DynamoDBUtils;
 import request.RequestInput;
 import request.RequestOutput;
 
-import static dynamodb.DynamoDBUtils.getItems;
+import static handler.RequestUtils.getItems;
 
 public class GetCandidateTestHandler implements RequestHandler<RequestInput, RequestOutput> {
 

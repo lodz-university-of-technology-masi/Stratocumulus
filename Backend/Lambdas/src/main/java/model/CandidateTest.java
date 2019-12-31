@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class CandidateTest {
+public class CandidateTest implements Identifiable {
 
     private String id;
     private String candidateId;
@@ -23,6 +23,7 @@ public class CandidateTest {
         setAnswers(json);
     }
 
+    @Override
     public String getId() {
         return id;
     }

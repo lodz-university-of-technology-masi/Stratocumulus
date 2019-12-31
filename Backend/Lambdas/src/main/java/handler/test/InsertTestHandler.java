@@ -5,13 +5,10 @@ import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import dynamodb.DynamoDBUtils;
+import handler.RequestUtils;
 import model.Test;
-import org.json.JSONObject;
 import request.RequestInput;
 import request.RequestOutput;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class InsertTestHandler implements RequestHandler<RequestInput, RequestOutput> {
 
@@ -23,19 +20,7 @@ public class InsertTestHandler implements RequestHandler<RequestInput, RequestOu
 
         insertToDatabase(test);
 
-        JSONObject responseJson = new JSONObject()
-                .put("id", test.getId());
-
-        RequestOutput output = new RequestOutput();
-        output.setStatusCode(200);
-        output.setBody(responseJson.toString());
-
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Access-Control-Allow-Origin", "*");
-
-        output.setHeaders(headers);
-
-        return output;
+        return RequestUtils.getIdOutput(test);
     }
 
     private void insertToDatabase(Test test) {
