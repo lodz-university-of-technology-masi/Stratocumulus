@@ -3,10 +3,12 @@
 <head>
     <link rel="stylesheet" type="text/css" href="css/MainView.css">
     <script src="js/jquery-3.4.1.js"></script>
+    <script src="js/vendor/aws-cognito-sdk.min.js"></script>
+    <script src="js/vendor/amazon-cognito-identity.min.js"></script>
     <script src="js/MainView.js"></script>
 
 </head>
-<body>
+<body onload="onPageLoad()">
 <div class="grid-container">
 
     <div class="naviBar">
@@ -22,11 +24,7 @@
             <li><a href="example.com">User3</a></li>
         </ul>
 
-        <ul id="TestListId">
-            <li><a href="example.com">Test1</a></li>
-            <li><a href="example.com">Test2</a></li>
-            <li><a href="example.com">Test3</a></li>
-        </ul>
+        <ul id="TestListId"></ul>
 
         <button id="addButton" onclick="showAddView()">add</button>
 
