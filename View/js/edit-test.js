@@ -18,7 +18,7 @@ function loadTest(testJson) {
 
     var name = testJson.name;
     var language = testJson.language;
-    var questions = JSON.parse(testJson.questions);
+    var questions = testJson.questions;
 
     $('#testNameInput').val(name);
 

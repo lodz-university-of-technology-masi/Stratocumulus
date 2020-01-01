@@ -92,9 +92,9 @@ function populateTestList(testList) {
         let btn = document.createElement("BUTTON");
         btn.innerHTML = testList[i].name;
 
-        btn.setAttribute("data-id", testList[i].id);
-        btn.onclick = showEditTestView;
-
+        btn.onclick = function () {
+            showEditTestView(testList[i])
+        };
 
         let li = document.createElement("li");
         li.appendChild(btn);
@@ -107,6 +107,9 @@ function showAddTestView() {
     $("#includedContent").load("add-test.html");
 }
 
-function showEditTestView() {
-    $("#includedContent").load("edit-test.html");
+function showEditTestView(testObject) {
+    $("#includedContent").load("edit-test.html",function(){
+     loadTest(testObject);
+    });
 }
+
