@@ -114,6 +114,37 @@ var TestApp = window.TestApp || {};
 
     }
 
+
+    var lista = () => {
+        var params = {
+            UserPoolId: 'us-east-1_CY4O3GKHV',
+            AttributesToGet: [
+                'email', 'name', 'username'
+            ],
+        };
+
+        return new Promise((resolve, reject) => {
+            var provider = new AWS.CognitoIdentityServiceProvider();
+            provider.listUsers(params, (err, data) => {
+                if (err) {
+                    console.log(err);
+                    reject(err)
+                }
+                else {
+                    console.log("data", data);
+                    resolve(data)
+                }
+            })
+        });
+    }
+
+    function signout() {
+        if (cognitoUser != null) {
+            cognitoUser.signOut();
+        }
+        cognitoUser.globalSignOut();
+    }
+
     function signin(email, password, onSuccess, onFailure) {
         var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
             Username: email,
@@ -154,6 +185,8 @@ var TestApp = window.TestApp || {};
         $('#signinForm').submit(handleSignin);
         $('#verifyForm').submit(handleVerify);
         $('#deleteForm').submit(handleDeletion);
+        $('#arrayMessage').html('lista');
+
     });
 
     function handleSignin(event) {
