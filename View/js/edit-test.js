@@ -120,6 +120,8 @@ function handleSaveTestButton(event) {
 
     console.log(modifiedJson);
 
+    clearIncludedView();
+
     sendRequest(modifiedJson);
 }
 
@@ -129,6 +131,8 @@ function handleDeleteTestButton(event) {
 
         if (this.readyState === 4 && this.status === 200) {
             console.log(this.responseText);
+            reloadList();
+            showSuccessPopup("Pomyslnie usunieto test");
         }
     };
 
@@ -137,6 +141,8 @@ function handleDeleteTestButton(event) {
 
     xhttp.setRequestHeader('Content-Type', 'application/json');
     xhttp.setRequestHeader('Authorization', getAccessToken());
+
+    clearIncludedView();
 
     xhttp.send();
 }
@@ -185,6 +191,8 @@ function sendRequest(body) {
 
         if (this.readyState === 4 && this.status === 200) {
             console.log(this.responseText);
+            reloadList();
+            showSuccessPopup("Pomyslnie edytowano test");
         }
     };
 

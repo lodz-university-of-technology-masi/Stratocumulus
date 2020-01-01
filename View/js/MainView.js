@@ -15,17 +15,12 @@ function showUsers() {
 }
 
 
-function showAddView() {
-    var y = document.getElementById("UserListId");
-
-    if (y.style.display == "none") {
-        $("#includedContent").load("test-details/add-test.html");
-    } else {
-        $("#includedContent").load("add-candidate.html");
-    }
-}
 
 function onPageLoad() {
+    reloadList();
+}
+
+function reloadList() {
     var poolData = {
         UserPoolId: 'us-east-1_CY4O3GKHV',
         ClientId: 'thcc01b1nkqm7fti3p434r7un'
@@ -86,7 +81,11 @@ function onPageLoad() {
 
 }
 
+
+
 function populateTestList(testList) {
+
+    document.getElementById("TestListId").innerHTML = "";
 
     for (let i = 0; i < testList.length; i++) {
         let btn = document.createElement("BUTTON");
@@ -102,14 +101,26 @@ function populateTestList(testList) {
     }
 }
 
+function clearIncludedView()
+{
+    $("#includedContent").empty();
+}
 
 function showAddTestView() {
     $("#includedContent").load("add-test.html");
+
 }
 
 function showEditTestView(testObject) {
     $("#includedContent").load("edit-test.html",function(){
      loadTest(testObject);
     });
+}
+
+function showSuccessPopup (text)
+{
+document.getElementById( "AlertMsg").innerText= text;
+document.getElementById( "AlertMsg").parentElement.style.display="inline-block";
+
 }
 
