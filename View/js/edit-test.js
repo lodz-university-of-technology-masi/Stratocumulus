@@ -4,8 +4,8 @@ var questionsCount = 0;
 
 function loadSampleTest() {
     var testJson = {
-        "id": "7d8e3e05-a3cb-4327-beac-3b1a4d6fbd4b",
-        "name": "Test z wiedzy o Javie",
+        "id": "d79c00f6-5007-4113-a94b-d0dbf2752cfc",
+        "name": "C++",
         "language": "PL",
         "questions": "[{\"no\":\"1\",\"type\":\"c\",\"content\":\"Co to jest metoda abstrakcyjna?\",\"numAnswers\":4,\"answers\":[\"Metoda, która nie ma implementacji\",\"Metoda z implementacją, w której wykorzystujemy jedynie klasy abstrakcyjne\",\"Każda metoda klasy abstrakcyjnej\",\"Inaczej nazywamy ją metodą generyczną\"]},{\"no\":\"2\",\"type\":\"o\",\"content\":\"Wymień rodzaje złączeń w SQL i różnice między nimi\"}]"
     };
@@ -121,6 +121,24 @@ function handleSaveTestButton(event) {
     console.log(modifiedJson);
 
     sendRequest(modifiedJson);
+}
+
+function handleDeleteTestButton(event) {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+
+        if (this.readyState === 4 && this.status === 200) {
+            console.log(this.responseText);
+        }
+    };
+
+    var testId = originalJson.id;
+    xhttp.open("DELETE", "https://ot28vqg79h.execute-api.us-east-1.amazonaws.com/dev/tests?id=" + testId, true);
+
+    xhttp.setRequestHeader('Content-Type', 'application/json');
+    xhttp.setRequestHeader('Authorization', getAccessToken());
+
+    xhttp.send();
 }
 
 function readQuestionsFromHtml() {
