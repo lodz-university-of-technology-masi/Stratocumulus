@@ -45,7 +45,7 @@ public class UpdateTestHandler implements RequestHandler<RequestInput, RequestOu
                             .with(":test_id", id)
                             .with(":test_name", test.getName())
                             .with(":test_lang", test.getLanguage())
-                            .with(":questions", test.getQuestionsJson()))
+                            .withJSON(":questions", test.getQuestionsJson().replace("\\", "")))
                     .withReturnValues(ReturnValue.ALL_OLD));
         } catch (ConditionalCheckFailedException e) {
             return false;
