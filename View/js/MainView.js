@@ -1,14 +1,14 @@
 function showTests() {
-    var x = document.getElementById("UserListId");
-    var y = document.getElementById("TestListId");
+    var x = document.getElementById("UserContentId");
+    var y = document.getElementById("TestContentId");
 
     x.style.display = "none";
     y.style.display = "block";
 }
 
 function showUsers() {
-    var x = document.getElementById("TestListId");
-    var y = document.getElementById("UserListId");
+    var x = document.getElementById("TestContentId");
+    var y = document.getElementById("UserContentId");
 
     x.style.display = "none";
     y.style.display = "block";
@@ -101,4 +101,7 @@ function populateTestList(testList)
 }
 
 
-
+function showAddTestView()
+{
+    $("#includedContent").load("add-test.html");
+}
