@@ -4,8 +4,8 @@ var questionsCount = 0;
 
 function loadSampleTest() {
     var testJson = {
+        "id": "7d8e3e05-a3cb-4327-beac-3b1a4d6fbd4b",
         "name": "Test z wiedzy o Javie",
-        "id": "3278ceb0-2f17-46b1-95ea-50492df0f101",
         "language": "PL",
         "questions": "[{\"no\":\"1\",\"type\":\"c\",\"content\":\"Co to jest metoda abstrakcyjna?\",\"numAnswers\":4,\"answers\":[\"Metoda, która nie ma implementacji\",\"Metoda z implementacją, w której wykorzystujemy jedynie klasy abstrakcyjne\",\"Każda metoda klasy abstrakcyjnej\",\"Inaczej nazywamy ją metodą generyczną\"]},{\"no\":\"2\",\"type\":\"o\",\"content\":\"Wymień rodzaje złączeń w SQL i różnice między nimi\"}]"
     };
@@ -109,21 +109,6 @@ function deleteQuestion(button) {
     questionLabel.remove();
 }
 
-function handleAddTestButton(event) {
-    var testName = $("#testNameInput").val();
-
-
-    var testJson = {
-        "name": testName,
-        "language": "PL",
-        "questions": JSON.stringify(readQuestionsFromHtml())
-    };
-
-    console.log(testJson);
-
-    sendRequest(testJson);
-}
-
 function handleSaveTestButton(event) {
     var testName = $("#testNameInput").val();
 
@@ -190,6 +175,8 @@ function sendRequest(body) {
 
     xhttp.setRequestHeader('Content-Type', 'application/json');
     xhttp.setRequestHeader('Authorization', getAccessToken());
+
+    console.log(JSON.stringify(body));
 
     xhttp.send(JSON.stringify(body));
 }
