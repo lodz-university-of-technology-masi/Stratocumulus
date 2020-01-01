@@ -80,7 +80,7 @@ hr {
     background: #FF22ff;
 }
 
-.add_question_button {
+.add-question-button {
     background-color: #6b4099;
     color: white;
     padding: 16px 20px;
@@ -92,7 +92,7 @@ hr {
     opacity: 0.9;
 }
 
-.add_question_button:hover {
+.add-question-button:hover {
     opacity: 1;
 }
 

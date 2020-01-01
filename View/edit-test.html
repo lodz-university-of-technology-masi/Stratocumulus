@@ -6,7 +6,7 @@
     <link href="css/test-details.css"
           rel="stylesheet"
           type="text/css"/>
-    <script src="js/add-test.js"></script>
+    <script src="js/edit-test.js"></script>
     <script src="js/jquery-3.4.1.js"></script>
     <script src="js/vendor/aws-cognito-sdk.min.js"></script>
     <script src="js/vendor/amazon-cognito-identity.min.js"></script>
@@ -23,10 +23,11 @@
         <hr id="question_hr">
         </hr>
 
-        <button class="add_question_button" onclick="addNewClosedQuestion()" type="button">Dodaj pytanie zamknięte
+        <button class="add-question-button" onclick="addNewClosedQuestion()" type="button">Dodaj pytanie zamknięte
         </button>
-        <button class="add_question_button" onclick="addNewOpenQuestion()" type="button">Dodaj pytanie otwarte</button>
-        <button class="add_test_button" onclick="handleAddTestButton()" type="button">Dodaj test</button>
+        <button class="add-question-button" onclick="addNewOpenQuestion()" type="button">Dodaj pytanie otwarte</button>
+        <button class="add-question-button" onclick="handleSaveTestButton()" type="button">Zapisz zmiany</button>
+        <button class="add-question-button" onclick="handleDeleteTestButton()" type="button">Usuń test</button>
     </div>
 </form>
 </body>
