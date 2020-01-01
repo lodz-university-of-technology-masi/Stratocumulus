@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Stwórz nowy test</title>
+    <link href="css/test-details.css"
+          rel="stylesheet"
+          type="text/css"/>
+    <script src="js/add-test.js"></script>
+    <script src="js/jquery-3.4.1.js"></script>
+    <script src="js/vendor/aws-cognito-sdk.min.js"></script>
+    <script src="js/vendor/amazon-cognito-identity.min.js"></script>
+
+</head>
+<body>
+
+<form>
+    <div class="container">
+        <h1>Nazwa testu:</h1>
+        <label>
+            <input id="testNameInput" type="text"/>
+        </label>
+        <hr id="question_hr">
+        </hr>
+
+        <button class="add_question_button" onclick="addNewClosedQuestion()" type="button">Dodaj pytanie zamknięte
+        </button>
+        <button class="add_question_button" onclick="addNewOpenQuestion()" type="button">Dodaj pytanie otwarte</button>
+        <button class="add_test_button" onclick="handleAddTestButton()" type="button">Dodaj test</button>
+    </div>
+</form>
+</body>
+</html>
