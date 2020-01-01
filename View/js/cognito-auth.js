@@ -75,6 +75,45 @@ var TestApp = window.TestApp || {};
         );
     }
 
+    function update(email, name, password, onSuccess, onFailure) {
+
+        var cognitoUser = userPool.getCurrentUser();
+        if (cognitoUser != null) {
+            cognitoUser.getSession(function(err, session) {
+                if (err) {
+                    alert(err);
+                    return;
+                }
+                console.log('session validity: ' + session.isValid());
+            });
+        }
+
+        var dataEmail = {
+            Name: 'email',
+            Value: email
+        };
+
+        var fullName = {
+            Name: 'name',
+            Value: name
+        };
+
+        var attributeName = new AmazonCognitoIdentity.CognitoUserAttribute(fullName);
+        var attributeEmail = new AmazonCognitoIdentity.CognitoUserAttribute(dataEmail);
+
+        cognitoUser.updateAttributes([attributeName, attributeEmail], function(err, result) {
+            if (!err) {
+                onSuccess(result);
+            } else {
+                onFailure(err);
+            }
+            console.log('call result: ' + result);
+        });
+
+
+
+    }
+
     function signin(email, password, onSuccess, onFailure) {
         var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
             Username: email,
@@ -113,6 +152,8 @@ var TestApp = window.TestApp || {};
         $('#registrationForm').submit(handleRegister);
         $('#signinForm').submit(handleSignin);
         $('#verifyForm').submit(handleVerify);
+        $('deleteForm').submit(handleDeletion);
+        $('changeForm').submit(handleEdition);
     });
 
     function handleSignin(event) {
@@ -155,6 +196,36 @@ var TestApp = window.TestApp || {};
 
         if (password === password2) {
             register(email, userName, password, onSuccess, onFailure);
+        } else {
+            alert('Podane hasła nie są takie same!');
+        }
+    }
+
+    function handleEdition(event) {
+        var email = $('#userEditedEmail').val();
+        var userName = $('#userEditedFullName').val();
+        var password = $('#editedPass').val();
+        var password2 = $('#editedPassRepeat').val();
+
+        var onSuccess = function registerSuccess(result) {
+            alert('Konto zostało zaktualizowane!');
+            var cognitoUser = result.user;
+            var confirmation = ('Aktualizacja zakończona pomyślnie.');
+            if (confirmation) {
+                window.location.href = 'MainView.html';
+            }
+            else{
+                window.location.href = 'MainView.html';
+            }
+        };
+
+        var onFailure = function registerFailure(err) {
+            alert(err);
+        };
+        event.preventDefault();
+
+        if (password === password2) {
+            update(email, userName, password, onSuccess, onFailure);
         } else {
             alert('Podane hasła nie są takie same!');
         }
