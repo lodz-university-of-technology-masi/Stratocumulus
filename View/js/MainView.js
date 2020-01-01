@@ -20,8 +20,7 @@ function showAddView() {
 
     if (y.style.display == "none") {
         $("#includedContent").load("test-details/add-test.html");
-    }
-    else {
+    } else {
         $("#includedContent").load("add-candidate.html");
     }
 }
@@ -87,12 +86,15 @@ function onPageLoad() {
 
 }
 
-function populateTestList(testList)
-{
+function populateTestList(testList) {
 
     for (let i = 0; i < testList.length; i++) {
         let btn = document.createElement("BUTTON");
         btn.innerHTML = testList[i].name;
+
+        btn.setAttribute("data-id", testList[i].id);
+        btn.onclick = showEditTestView;
+
 
         let li = document.createElement("li");
         li.appendChild(btn);
@@ -101,7 +103,10 @@ function populateTestList(testList)
 }
 
 
-function showAddTestView()
-{
+function showAddTestView() {
     $("#includedContent").load("add-test.html");
+}
+
+function showEditTestView() {
+    $("#includedContent").load("edit-test.html");
 }
