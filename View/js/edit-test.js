@@ -132,7 +132,7 @@ function handleDeleteTestButton(event) {
         if (this.readyState === 4 && this.status === 200) {
             console.log(this.responseText);
             reloadList();
-            showSuccessPopup("Pomyslnie usunieto test");
+            showSuccessPopup("Pomyslnie usunieto test: " + originalJson.name);
         }
     };
 
@@ -192,7 +192,7 @@ function sendRequest(body) {
         if (this.readyState === 4 && this.status === 200) {
             console.log(this.responseText);
             reloadList();
-            showSuccessPopup("Pomyslnie edytowano test");
+            showSuccessPopup("Pomyslnie edytowano test: " + originalJson.name);
         }
     };
 
