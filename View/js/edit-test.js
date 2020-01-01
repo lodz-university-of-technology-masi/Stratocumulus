@@ -1,4 +1,55 @@
+var originalJson;
+
 var questionsCount = 0;
+
+function loadSampleTest() {
+    var testJson = {
+        "name": "Test z wiedzy o Javie",
+        "id": "3278ceb0-2f17-46b1-95ea-50492df0f101",
+        "language": "PL",
+        "questions": "[{\"no\":\"1\",\"type\":\"c\",\"content\":\"Co to jest metoda abstrakcyjna?\",\"numAnswers\":4,\"answers\":[\"Metoda, która nie ma implementacji\",\"Metoda z implementacją, w której wykorzystujemy jedynie klasy abstrakcyjne\",\"Każda metoda klasy abstrakcyjnej\",\"Inaczej nazywamy ją metodą generyczną\"]},{\"no\":\"2\",\"type\":\"o\",\"content\":\"Wymień rodzaje złączeń w SQL i różnice między nimi\"}]"
+    };
+
+    loadTest(testJson);
+}
+
+function loadTest(testJson) {
+    originalJson = testJson;
+
+    var name = testJson.name;
+    var language = testJson.language;
+    var questions = JSON.parse(testJson.questions);
+
+    $('#testNameInput').val(name);
+
+    displayInputs(questions);
+    displayQuestions(questions);
+}
+
+function displayInputs(questions) {
+    questions.forEach(function (question) {
+        if (question.type === 'c') {
+            addNewClosedQuestion();
+        } else {
+            addNewOpenQuestion();
+        }
+    });
+}
+
+function displayQuestions(questions) {
+    $('[id^=content]').each(function (index) {
+        var question = questions[index];
+        this.value = question.content;
+
+        if (this.className === 'closed') {
+            for (var i = 0; i < 4; i++) {
+                var answerContent = question.answers[i];
+                var answerId = 'q' + (index + 1) + 'a' + (i + 1).toString();
+                $('#' + answerId).val(answerContent);
+            }
+        }
+    });
+}
 
 function addNewClosedQuestion() {
     questionsCount++;
@@ -12,13 +63,14 @@ function addNewClosedQuestion() {
     var answer3Id = id + "a3";
     var answer4Id = id + "a4";
     var deleteButtonId = "d" + questionsCount.toString();
+    var contentId = 'content' + questionsCount.toString();
     newDiv.setAttribute("id", id);
 
     newDiv.innerHTML = "       <nobr> <label class=\"question_label\">\n" +
         "            Treść pytania zamkniętego:\n" +
         "        </label>\n" +
         "        <button id=\"" + deleteButtonId + "\" type=\"button\" class=\"delete_question_button\" onclick=\"deleteQuestion(this)\">Usuń</button> </nobr>\n" +
-        "            <input class='closed' id='content" + questionsCount.toString() + "' type=\"text\">\n" +
+        "            <input class='closed' id='" + contentId + "' type=\"text\">\n" +
         "<label class=\"question_label\">Warianty odpowiedzi:</label>" +
         "        <input id=\"" + answer1Id + "\" type=\"text\">" +
         "        <input id=\"" + answer2Id + "\" type=\"text\">" +
@@ -72,6 +124,20 @@ function handleAddTestButton(event) {
     sendRequest(testJson);
 }
 
+function handleSaveTestButton(event) {
+    var testName = $("#testNameInput").val();
+
+    var modifiedJson = {
+        "name": testName,
+        "language": "PL",
+        "questions": JSON.stringify(readQuestionsFromHtml())
+    };
+
+    console.log(modifiedJson);
+
+    sendRequest(modifiedJson);
+}
+
 function readQuestionsFromHtml() {
     var questionsJson = [];
 
@@ -119,7 +185,8 @@ function sendRequest(body) {
         }
     };
 
-    xhttp.open("POST", "https://ot28vqg79h.execute-api.us-east-1.amazonaws.com/dev/tests", true);
+    var testId = originalJson.id;
+    xhttp.open("PUT", "https://ot28vqg79h.execute-api.us-east-1.amazonaws.com/dev/tests?id=" + testId, true);
 
     xhttp.setRequestHeader('Content-Type', 'application/json');
     xhttp.setRequestHeader('Authorization', getAccessToken());
