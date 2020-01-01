@@ -1,14 +1,14 @@
 function showTests() {
-    var x = document.getElementById("UserListId");
-    var y = document.getElementById("TestListId");
+    var x = document.getElementById("UserContentId");
+    var y = document.getElementById("TestContentId");
 
     x.style.display = "none";
     y.style.display = "block";
 }
 
 function showUsers() {
-    var x = document.getElementById("TestListId");
-    var y = document.getElementById("UserListId");
+    var x = document.getElementById("TestContentId");
+    var y = document.getElementById("UserContentId");
 
     x.style.display = "none";
     y.style.display = "block";
@@ -20,8 +20,7 @@ function showAddView() {
 
     if (y.style.display == "none") {
         $("#includedContent").load("test-details/add-test.html");
-    }
-    else {
+    } else {
         $("#includedContent").load("add-candidate.html");
     }
 }
@@ -87,12 +86,15 @@ function onPageLoad() {
 
 }
 
-function populateTestList(testList)
-{
+function populateTestList(testList) {
 
     for (let i = 0; i < testList.length; i++) {
         let btn = document.createElement("BUTTON");
         btn.innerHTML = testList[i].name;
+
+        btn.setAttribute("data-id", testList[i].id);
+        btn.onclick = showEditTestView;
+
 
         let li = document.createElement("li");
         li.appendChild(btn);
@@ -101,4 +103,10 @@ function populateTestList(testList)
 }
 
 
+function showAddTestView() {
+    $("#includedContent").load("add-test.html");
+}
 
+function showEditTestView() {
+    $("#includedContent").load("edit-test.html");
+}
