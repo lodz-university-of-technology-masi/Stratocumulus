@@ -3,16 +3,19 @@ var originalJson;
 var questionsCount = 0;
 
 function loadSampleTest() {
-    var sampleTest = {
+    var testJson = {
         "name": "Test z wiedzy o Javie",
+        "id": "3278ceb0-2f17-46b1-95ea-50492df0f101",
         "language": "PL",
         "questions": "[{\"no\":\"1\",\"type\":\"c\",\"content\":\"Co to jest metoda abstrakcyjna?\",\"numAnswers\":4,\"answers\":[\"Metoda, która nie ma implementacji\",\"Metoda z implementacją, w której wykorzystujemy jedynie klasy abstrakcyjne\",\"Każda metoda klasy abstrakcyjnej\",\"Inaczej nazywamy ją metodą generyczną\"]},{\"no\":\"2\",\"type\":\"o\",\"content\":\"Wymień rodzaje złączeń w SQL i różnice między nimi\"}]"
     };
 
-    loadTest(sampleTest);
+    loadTest(testJson);
 }
 
 function loadTest(testJson) {
+    originalJson = testJson;
+
     var name = testJson.name;
     var language = testJson.language;
     var questions = JSON.parse(testJson.questions);
