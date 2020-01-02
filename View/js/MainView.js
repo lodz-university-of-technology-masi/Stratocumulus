@@ -182,3 +182,87 @@ function getUserList() {
 
     xhttp.send();
 }
+
+function handleImport(fileList) {
+    console.log(fileList[0].name);
+
+    var reader = new FileReader();
+
+    reader.onload = function () {
+        console.log(reader.result);
+        parseCsv(reader.result,fileList[0].name);
+
+    }
+
+    reader.readAsText(fileList[0]);
+}
+
+function parseCsv(text,name) {
+    let lines = text.split('\n');
+
+
+    let test = new Object();
+    test.name = name;
+
+
+    let questions = [];
+
+    let language = '';
+
+    for (let i = 0; i < lines.length; i++) {
+
+
+        let start_pos = lines[i].indexOf('"') + 1;
+        let end_pos = lines[i].indexOf('"', start_pos);
+        let text_to_get = lines[i].substring(start_pos, end_pos);
+
+
+        if (text_to_get != "") {
+            let fragments = text_to_get.split(";");
+            let question = new Object();
+
+            question.no = fragments[0];
+
+            //ToDo: Poprawic kiedy będzie juztyp liczbowy
+
+            if (fragments[1] == 'W')
+                question.type = 'c';
+            if (fragments[1] == 'O')
+                question.type = 'o';
+            if (fragments[1] == "L")
+                question.type = 'o';
+
+            console.log(i);
+            console.log(language);
+            console.log(fragments[2]);
+
+            if(language=='') {
+                language = fragments[2];
+            }
+            else if(language!=fragments[2])
+                language='XX';
+
+            question.content = fragments[3];
+
+            if (question.type == "c") {
+                question.numAnswers = fragments[4]
+                question.answers = [];
+                for (let k = 0; k < question.numAnswers; k++)
+                    question.answers.push(fragments[5 + k]);
+
+            }
+
+            if (question.type == "c" && fragments[4] != "|") {
+                // Some error
+            }
+            questions.push(question);
+        }
+    }
+
+    test.language = language;
+    test.questions = JSON.stringify(questions);
+    console.log(JSON.stringify(test));
+    sendRequest(test);
+
+
+}
