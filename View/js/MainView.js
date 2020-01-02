@@ -18,9 +18,107 @@ function showUsers() {
 
 function onPageLoad() {
     reloadList();
+    getUserList();
 }
 
 function reloadList() {
+
+    let response = '';
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+
+        if (this.readyState === 4 && this.status === 200) {
+            response = this.responseText;
+            console.log(this.responseText);
+            populateTestList(JSON.parse(response));
+        }
+    };
+
+    xhttp.open("GET", "https://ot28vqg79h.execute-api.us-east-1.amazonaws.com/dev/tests", true);
+    xhttp.setRequestHeader('Content-Type', 'application/json');
+    xhttp.setRequestHeader('Authorization', getAccessToken());
+    xhttp.send();
+
+
+}
+
+
+
+function populateTestList(testList) {
+
+    document.getElementById("TestListId").innerHTML = "";
+
+    for (let i = 0; i < testList.length; i++) {
+        let btn = document.createElement("BUTTON");
+        btn.innerHTML = testList[i].name;
+
+        btn.onclick = function () {
+            showEditTestView(testList[i])
+        };
+
+        let li = document.createElement("li");
+        li.appendChild(btn);
+        document.getElementById("TestListId").appendChild(li);
+    }
+}
+
+function populateUserList(userList) {
+
+    document.getElementById("UserListId").innerHTML = "";
+
+    for (let i = 0; i < userList.length; i++) {
+        let btn = document.createElement("BUTTON");
+        btn.innerHTML = userList[i].name;
+
+        btn.onclick = function () {
+            showDetailsUserView(userList[i])
+        };
+
+        let li = document.createElement("li");
+        li.appendChild(btn);
+        document.getElementById("UserListId").appendChild(li);
+    }
+
+}
+
+function clearIncludedView()
+{
+    $("#includedContent").empty();
+}
+
+function showAddTestView() {
+    $("#includedContent").load("add-test.html");
+
+}
+
+function showAddUserView() {
+    $("#includedContent").load("add-candidate.html");
+
+}
+
+function showEditTestView(testObject) {
+    $("#includedContent").load("edit-test.html",function(){
+     loadTest(testObject);
+    });
+}
+
+function showDetailsUserView(testObject) {
+    $("#includedContent").load("view-single.html",function(){
+        loadData(testObject);
+    });
+}
+
+
+function showSuccessPopup (text)
+{
+document.getElementById( "AlertMsg").innerText= text;
+document.getElementById( "AlertMsg").parentElement.style.display="inline-block";
+
+}
+
+function getAccessToken() {
+
     var poolData = {
         UserPoolId: 'us-east-1_CY4O3GKHV',
         ClientId: 'thcc01b1nkqm7fti3p434r7un'
@@ -61,66 +159,110 @@ function reloadList() {
         }
     });
 
-    let response = '';
+    return idToken;
+}
 
+function getUserList() {
+    let userList = '';
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
 
+
         if (this.readyState === 4 && this.status === 200) {
-            response = this.responseText;
+            userList = this.responseText;
             console.log(this.responseText);
-            populateTestList(JSON.parse(response));
+            populateUserList(JSON.parse(userList));
         }
     };
 
-    xhttp.open("GET", "https://ot28vqg79h.execute-api.us-east-1.amazonaws.com/dev/tests", true);
+    xhttp.open("GET", "https://ot28vqg79h.execute-api.us-east-1.amazonaws.com/dev/candidates", true);
+
     xhttp.setRequestHeader('Content-Type', 'application/json');
-    xhttp.setRequestHeader('Authorization', idToken);
+    xhttp.setRequestHeader('Authorization', getAccessToken());
+
     xhttp.send();
-
-
 }
 
+function handleImport(fileList) {
+    console.log(fileList[0].name);
 
+    var reader = new FileReader();
 
-function populateTestList(testList) {
+    reader.onload = function () {
+        console.log(reader.result);
+        parseCsv(reader.result,fileList[0].name);
 
-    document.getElementById("TestListId").innerHTML = "";
-
-    for (let i = 0; i < testList.length; i++) {
-        let btn = document.createElement("BUTTON");
-        btn.innerHTML = testList[i].name;
-
-        btn.onclick = function () {
-            showEditTestView(testList[i])
-        };
-
-        let li = document.createElement("li");
-        li.appendChild(btn);
-        document.getElementById("TestListId").appendChild(li);
     }
+
+    reader.readAsText(fileList[0]);
 }
 
-function clearIncludedView()
-{
-    $("#includedContent").empty();
+function parseCsv(text,name) {
+    let lines = text.split('\n');
+
+
+    let test = new Object();
+    test.name = name;
+
+
+    let questions = [];
+
+    let language = '';
+
+    for (let i = 0; i < lines.length; i++) {
+
+
+        let start_pos = lines[i].indexOf('"') + 1;
+        let end_pos = lines[i].indexOf('"', start_pos);
+        let text_to_get = lines[i].substring(start_pos, end_pos);
+
+
+        if (text_to_get != "") {
+            let fragments = text_to_get.split(";");
+            let question = new Object();
+
+            question.no = fragments[0];
+
+            //ToDo: Poprawic kiedy będzie juztyp liczbowy
+
+            if (fragments[1] == 'W')
+                question.type = 'c';
+            if (fragments[1] == 'O')
+                question.type = 'o';
+            if (fragments[1] == "L")
+                question.type = 'o';
+
+            console.log(i);
+            console.log(language);
+            console.log(fragments[2]);
+
+            if(language=='') {
+                language = fragments[2];
+            }
+            else if(language!=fragments[2])
+                language='XX';
+
+            question.content = fragments[3];
+
+            if (question.type == "c") {
+                question.numAnswers = fragments[4]
+                question.answers = [];
+                for (let k = 0; k < question.numAnswers; k++)
+                    question.answers.push(fragments[5 + k]);
+
+            }
+
+            if (question.type == "c" && fragments[4] != "|") {
+                // Some error
+            }
+            questions.push(question);
+        }
+    }
+
+    test.language = language;
+    test.questions = JSON.stringify(questions);
+    console.log(JSON.stringify(test));
+    sendRequest(test);
+
+
 }
-
-function showAddTestView() {
-    $("#includedContent").load("add-test.html");
-
-}
-
-function showEditTestView(testObject) {
-    $("#includedContent").load("edit-test.html",function(){
-     loadTest(testObject);
-    });
-}
-
-function showSuccessPopup (text)
-{
-document.getElementById( "AlertMsg").innerText= text;
-document.getElementById( "AlertMsg").parentElement.style.display="inline-block";
-
-}
-
