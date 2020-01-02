@@ -69,6 +69,7 @@ function handleAddTestButton(event) {
 
     console.log(testJson);
 
+    clearIncludedView();
     sendRequest(testJson);
 }
 
@@ -116,7 +117,10 @@ function sendRequest(body) {
 
         if (this.readyState === 4 && this.status === 200) {
             console.log(this.responseText);
+            reloadList();
+            showSuccessPopup("Pomyslnie dodano nowy test");
         }
+
     };
 
     xhttp.open("POST", "https://ot28vqg79h.execute-api.us-east-1.amazonaws.com/dev/tests", true);

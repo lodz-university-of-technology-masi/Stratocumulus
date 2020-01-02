@@ -10,14 +10,14 @@
 <body>
 
 <section class="container">
-    <form id="changeForm">
+    <form id="editForm">
         <h1>Edytuj kandydata</h1>
         <hr>
-        <label for="userEditedEmail"><b>Nowy email kandydata</b></label>
-        <input type="email" pattern=".*" placeholder="Wprowadź nowy adres Email" name="email" id="userEditedEmail" required>
-
         <label for="userEditedFullName"><b>Nowe imię i nazwisko kandydata</b></label>
         <input type="text" pattern=".*" placeholder="Wprowadź nowe imię i nazwisko" name="fullName" id="userEditedFullName" required>
+
+        <label for="editedPass"><b>Stare hasło</b></label>
+        <input type="password" pattern=".*" placeholder="Wprowadź stare hasło" name="psw" id="oldPass" minlength="8" required>
 
         <label for="editedPass"><b>Nowe hasło</b></label>
         <input type="password" pattern=".*" placeholder="Wprowadź nowe hasło" name="psw" id="editedPass" minlength="8" required>
@@ -28,9 +28,9 @@
 
         <input type="submit" class="editButton" value="Zaktualizuj użytkownia">
     </form>
-    <form id="deleteForm">
-        <input type="submit" class="deleteButton" value="Usuń użytkownia">
-    </form>
+<!--    <form id="deleteForm">-->
+<!--        <input type="submit" class="deleteButton" value="Usuń użytkownia">-->
+<!--    </form>-->
 </section>
 
 <script src="js/vendor/jquery-3.1.0.js"></script>
@@ -39,5 +39,6 @@
 <script src="js/vendor/amazon-cognito-identity.min.js"></script>
 <script src="js/poolConfig.js"></script>
 <script src="js/cognito-auth.js"></script>
+<script src="js/vendor/aws-sdk-cognito-service-provider.js"></script>
 </body>
 </html>
