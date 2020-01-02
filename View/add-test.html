@@ -16,9 +16,17 @@
 
 <form>
     <div class="container">
+
         <h1>Nazwa testu:</h1>
         <label>
             <input id="testNameInput" type="text"/>
+        </label>
+
+        <label>Język:
+            <select class="select-language">
+                <option value="PL">PL</option>
+                <option value="EN">EN</option>
+            </select>
         </label>
         <hr id="question_hr">
         </hr>
@@ -26,7 +34,8 @@
         <button class="add-question-button" onclick="addNewClosedQuestion()" type="button">Dodaj pytanie zamknięte
         </button>
         <button class="add-question-button" onclick="addNewOpenQuestion()" type="button">Dodaj pytanie otwarte</button>
-        <button class="add_test_button" onclick="handleAddTestButton()" type="button">Dodaj test</button>
+        <button class="add-question-button" onclick="addNewNumericQuestion()" type="button">Dodaj pytanie liczbowe</button>
+        <button class="add-test-button" onclick="handleAddTestButton()" type="button">Dodaj test</button>
     </div>
 </form>
 </body>

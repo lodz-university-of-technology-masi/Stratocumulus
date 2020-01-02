@@ -96,7 +96,7 @@ hr {
     opacity: 1;
 }
 
-.add_test_button {
+.add-test-button {
     background-color: green;
     color: white;
     padding: 16px 20px;
@@ -108,7 +108,7 @@ hr {
     opacity: 0.9;
 }
 
-.add_test_button:hover {
+.add-test-button:hover {
     opacity: 1;
 }
 

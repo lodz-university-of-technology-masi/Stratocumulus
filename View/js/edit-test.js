@@ -30,8 +30,10 @@ function displayInputs(questions) {
     questions.forEach(function (question) {
         if (question.type === 'c') {
             addNewClosedQuestion();
-        } else {
+        } else if (question.type === 'o') {
             addNewOpenQuestion();
+        } else if (question.type === 'n') {
+            addNewNumericQuestion();
         }
     });
 }
@@ -103,6 +105,28 @@ function addNewOpenQuestion() {
     questionHr.appendChild(newDiv);
 }
 
+function addNewNumericQuestion() {
+    questionsCount++;
+
+    addNewOpenQuestion.counter++;
+    var newDiv = document.createElement("div");
+    newDiv.className = "question_div";
+    var id = "q" + questionsCount.toString();
+    var deleteButtonId = "d" + questionsCount.toString();
+    newDiv.setAttribute("id", id);
+
+    newDiv.innerHTML = "        <nobr>\n" +
+        "            <label class=\"question_label\">\n" +
+        "                Treść pytania liczbowego:\n" +
+        "            </label>\n" +
+        "            <button id=\"" + deleteButtonId + "\" type=\"button\" class=\"delete_question_button\" onclick=\"deleteQuestion(this)\">Usuń</button>\n" +
+        "        </nobr>\n" +
+        "        <input class='numeric' id='content" + questionsCount.toString() + "' type=\"text\">";
+
+    var questionHr = document.getElementById("question_hr");
+    questionHr.appendChild(newDiv);
+}
+
 function deleteQuestion(button) {
     var id = button.getAttribute("id").replace("d", "q");
     var questionLabel = document.getElementById(id);
@@ -114,7 +138,7 @@ function handleSaveTestButton(event) {
 
     var modifiedJson = {
         "name": testName,
-        "language": "PL",
+        "language": $(".select-language").val(),
         "questions": JSON.stringify(readQuestionsFromHtml())
     };
 
@@ -163,7 +187,7 @@ function readQuestionsFromHtml() {
             questionsJson.push(readClosedQuestionFromHtml(questionJson, questionNo));
 
         } else {
-            questionJson.type = 'o';
+            questionJson.type = this.className === 'open' ? 'o' : 'n';
             questionsJson.push(questionJson);
         }
     });
