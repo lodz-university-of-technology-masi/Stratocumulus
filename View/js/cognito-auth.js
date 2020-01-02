@@ -184,7 +184,6 @@ var TestApp = window.TestApp || {};
         $('#editForm').submit(handleEdition);
         $('#signinForm').submit(handleSignin);
         $('#verifyForm').submit(handleVerify);
-        $('#deleteForm').submit(handleDeletion);
 
     });
 
