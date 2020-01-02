@@ -266,3 +266,31 @@ function parseCsv(text,name) {
 
 
 }
+
+function logOutUser(){
+
+    var poolData = {
+        UserPoolId: 'us-east-1_CY4O3GKHV',
+        ClientId: 'thcc01b1nkqm7fti3p434r7un'
+    };
+
+    var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+
+    var cognitoUser =  userPool.getCurrentUser();
+
+    if (cognitoUser != null) {
+        cognitoUser.getSession(function(err, session) {
+            if (err) {
+                alert(err);
+                return;
+            }
+            console.log('session validity: ' + session.isValid());
+        });
+    }
+
+    cognitoUser.globalSignOut(
+        {   onFailure: e =>  alert("Błąd podczas wylogowywania!")
+        , onSuccess: r =>  {window.location.href = 'index.html'; alert("Logout successful")} }
+        )
+
+}
