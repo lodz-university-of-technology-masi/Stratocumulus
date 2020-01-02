@@ -1,5 +1,6 @@
 package model;
 
+import handler.TranslateUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -21,6 +22,11 @@ public class Test implements Identifiable {
         setName(json);
         setLanguage(json);
         setQuestions(json);
+    }
+
+    public Test() {
+        questions = new ArrayList<>();
+        setRandomId();
     }
 
     @Override
@@ -48,6 +54,22 @@ public class Test implements Identifiable {
         if (json.has("name")) {
             this.name = json.getString("name");
         }
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    public void setQuestions(List<Question> questions) {
+        this.questions = questions;
+    }
+
+    public void addQuestion(Question question) {
+        questions.add(question);
+    }
+
+    private void setName(String name) {
+        this.name = name;
     }
 
     public String getLanguage() {
@@ -94,5 +116,17 @@ public class Test implements Identifiable {
                 .put("questions", getQuestionsJson());
 
         return json.toString();
+    }
+
+    public Test translate(String sourceLang, String targetLang) {
+        Test translatedTest = new Test();
+        translatedTest.language = targetLang.toUpperCase();
+        translatedTest.name = TranslateUtils.translate(name, sourceLang, targetLang);
+
+        for (Question question : this.questions) {
+            translatedTest.addQuestion(question.translate(sourceLang, targetLang));
+        }
+
+        return translatedTest;
     }
 }

@@ -18,10 +18,10 @@ import java.util.stream.Collectors;
 public class GetCandidateHandler implements RequestHandler<RequestInput, RequestOutput> {
 
     private AWSCognitoIdentityProvider cognito = AWSCognitoIdentityProviderClientBuilder.defaultClient();
+    private String userPoolId = System.getenv("USER_POOL_ID");
 
     @Override
     public RequestOutput handleRequest(RequestInput input, Context context) {
-        String userPoolId = System.getenv("USER_POOL_ID");
 
         List<UserType> users = cognito.listUsers(new ListUsersRequest().withUserPoolId(userPoolId)).getUsers();
 

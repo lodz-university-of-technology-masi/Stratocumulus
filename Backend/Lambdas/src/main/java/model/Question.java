@@ -1,5 +1,6 @@
 package model;
 
+import handler.TranslateUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -11,8 +12,8 @@ public class Question {
     private String no;
     private String type;
     private String content;
-    private int numAnswers; // applicable only for open questions
-    private List<String> answers; // applicable only for open questions
+    private int numAnswers; // applicable only for closed questions
+    private List<String> answers; // applicable only for closed questions
 
     public Question(JSONObject json) {
         setNo(json);
@@ -20,6 +21,9 @@ public class Question {
         setContent(json);
         setNumAnswers(json);
         setAnswers(json);
+    }
+
+    public Question() {
     }
 
     public String getNo() {
@@ -77,6 +81,26 @@ public class Question {
         }
     }
 
+    public void setNo(String no) {
+        this.no = no;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public void setNumAnswers(int numAnswers) {
+        this.numAnswers = numAnswers;
+    }
+
+    public void setAnswers(List<String> answers) {
+        this.answers = answers;
+    }
+
     public JSONObject toJsonObject() {
         JSONObject json = new JSONObject()
                 .put("no", no)
@@ -95,5 +119,24 @@ public class Question {
         }
 
         return json;
+    }
+
+
+    public Question translate(String sourceLang, String targetLang) {
+        Question translatedQuestion = new Question();
+        translatedQuestion.no = no;
+        translatedQuestion.numAnswers = numAnswers;
+        translatedQuestion.content = TranslateUtils.translate(content, sourceLang, targetLang);
+        translatedQuestion.type = type;
+
+        if (answers != null) {
+            List<String> translatedAnswers = new ArrayList<>();
+            for (String answer : answers) {
+                translatedAnswers.add(TranslateUtils.translate(answer, sourceLang, targetLang));
+            }
+            translatedQuestion.answers = translatedAnswers;
+        }
+
+        return translatedQuestion;
     }
 }

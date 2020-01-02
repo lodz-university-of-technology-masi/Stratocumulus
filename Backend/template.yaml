@@ -204,6 +204,50 @@ Resources:
             Path: /candidates
             Method: get
 
+  DeleteCandidate:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: Lambdas
+      Handler: handler.candidate.DeleteCandidateHandler::handleRequest
+      Policies:
+        - Statement:
+            - Sid: AllowCognito
+              Effect: "Allow"
+              Action: [
+                "cognito-idp:*"
+              ]
+              Resource: '*'
+      Runtime: java8
+      MemorySize: 512
+      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+        Variables:
+          PARAM1: VALUE
+      Events:
+        HelloWorld:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            RestApiId: !Ref StratocumulusApi
+            Path: /candidates
+            Method: delete
+
+  TranslateTest:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: Lambdas
+      Handler: handler.test.TranslateTestHandler::handleRequest
+      Runtime: java8
+      MemorySize: 512
+      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+        Variables:
+          PARAM1: VALUE
+      Events:
+        HelloWorld:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            RestApiId: !Ref StratocumulusApi
+            Path: /translate-test
+            Method: post
+
 Outputs:
   Api:
     Description: "API Gateway"
