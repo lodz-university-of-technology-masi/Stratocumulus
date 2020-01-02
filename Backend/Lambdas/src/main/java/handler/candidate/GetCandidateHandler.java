@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class GetCandidateHandler implements RequestHandler<RequestInput, RequestOutput> {
+
     private AWSCognitoIdentityProvider cognito = AWSCognitoIdentityProviderClientBuilder.defaultClient();
 
     @Override
