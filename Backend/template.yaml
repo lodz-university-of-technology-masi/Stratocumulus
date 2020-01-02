@@ -13,8 +13,12 @@ Resources:
     Type: AWS::Serverless::Api
     Properties:
       Auth:
-        AddDefaultAuthorizerToCorsPreflight: False
-        DefaultAuthorizer: None
+        DefaultAuthorizer: CognitoAuthorizer
+        Authorizers:
+          CognitoAuthorizer:
+            UserPoolArn: arn:aws:cognito-idp:us-east-1:378648381617:userpool/us-east-1_CY4O3GKHV
+            Identity:
+              Header: Authorization
       Cors:
         AllowMethods: "'*'"
         AllowHeaders: "'*'"
@@ -172,6 +176,32 @@ Resources:
             RestApiId: !Ref StratocumulusApi
             Path: /candidatetests
             Method: put
+
+  GetCandidate:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: Lambdas
+      Handler: handler.candidate.GetCandidateHandler::handleRequest
+      Policies:
+        - Statement:
+            - Sid: AllowCognito
+              Effect: "Allow"
+              Action: [
+                "cognito-idp:*"
+              ]
+              Resource: '*'
+      Runtime: java8
+      MemorySize: 512
+      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+        Variables:
+          PARAM1: VALUE
+      Events:
+        HelloWorld:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            RestApiId: !Ref StratocumulusApi
+            Path: /candidates
+            Method: get
 
 Outputs:
   Api:

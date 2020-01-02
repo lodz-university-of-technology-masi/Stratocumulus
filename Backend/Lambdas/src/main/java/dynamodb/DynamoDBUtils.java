@@ -5,15 +5,10 @@ import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.document.DeleteItemOutcome;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
-import com.amazonaws.services.dynamodbv2.document.Item;
 import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.services.dynamodbv2.document.spec.DeleteItemSpec;
 import com.amazonaws.services.dynamodbv2.model.ReturnValue;
 import model.Identifiable;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import request.RequestInput;
-import request.RequestOutput;
 
 public class DynamoDBUtils {
     private static final Regions REGION = Regions.US_EAST_1;
@@ -23,8 +18,6 @@ public class DynamoDBUtils {
         client.setRegion(Region.getRegion(REGION));
         return new DynamoDB(client);
     }
-
-
 
     public static boolean deleteFromDatabase(Table table, Identifiable object) {
         DeleteItemOutcome outcome = table.deleteItem(new DeleteItemSpec()
