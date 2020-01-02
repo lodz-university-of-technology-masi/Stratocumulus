@@ -19,30 +19,86 @@ function handleDeletion(event) {
     var desiredName = $('#userFullName').val();
     var desiredUUID = $('#userId').val();
 
-    var onSuccess = function deletionSuccess(result) {
-        alert('Konto zostało poprawnie usunięte!');
-        var confirmation = ('Removal successful.');
-        if (confirmation) {
-            window.location.href = 'MainView.html';
-        }
-    };
-    var onFailure = function deletionFailure(err) {
-        alert(err);
-    };
     event.preventDefault();
 
     if (!isEmpty(desiredEmail) && !isEmpty(desiredName) && !isEmpty(desiredUUID)) {
-        deletion(desiredEmail, desiredEmail, desiredUUID, onSuccess, onFailure);
+        deletion(desiredEmail, desiredName);
     } else {
         alert('W pobranych danych znajduje się błąd!');
     }
 }
 
-function deletion(email, name, uuid, onSuccess, onFailure) {
+function deletion(email, name) {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
 
+        if (this.readyState === 4 && this.status === 200) {
+            console.log(this.responseText);
+            if(JSON.parse(this.responseText).result){
+                alert("Pomyślnie usunięto użytkownika: " + name + " | " + email);
+                window.location.href = 'MainView.html';
+            }
+            else {
+                alert("Błąd podczas usuwania użytkownika: " + name + " | " + email);
+            }
+
+        }
+    };
+
+    xhttp.open("DELETE", "https://ot28vqg79h.execute-api.us-east-1.amazonaws.com/dev/candidates?username=" + email, true);
+
+    xhttp.setRequestHeader('Content-Type', 'application/json');
+    xhttp.setRequestHeader('Authorization', getAccessToken());
+
+    xhttp.send();
 
 }
 
 function isEmpty(str) {
     return (!str || 0 === str.length);
+}
+
+function getAccessToken() {
+
+    var poolData = {
+        UserPoolId: 'us-east-1_CY4O3GKHV',
+        ClientId: 'thcc01b1nkqm7fti3p434r7un'
+    };
+
+    var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+
+    var email = 'adrianwarcholinski9@gmail.com';
+    var password = 'Qwerty123';
+
+    var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
+        Username: email,
+        Password: password
+    });
+
+    var cognitoUser = new AmazonCognitoIdentity.CognitoUser({
+        Username: email,
+        Pool: userPool
+    });
+
+    cognitoUser.authenticateUser(authenticationDetails, {
+        onSuccess: function printOkMessage() {
+            console.log('Authenticated successfully')
+        },
+        onFailure: function printFailedMessage() {
+            console.log('Authentication failed')
+        }
+    });
+
+    var idToken;
+
+    cognitoUser.getSession(function (err, session) {
+        if (err) {
+            console.log('Error');
+        } else {
+            console.log(':)')
+            idToken = session.getIdToken().getJwtToken();
+        }
+    });
+
+    return idToken;
 }
