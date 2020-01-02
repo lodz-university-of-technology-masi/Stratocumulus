@@ -63,6 +63,25 @@ function populateTestList(testList) {
     }
 }
 
+function populateUserList(userList) {
+
+    document.getElementById("UserListId").innerHTML = "";
+
+    for (let i = 0; i < userList.length; i++) {
+        let btn = document.createElement("BUTTON");
+        btn.innerHTML = userList[i].name;
+
+        // btn.onclick = function () {
+        //     showEditTestView(testList[i])
+        // };
+
+        let li = document.createElement("li");
+        li.appendChild(btn);
+        document.getElementById("UserListId").appendChild(li);
+    }
+
+}
+
 function clearIncludedView()
 {
     $("#includedContent").empty();
@@ -70,6 +89,11 @@ function clearIncludedView()
 
 function showAddTestView() {
     $("#includedContent").load("add-test.html");
+
+}
+
+function showAddUserView() {
+    $("#includedContent").load("add-candidate.html");
 
 }
 
@@ -140,6 +164,7 @@ function getUserList() {
         if (this.readyState === 4 && this.status === 200) {
             userList = this.responseText;
             console.log(this.responseText);
+            populateUserList(JSON.parse(userList));
         }
     };
 
