@@ -71,9 +71,9 @@ function populateUserList(userList) {
         let btn = document.createElement("BUTTON");
         btn.innerHTML = userList[i].name;
 
-        // btn.onclick = function () {
-        //     showEditTestView(testList[i])
-        // };
+        btn.onclick = function () {
+            showDetailsUserView(userList[i])
+        };
 
         let li = document.createElement("li");
         li.appendChild(btn);
@@ -102,6 +102,13 @@ function showEditTestView(testObject) {
      loadTest(testObject);
     });
 }
+
+function showDetailsUserView(testObject) {
+    $("#includedContent").load("view-single.html",function(){
+        loadData(testObject);
+    });
+}
+
 
 function showSuccessPopup (text)
 {
