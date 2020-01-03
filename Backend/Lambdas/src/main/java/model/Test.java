@@ -128,6 +128,8 @@ public class Test implements Identifiable {
             for (Question question : questions) {
                 questionsArray.put(question.toJsonObject());
             }
+
+            jsonObject.put("questions", questionsArray);
         }
 
         return jsonObject.toString();
