@@ -133,7 +133,7 @@ function deleteQuestion(button) {
     questionLabel.remove();
 }
 
-function handleSaveTestButton(event) {
+function getFilledTestJson() {
     var testName = $("#testNameInput").val();
 
     var modifiedJson = {
@@ -142,11 +142,17 @@ function handleSaveTestButton(event) {
         "questions": JSON.stringify(readQuestionsFromHtml())
     };
 
-    console.log(modifiedJson);
+    return modifiedJson;
+}
+
+function handleSaveTestButton(event) {
+    var json = getFilledTestJson();
+
+    console.log(json);
 
     clearIncludedView();
 
-    sendRequest(modifiedJson);
+    sendRequest(json);
 }
 
 function handleDeleteTestButton(event) {
@@ -169,6 +175,44 @@ function handleDeleteTestButton(event) {
     clearIncludedView();
 
     xhttp.send();
+}
+
+function handleTranslateManuallyButton(event) {
+    var json = getFilledTestJson();
+
+    if (json.language === 'PL') {
+        json.language = 'EN';
+    } else {
+        json.language = 'PL';
+    }
+
+    alert(JSON.stringify(json));
+    // Display add-test.html filled with 'json'
+}
+
+function handleAutoTranslateButton(event) {
+    var json = getFilledTestJson();
+
+    var translateLang = json.language === 'PL' ? 'pl-en' : 'en-pl';
+
+    autoTranslate(translateLang, json);
+}
+
+function autoTranslate(translateLang, testJson) {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            alert(this.responseText);
+            // Display add-test.html filled with response json
+        }
+    };
+
+    xhttp.open("POST", "https://ot28vqg79h.execute-api.us-east-1.amazonaws.com/dev/translate-test?lang=" + translateLang, true);
+
+    xhttp.setRequestHeader('Content-Type', 'application/json');
+    xhttp.setRequestHeader('Authorization', getAccessToken());
+
+    xhttp.send(JSON.stringify(testJson));
 }
 
 function readQuestionsFromHtml() {
