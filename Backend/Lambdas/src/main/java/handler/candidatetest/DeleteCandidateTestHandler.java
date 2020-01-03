@@ -5,7 +5,7 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import dynamodb.DynamoDBUtils;
 import handler.RequestUtils;
-import model.CandidateTest;
+import model.CandidateTests;
 import org.json.JSONObject;
 import request.RequestInput;
 import request.RequestOutput;
@@ -16,8 +16,8 @@ public class DeleteCandidateTestHandler implements RequestHandler<RequestInput, 
 
     @Override
     public RequestOutput handleRequest(RequestInput input, Context context) {
-        CandidateTest test = new CandidateTest(new JSONObject(input.getQueryStringParameters()).toString());
+        CandidateTests tests = new CandidateTests(new JSONObject(input.getQueryStringParameters()).toString());
 
-        return RequestUtils.getBooleanRequestOutput(DynamoDBUtils.deleteFromDatabase(table, test));
+        return RequestUtils.getBooleanRequestOutput(DynamoDBUtils.deleteFromDatabase("candidateId", table, tests));
     }
 }

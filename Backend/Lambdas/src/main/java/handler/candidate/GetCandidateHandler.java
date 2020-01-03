@@ -6,7 +6,7 @@ import com.amazonaws.services.cognitoidp.model.ListUsersRequest;
 import com.amazonaws.services.cognitoidp.model.UserType;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import handler.Candidate;
+import model.Candidate;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import request.RequestInput;

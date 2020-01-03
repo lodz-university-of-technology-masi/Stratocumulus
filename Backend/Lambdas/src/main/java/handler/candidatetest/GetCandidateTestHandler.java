@@ -4,10 +4,9 @@ import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import dynamodb.DynamoDBUtils;
+import handler.RequestUtils;
 import request.RequestInput;
 import request.RequestOutput;
-
-import static handler.RequestUtils.getItems;
 
 public class GetCandidateTestHandler implements RequestHandler<RequestInput, RequestOutput> {
 
@@ -15,6 +14,6 @@ public class GetCandidateTestHandler implements RequestHandler<RequestInput, Req
 
     @Override
     public RequestOutput handleRequest(RequestInput input, Context context) {
-        return getItems(input, table);
+        return RequestUtils.getItems("candidateId", input, table);
     }
 }

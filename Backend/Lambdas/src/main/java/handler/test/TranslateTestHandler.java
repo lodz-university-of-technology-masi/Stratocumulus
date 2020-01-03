@@ -16,7 +16,6 @@ public class TranslateTestHandler implements RequestHandler<RequestInput, Reques
 
         RequestOutput output = getBasicOutput();
 
-
         Map<String, String> queryParams = input.getQueryStringParameters();
         if (queryParams != null && queryParams.containsKey("lang")
                 && queryParams.get("lang").contains("-")) {

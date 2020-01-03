@@ -5,8 +5,8 @@ import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import dynamodb.DynamoDBUtils;
-import handler.RequestUtils;
-import model.CandidateTest;
+import model.CandidateTests;
+import org.json.JSONObject;
 import request.RequestInput;
 import request.RequestOutput;
 
@@ -16,18 +16,34 @@ public class InsertCandidateTestHandler implements RequestHandler<RequestInput, 
 
     @Override
     public RequestOutput handleRequest(RequestInput requestInput, Context context) {
-        CandidateTest test = new CandidateTest(requestInput.getBody());
+        CandidateTests tests = new CandidateTests(requestInput.getBody());
 
-        insertToDatabase(test);
+        insertToDatabase(tests);
 
-        return RequestUtils.getIdOutput(test);
+        return getCandidateIdOutput(tests.getCandidateId());
     }
 
-    private void insertToDatabase(CandidateTest test) {
+    private void insertToDatabase(CandidateTests test) {
         table.putItem(new Item()
-                .withString("id", test.getId())
                 .withString("candidateId", test.getCandidateId())
-                .withString("testId", test.getTestId())
-                .withJSON("answers", test.getAnswersJson().replace("\\", "")));
+                .withJSON("assignedTests", test.getTestsJson().replace("\\", "")));
+    }
+
+    private RequestOutput getCandidateIdOutput(String candidateId) {
+        RequestOutput output = getBasicOutput();
+        JSONObject response = new JSONObject()
+                .put("candidateId", candidateId);
+
+        output.setBody(response.toString());
+
+        return output;
+    }
+
+    private RequestOutput getBasicOutput() {
+        RequestOutput output = new RequestOutput();
+        output.setStatusCode(200);
+        output.setAccessControlAllowOriginHeader();
+
+        return output;
     }
 }

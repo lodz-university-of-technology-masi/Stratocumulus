@@ -10,7 +10,7 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import dynamodb.DynamoDBUtils;
 import handler.RequestUtils;
-import model.CandidateTest;
+import model.CandidateTests;
 import request.RequestInput;
 import request.RequestOutput;
 
@@ -20,32 +20,32 @@ public class UpdateCandidateTestHandler implements RequestHandler<RequestInput, 
 
     @Override
     public RequestOutput handleRequest(RequestInput input, Context context) {
-        String id = input.getQueryStringParameters().get("id");
+        if (input.getQueryStringParameters() != null && input.getQueryStringParameters().containsKey("candidateId")) {
+            String id = input.getQueryStringParameters().get("candidateId");
 
-        CandidateTest test = new CandidateTest(input.getBody());
+            CandidateTests tests = new CandidateTests(input.getBody());
 
-        boolean result = updateCandidateTest(id, test);
+            boolean result = updateCandidateTest(id, tests);
 
-        return RequestUtils.getBooleanRequestOutput(result);
+            return RequestUtils.getBooleanRequestOutput(result);
+        } else {
+            return RequestUtils.getBooleanRequestOutput(false);
+        }
     }
 
-    private boolean updateCandidateTest(String id, CandidateTest test) {
+    private boolean updateCandidateTest(String id, CandidateTests test) {
         try {
             table.updateItem(new UpdateItemSpec()
-                    .withConditionExpression("id = :candidatetest_id")
+                    .withConditionExpression("candidateId = :candidate_id")
                     .withPrimaryKey("id", id)
                     .withUpdateExpression("SET #c = :candidate_id, " +
-                            "#t = :test_id, " +
-                            "#a = :answers")
+                            "#a = :assigned_tests")
                     .withNameMap(new NameMap()
                             .with("#c", "candidateId")
-                            .with("#t", "testId")
-                            .with("#a", "answers"))
+                            .with("#a", "assignedTests"))
                     .withValueMap(new ValueMap()
-                            .with(":candidatetest_id", id)
-                            .with(":candidate_id", test.getCandidateId())
-                            .with(":test_id", test.getTestId())
-                            .withJSON(":answers", test.getAnswersJson().replace("\\", "")))
+                            .with(":candidate_id", id)
+                            .withJSON(":assigned_tests", test.getTestsJson().replace("\\", "")))
                     .withReturnValues(ReturnValue.ALL_OLD));
         } catch (ConditionalCheckFailedException e) {
             return false;

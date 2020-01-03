@@ -1,4 +1,4 @@
-package handler;
+package model;
 
 import com.amazonaws.services.cognitoidp.model.AttributeType;
 import com.amazonaws.services.cognitoidp.model.UserType;
@@ -16,6 +16,23 @@ public class Candidate {
         this.id = id;
         this.email = login;
         this.name = name;
+    }
+
+    public static Candidate convertFromUserType(UserType user) {
+        String id = getAttributeIfExists(user, "sub");
+        String email = getAttributeIfExists(user, "email");
+        String firstName = getAttributeIfExists(user, "name");
+
+        return new Candidate(id, email, firstName);
+    }
+
+    private static String getAttributeIfExists(UserType user, String attributeName) {
+        Optional<AttributeType> attribute = getUserAttribute(user, attributeName);
+        return attribute.map(AttributeType::getValue).orElse(null);
+    }
+
+    private static Optional<AttributeType> getUserAttribute(UserType user, String attributeName) {
+        return user.getAttributes().stream().filter(attribute -> attribute.getName().equals(attributeName)).findFirst();
     }
 
     public String getId() {
@@ -47,22 +64,5 @@ public class Candidate {
                 .put("id", id)
                 .put("email", email)
                 .put("name", name);
-    }
-
-    public static Candidate convertFromUserType(UserType user) {
-        String id = getAttributeIfExists(user, "sub");
-        String email = getAttributeIfExists(user, "email");
-        String firstName = getAttributeIfExists(user, "name");
-
-        return new Candidate(id, email, firstName);
-    }
-
-    private static String getAttributeIfExists(UserType user, String attributeName) {
-        Optional<AttributeType> attribute = getUserAttribute(user, attributeName);
-        return attribute.map(AttributeType::getValue).orElse(null);
-    }
-
-    private static Optional<AttributeType> getUserAttribute(UserType user, String attributeName) {
-        return user.getAttributes().stream().filter(attribute -> attribute.getName().equals(attributeName)).findFirst();
     }
 }

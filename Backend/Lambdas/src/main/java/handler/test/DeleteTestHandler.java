@@ -18,6 +18,6 @@ public class DeleteTestHandler implements RequestHandler<RequestInput, RequestOu
     public RequestOutput handleRequest(RequestInput input, Context context) {
         Test test = new Test(new JSONObject(input.getQueryStringParameters()).toString());
 
-        return RequestUtils.getBooleanRequestOutput(DynamoDBUtils.deleteFromDatabase(table, test));
+        return RequestUtils.getBooleanRequestOutput(DynamoDBUtils.deleteFromDatabase("id", table, test));
     }
 }

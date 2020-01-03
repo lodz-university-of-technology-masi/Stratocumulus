@@ -15,7 +15,6 @@ function showUsers() {
 }
 
 
-
 function onPageLoad() {
     reloadList();
     getUserList();
@@ -42,7 +41,6 @@ function reloadList() {
 
 
 }
-
 
 
 function populateTestList(testList) {
@@ -82,8 +80,7 @@ function populateUserList(userList) {
 
 }
 
-function clearIncludedView()
-{
+function clearIncludedView() {
     $("#includedContent").empty();
 }
 
@@ -98,22 +95,21 @@ function showAddUserView() {
 }
 
 function showEditTestView(testObject) {
-    $("#includedContent").load("edit-test.html",function(){
-     loadTest(testObject);
+    $("#includedContent").load("edit-test.html", function () {
+        loadTest(testObject);
     });
 }
 
 function showDetailsUserView(testObject) {
-    $("#includedContent").load("view-single.html",function(){
+    $("#includedContent").load("view-single.html", function () {
         loadData(testObject);
     });
 }
 
 
-function showSuccessPopup (text)
-{
-document.getElementById( "AlertMsg").innerText= text;
-document.getElementById( "AlertMsg").parentElement.style.display="inline-block";
+function showSuccessPopup(text) {
+    document.getElementById("AlertMsg").innerText = text;
+    document.getElementById("AlertMsg").parentElement.style.display = "inline-block";
 
 }
 
@@ -190,14 +186,14 @@ function handleImport(fileList) {
 
     reader.onload = function () {
         console.log(reader.result);
-        parseCsv(reader.result,fileList[0].name);
+        parseCsv(reader.result, fileList[0].name);
 
-    }
+    };
 
     reader.readAsText(fileList[0]);
 }
 
-function parseCsv(text,name) {
+function parseCsv(text, name) {
     let lines = text.split('\n');
 
 
@@ -219,7 +215,7 @@ function parseCsv(text,name) {
         let text_to_get = lines[i].substring(start_pos, end_pos);
 
 
-        if (text_to_get != "") {
+        if (text_to_get !== "") {
             let fragments = text_to_get.split(";");
             let question = new Object();
 
@@ -227,27 +223,26 @@ function parseCsv(text,name) {
 
             //ToDo: Poprawic kiedy będzie juztyp liczbowy
 
-            if (fragments[1] == 'W')
+            if (fragments[1] === 'W')
                 question.type = 'c';
-            if (fragments[1] == 'O')
+            if (fragments[1] === 'O')
                 question.type = 'o';
-            if (fragments[1] == "L")
+            if (fragments[1] === "L")
                 question.type = 'n';
 
             console.log(i);
             console.log(language);
             console.log(fragments[2]);
 
-            if(language=='') {
+            if (language === '') {
                 language = fragments[2];
-            }
-            else if(language!=fragments[2]) {
+            } else if (language !== fragments[2]) {
                 language_err = true;
             }
 
             question.content = fragments[3];
 
-            if (question.type == "c") {
+            if (question.type === "c") {
                 question.numAnswers = fragments[4]
                 question.answers = [];
                 for (let k = 0; k < question.numAnswers; k++)
@@ -255,15 +250,14 @@ function parseCsv(text,name) {
 
             }
 
-            if (question.type == "c" && fragments[4] != "|") {
+            if (question.type === "c" && fragments[4] !== "|") {
                 // Some error
             }
             questions.push(question);
         }
     }
 
-    if(language_err==true)
-    {
+    if (language_err === true) {
         // niespojnojsc jezyka
     }
 
@@ -275,7 +269,7 @@ function parseCsv(text,name) {
 
 }
 
-function logOutUser(){
+function logOutUser() {
 
     var poolData = {
         UserPoolId: 'us-east-1_CY4O3GKHV',
@@ -284,10 +278,10 @@ function logOutUser(){
 
     var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
 
-    var cognitoUser =  userPool.getCurrentUser();
+    var cognitoUser = userPool.getCurrentUser();
 
     if (cognitoUser != null) {
-        cognitoUser.getSession(function(err, session) {
+        cognitoUser.getSession(function (err, session) {
             if (err) {
                 alert(err);
                 return;
@@ -297,8 +291,13 @@ function logOutUser(){
     }
 
     cognitoUser.globalSignOut(
-        {   onFailure: e =>  alert("Błąd podczas wylogowywania!")
-        , onSuccess: r =>  {window.location.href = 'index.html'; alert("Logout successful")} }
-        )
+        {
+            onFailure: e => alert("Błąd podczas wylogowywania!")
+            , onSuccess: r => {
+                window.location.href = 'index.html';
+                alert("Logout successful")
+            }
+        }
+    )
 
 }

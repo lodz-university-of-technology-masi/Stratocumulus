@@ -90,7 +90,7 @@ public class Test implements Identifiable {
         if (json.has("questions")) {
             this.questions = new ArrayList<>();
 
-            JSONArray questionsArray = new JSONArray(json.getString("questions"));
+            JSONArray questionsArray = json.getJSONArray("questions");
 
             for (int i = 0; i < questionsArray.length(); i++) {
                 JSONObject questionObject = questionsArray.getJSONObject(i);
@@ -109,13 +109,28 @@ public class Test implements Identifiable {
     }
 
     public String toJSON() {
-        JSONObject json = new JSONObject()
-                .put("id", id)
-                .put("name", name)
-                .put("language", language)
-                .put("questions", getQuestionsJson());
+        JSONObject jsonObject = new JSONObject();
 
-        return json.toString();
+        if (id != null) {
+            jsonObject.put("id", id);
+        }
+
+        if (name != null) {
+            jsonObject.put("name", name);
+        }
+
+        if (language != null) {
+            jsonObject.put("language", language);
+        }
+
+        if (questions != null) {
+            JSONArray questionsArray = new JSONArray();
+            for (Question question : questions) {
+                questionsArray.put(question.toJsonObject());
+            }
+        }
+
+        return jsonObject.toString();
     }
 
     public Test translate(String sourceLang, String targetLang) {

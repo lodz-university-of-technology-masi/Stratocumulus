@@ -15,6 +15,6 @@ public class GetTestHandler implements RequestHandler<RequestInput, RequestOutpu
 
     @Override
     public RequestOutput handleRequest(RequestInput input, Context context) {
-        return getItems(input, table);
+        return getItems("id", input, table);
     }
 }

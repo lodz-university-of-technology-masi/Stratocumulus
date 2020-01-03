@@ -19,9 +19,9 @@ public class DynamoDBUtils {
         return new DynamoDB(client);
     }
 
-    public static boolean deleteFromDatabase(Table table, Identifiable object) {
+    public static boolean deleteFromDatabase(String keyPropertyName, Table table, Identifiable object) {
         DeleteItemOutcome outcome = table.deleteItem(new DeleteItemSpec()
-                .withPrimaryKey("id", object.getId())
+                .withPrimaryKey(keyPropertyName, object.getId())
                 .withReturnValues(ReturnValue.ALL_OLD));
 
         return outcome.getDeleteItemResult().getAttributes() != null;

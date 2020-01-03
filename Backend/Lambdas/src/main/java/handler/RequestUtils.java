@@ -23,13 +23,13 @@ public class RequestUtils {
         return output;
     }
 
-    public static RequestOutput getItems(RequestInput input, Table table) {
+    public static RequestOutput getItems(String keyPropertyName, RequestInput input, Table table) {
         RequestOutput output = new RequestOutput();
         output.setStatusCode(200);
 
-        if (input.getQueryStringParameters() != null && input.getQueryStringParameters().containsKey("id")) {
-            String id = input.getQueryStringParameters().get("id");
-            Item foundItem = table.getItem("id", id);
+        if (input.getQueryStringParameters() != null && input.getQueryStringParameters().containsKey(keyPropertyName)) {
+            String id = input.getQueryStringParameters().get(keyPropertyName);
+            Item foundItem = table.getItem(keyPropertyName, id);
             output.setBody(foundItem.toJSON());
         } else {
             JSONArray testsArray = new JSONArray();
