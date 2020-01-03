@@ -153,7 +153,7 @@ function handleSaveTestButton(event) {
 
     clearIncludedView();
 
-    sendRequest(json);
+    sendEditRequest(json);
 }
 
 function handleDeleteTestButton(event) {
@@ -254,7 +254,7 @@ function readClosedQuestionFromHtml(questionJson, questionNo) {
     return questionJson;
 }
 
-function sendRequest(body) {
+function sendEditRequest(body) {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
 

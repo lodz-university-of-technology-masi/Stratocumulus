@@ -143,7 +143,7 @@ function handleAddTestButton(event) {
     console.log(testJson);
 
     clearIncludedView();
-    sendRequest(testJson);
+    sendAddRequest(testJson);
 }
 
 function readQuestionsFromHtml() {
@@ -183,7 +183,7 @@ function readClosedQuestionFromHtml(questionJson, questionNo) {
     return questionJson;
 }
 
-function sendRequest(body) {
+function sendAddRequest(body) {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
 

@@ -209,6 +209,8 @@ function parseCsv(text,name) {
 
     let language = '';
 
+    let language_err = false;
+
     for (let i = 0; i < lines.length; i++) {
 
 
@@ -230,7 +232,7 @@ function parseCsv(text,name) {
             if (fragments[1] == 'O')
                 question.type = 'o';
             if (fragments[1] == "L")
-                question.type = 'o';
+                question.type = 'n';
 
             console.log(i);
             console.log(language);
@@ -239,8 +241,9 @@ function parseCsv(text,name) {
             if(language=='') {
                 language = fragments[2];
             }
-            else if(language!=fragments[2])
-                language='XX';
+            else if(language!=fragments[2]) {
+                language_err = true;
+            }
 
             question.content = fragments[3];
 
@@ -259,10 +262,15 @@ function parseCsv(text,name) {
         }
     }
 
+    if(language_err==true)
+    {
+        // niespojnojsc jezyka
+    }
+
     test.language = language;
     test.questions = JSON.stringify(questions);
     console.log(JSON.stringify(test));
-    sendRequest(test);
+    sendAddRequest(test);
 
 
 }
