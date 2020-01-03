@@ -1,5 +1,57 @@
 var questionsCount = 0;
 
+function loadSampleTest() {
+    var testJson = {
+        "id": "d79c00f6-5007-4113-a94b-d0dbf2752cfc",
+        "name": "C++",
+        "language": "EN",
+        "questions": "[{\"no\":\"1\",\"type\":\"c\",\"content\":\"Co to jest metoda abstrakcyjna?\",\"numAnswers\":4,\"answers\":[\"Metoda, która nie ma implementacji\",\"Metoda z implementacją, w której wykorzystujemy jedynie klasy abstrakcyjne\",\"Każda metoda klasy abstrakcyjnej\",\"Inaczej nazywamy ją metodą generyczną\"]},{\"no\":\"2\",\"type\":\"o\",\"content\":\"Wymień rodzaje złączeń w SQL i różnice między nimi\"}]"
+    };
+
+    loadTest(testJson);
+}
+
+function loadTest(testJson) {
+    originalJson = testJson;
+
+    var name = testJson.name;
+    var language = testJson.language;
+    var questions = testJson.questions;
+
+    $('#testNameInput').val(name);
+    $('.select-language').val(language);
+
+    displayInputs(questions);
+    displayQuestions(questions);
+}
+
+function displayInputs(questions) {
+    questions.forEach(function (question) {
+        if (question.type === 'c') {
+            addNewClosedQuestion();
+        } else if (question.type === 'o') {
+            addNewOpenQuestion();
+        } else if (question.type === 'n') {
+            addNewNumericQuestion();
+        }
+    });
+}
+
+function displayQuestions(questions) {
+    $('[id^=content]').each(function (index) {
+        var question = questions[index];
+        this.value = question.content;
+
+        if (this.className === 'closed') {
+            for (var i = 0; i < 4; i++) {
+                var answerContent = question.answers[i];
+                var answerId = 'q' + (index + 1) + 'a' + (i + 1).toString();
+                $('#' + answerId).val(answerContent);
+            }
+        }
+    });
+}
+
 function addNewClosedQuestion() {
     questionsCount++;
 

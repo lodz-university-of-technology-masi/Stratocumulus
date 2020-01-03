@@ -21,6 +21,7 @@ function loadTest(testJson) {
     var questions = testJson.questions;
 
     $('#testNameInput').val(name);
+    $('.select-language').val(language);
 
     displayInputs(questions);
     displayQuestions(questions);
