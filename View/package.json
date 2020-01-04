@@ -1,0 +1,7 @@
+{
+  "name": "View",
+  "version": "1.0.0",
+  "dependencies": {
+    "amazon-cognito-identity-js": "^3.2.1"
+  }
+}

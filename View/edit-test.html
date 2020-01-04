@@ -12,7 +12,7 @@
     <script src="js/vendor/amazon-cognito-identity.min.js"></script>
 
 </head>
-<body onload="loadSampleTest()">
+<body>
 
 <form>
     <div class="container">
@@ -40,6 +40,8 @@
         <button class="add-question-button" onclick="addNewClosedQuestion()" type="button">Dodaj pytanie zamknięte
         </button>
         <button class="add-question-button" onclick="addNewOpenQuestion()" type="button">Dodaj pytanie otwarte</button>
+        <button class="add-question-button" onclick="addNewNumericQuestion()" type="button">Dodaj pytanie liczbowe
+        </button>
         <button class="add-question-button" onclick="handleSaveTestButton()" type="button">Zapisz zmiany</button>
         <button class="add-question-button" onclick="handleDeleteTestButton()" type="button">Usuń test</button>
     </div>

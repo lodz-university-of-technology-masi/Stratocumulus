@@ -185,7 +185,7 @@ function readQuestionsFromHtml() {
         if (this.className === 'closed') {
             questionsJson.push(readClosedQuestionFromHtml(questionJson, questionNo));
         } else {
-            questionJson.type = this.className === 'open' ? 'open' : 'n';
+            questionJson.type = this.className === 'open' ? 'o' : 'n';
             questionsJson.push(questionJson);
         }
     });
