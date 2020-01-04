@@ -11,23 +11,24 @@
 
 <section class="container">
     <form id="editForm">
-        <h1>Edytuj kandydata</h1>
+        <h1>Edytuj swój profil</h1>
         <hr>
-        <label for="userEditedFullName"><b>Nowe imię i nazwisko kandydata</b></label>
+        <label for="userEditedFullName"><b>Twoje nowe imię i nazwisko</b></label>
         <input type="text" pattern=".*" placeholder="Wprowadź nowe imię i nazwisko" name="fullName" id="userEditedFullName" required>
 
-        <label for="editedPass"><b>Stare hasło</b></label>
+        <label for="oldPass"><b>Twoje stare hasło</b></label>
         <input type="password" pattern=".*" placeholder="Wprowadź stare hasło" name="psw" id="oldPass" minlength="8" required>
 
-        <label for="editedPass"><b>Nowe hasło</b></label>
+        <label for="editedPass"><b>Twoje nowe hasło</b></label>
         <input type="password" pattern=".*" placeholder="Wprowadź nowe hasło" name="psw" id="editedPass" minlength="8" required>
 
         <label for="editedPassRepeat"><b>Ponownie nowe hasło</b></label>
         <input type="password" pattern=".*" placeholder="Wprowadź ponownie nowe hasło" name="psw-repeat" id="editedPassRepeat" minlength="8" required>
         <hr>
 
-        <input type="submit" class="editButton" value="Zaktualizuj użytkownia">
+        <input type="submit" class="editButton" value="Zaktualizuj swój profil">
     </form>
+    <input type="button" id="backButton" class="editButton" value="Powrót do poprzedniej strony">
 </section>
 
 <script src="js/vendor/jquery-3.1.0.js"></script>
@@ -37,5 +38,10 @@
 <script src="js/poolConfig.js"></script>
 <script src="js/cognito-auth.js"></script>
 <script src="js/vendor/aws-sdk-cognito-service-provider.js"></script>
+<script type="text/javascript">
+    document.getElementById("backButton").onclick = function () {
+        location.href = "candidateTests.html";
+    };
+</script>
 </body>
 </html>

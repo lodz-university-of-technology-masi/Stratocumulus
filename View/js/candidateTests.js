@@ -18,3 +18,7 @@ function change_page(){
     // similar behavior as clicking on a link
     // window.location.href = "test.html";
 };
+
+function loadEditPage() {
+        window.location.href = "view-and-edit-candidate.html";
+}

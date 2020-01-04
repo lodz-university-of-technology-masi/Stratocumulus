@@ -292,10 +292,10 @@ function logOutUser() {
 
     cognitoUser.globalSignOut(
         {
-            onFailure: e => alert("Błąd podczas wylogowywania!")
+            onFailure: e => alert("Blad podczas wylogowywania!")
             , onSuccess: r => {
                 window.location.href = 'index.html';
-                alert("Logout successful")
+                alert("Wylogowano poprawnie!")
             }
         }
     )
