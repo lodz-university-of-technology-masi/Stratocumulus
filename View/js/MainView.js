@@ -272,11 +272,16 @@ function parseCsv(text, name) {
 function logOutUser() {
 
     var poolData = {
-        UserPoolId: 'us-east-1_CY4O3GKHV',
-        ClientId: 'thcc01b1nkqm7fti3p434r7un'
+        UserPoolId : 'us-east-1_CY4O3GKHV',    //_config.cognito.userPoolId, // Your user pool id here
+        ClientId : 'thcc01b1nkqm7fti3p434r7un',    //_config.cognito.userPoolClientId, // Your client id here
     };
 
-    var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+    var poolData2 = {
+        UserPoolId: 'us-east-1_lWqCuNtQd',   //_config.cognito.recruiterPoolId,
+        ClientId: '4rv0ibelu8sc3hi2dmjo05g5ku',  //_config.cognito.recruiterPoolClientId,
+    };
+
+    var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData2);
 
     var cognitoUser = userPool.getCurrentUser();
 

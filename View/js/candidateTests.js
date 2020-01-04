@@ -22,3 +22,42 @@ function change_page(){
 function loadEditPage() {
         window.location.href = "view-and-edit-candidate.html";
 }
+
+function logOut() {
+
+    alert("debug1");
+
+    var poolData = {
+        UserPoolId: 'us-east-1_CY4O3GKHV',
+        ClientId: 'thcc01b1nkqm7fti3p434r7un'
+    };
+
+    var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+
+    alert("debug2");
+    var cognitoUser = userPool.getCurrentUser();
+    alert("debug3");
+    if (cognitoUser != null) {
+        cognitoUser.getSession(function (err, session) {
+            if (err) {
+                alert(err);
+                return;
+            }
+            console.log('session validity: ' + session.isValid());
+        });
+    }
+    else {
+        alert("Blad pobierania uzytkownika!");
+    }
+
+    cognitoUser.globalSignOut(
+        {
+            onFailure: e => alert("Blad podczas wylogowywania!")
+            , onSuccess: r => {
+                window.location.href = 'index.html';
+                alert("Wylogowano poprawnie!")
+            }
+        }
+    )
+
+}

@@ -242,7 +242,7 @@ var TestApp = window.TestApp || {};
             alert('Konto zostało zaktualizowane!');
             var confirmation = ('Aktualizacja zakończona pomyślnie.');
             if (confirmation) {
-                window.location.href = 'MainView.html';
+                window.location.href = 'candidateTests.html';
             }
         };
 
