@@ -1,74 +1,3 @@
-const sampleCandidateTests = {
-    "assignedTests": [
-        {
-            "answers": [],
-            "testId": "ebe49f58-409b-4e29-802f-d4ebce331cd1"
-        }
-    ],
-    "candidateId": "f1a16aa7-dadb-4453-83a1-0f61785944bf"
-};
-
-const sampleTests = [
-    {
-        "id": "ebe49f58-409b-4e29-802f-d4ebce331cd1",
-        "language": "PL",
-        "name": "Tego testu nie ruszać bo jest dla Przemka",
-        "questions": [
-            {
-                "answers": [
-                    "A",
-                    "B",
-                    "C",
-                    "D"
-                ],
-                "content": "Którą literę najbardziej lubisz?",
-                "no": "1",
-                "numAnswers": 4,
-                "type": "c"
-            },
-            {
-                "content": "Napisz coś o sobie",
-                "no": "2",
-                "type": "o"
-            },
-            {
-                "content": "Ile masz lat?",
-                "no": "3",
-                "type": "n"
-            }
-        ]
-    },
-    {
-        "id": "2e67f777-b246-4af9-bc94-b63ec138c510",
-        "language": "PL",
-        "name": "Java",
-        "questions": [
-            {
-                "answers": [
-                    "Metoda, która nie ma implementacji",
-                    "Metoda z implementacją, w której wykorzystujemy jedynie klasy abstrakcyjne",
-                    "Każda metoda klasy abstrakcyjnej",
-                    "Inaczej nazywamy ją metodą generyczną"
-                ],
-                "content": "Co to jest metoda abstrakcyjna?",
-                "no": "1",
-                "numAnswers": 4,
-                "type": "c"
-            },
-            {
-                "content": "Wyjaśnij różnice między inner-join i outer-join.",
-                "no": "2",
-                "type": "o"
-            },
-            {
-                "content": "Jaką (maksymalnie) liczbę może przechowywać typ INT?",
-                "no": "3",
-                "type": "n"
-            }
-        ]
-    }
-];
-
 let tests;
 let candidateTests;
 let candidateId;
@@ -98,7 +27,7 @@ function getTests(response) {
     tests = JSON.parse(response);
 }
 
-function handleCandidateTests(response) {
+function getCandidateTests(response) {
     let allCandidateTests = JSON.parse(response);
     for (let i = 0; i < allCandidateTests.length; i++) {
         let currentCandidateTests = allCandidateTests[i];
@@ -113,9 +42,9 @@ function loadTests(candId, candidateName) {
     $('#candidate-header').text(`Przypisz testy: ${candidateName}`);
 
     callAwsLambda('GET', 'tests', getTests, false);
-    callAwsLambda('GET', 'candidatetests', handleCandidateTests, false);
+    callAwsLambda('GET', 'candidatetests', getCandidateTests, false);
 
-    let testsData = getAllAndAssignedTestsIdsAndNames(tests, candidateTests);
+    let testsData = getAllAndAssignedTestsIdsAndNames();
 
     let allTests = testsData.all;
     let assignedTests = testsData.assignedTests;
@@ -133,11 +62,12 @@ function displayAllCheckboxs(tests) {
 
 function checkAssignedCheckboxes(assignedTests) {
     for (let i = 0; i < assignedTests.length; i++) {
-        $(`#${assignedTests[i].id}`).prop('checked', true);
+        let assignedTest = assignedTests[i];
+        $(`#${assignedTests[i].id}`).prop('checked', true).attr('disabled', isTestSolved(assignedTest.id));
     }
 }
 
-function getAllAndAssignedTestsIdsAndNames(tests, candidateTests) {
+function getAllAndAssignedTestsIdsAndNames() {
     let allTests = [];
     let assignedTests = [];
 
@@ -151,7 +81,7 @@ function getAllAndAssignedTestsIdsAndNames(tests, candidateTests) {
         };
         allTests.push(idName);
 
-        if (isAssignedTest(candidateTests, idName.id)) {
+        if (isAssignedTest(idName.id)) {
             assignedTests.push(idName);
         }
     }
@@ -162,11 +92,23 @@ function getAllAndAssignedTestsIdsAndNames(tests, candidateTests) {
     };
 }
 
-function isAssignedTest(candidateTests, id) {
+function isAssignedTest(id) {
     const numAssignedTests = candidateTests.assignedTests.length;
     for (let i = 0; i < numAssignedTests; i++) {
         if (candidateTests.assignedTests[i].testId === id) {
             return true;
+        }
+    }
+
+    return false;
+}
+
+function isTestSolved(id) {
+    const numAssignedTests = candidateTests.assignedTests.length;
+    for (let i = 0; i < numAssignedTests; i++) {
+        let assignedTest = candidateTests.assignedTests[i];
+        if (assignedTest.testId === id) {
+            return assignedTest.answers !== null;
         }
     }
 
@@ -189,4 +131,53 @@ function displayLabel(test) {
     var br = $(`<br/>`);
 
     $('#test-hr').append(label).append(br);
+}
+
+function getAssignedTestByTestId(testId) {
+    for (let i = 0; i < candidateTests.assignedTests.length; i++) {
+        let assignedTest = candidateTests.assignedTests[i];
+        if (assignedTest.testId === testId) {
+            return assignedTest;
+        }
+    }
+
+    return null;
+}
+
+function getEmptyAssignedTest(testId) {
+    return {
+        "testId": testId,
+        "answers": null,
+    }
+}
+
+function afterUpdate(response) {
+    let responseObject = JSON.parse(response);
+    if (response.result) {
+        alert('Pomyślnie przypisano testy');
+    } else {
+        alert('Nie udało się przypisać testów');
+    }
+}
+
+function handleAssignTestsButton() {
+    let assignedTests = [];
+
+    $('.test-checkbox').each(function () {
+        if (this.checked) {
+            let testId = this.id;
+            if (isAssignedTest(candidateTests, testId)) {
+                let assignedTest = getAssignedTestByTestId(testId);
+                assignedTests.push(assignedTest);
+            } else {
+                assignedTests.push(getEmptyAssignedTest(testId));
+            }
+        }
+    });
+
+    let body = {
+        "assignedTests": assignedTests
+    };
+
+    callAwsLambda('PUT', 'candidatetests', afterUpdate, body, true);
 }
