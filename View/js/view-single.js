@@ -1,9 +1,12 @@
+var name;
+var email;
+var uuid;
 function loadData(userJson) {
     originalJson = userJson;
 
-    var name = userJson.name;
-    var email = userJson.email;
-    var uuid = userJson.id;
+    name = userJson.name;
+    email = userJson.email;
+    uuid = userJson.id;
 
     $('#userFullName').val(name);
     $('#userEmail').val(email);
@@ -13,7 +16,12 @@ function loadData(userJson) {
 }
 
 function setUserTests() {
-    window.location.href = 'assign-tests.html';
+    $.getScript("assign-tests.js", function () {
+        loadTests(candId, candidateName);
+    })
+    $("#includedContent").load("assign-tests.html",function () {
+        loadTests(uuid, name);
+    });
 }
 
 $(function onDocReady() {
