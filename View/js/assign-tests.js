@@ -153,7 +153,7 @@ function getEmptyAssignedTest(testId) {
 
 function afterUpdate(response) {
     let responseObject = JSON.parse(response);
-    if (response.result) {
+    if (responseObject.result) {
         alert('Pomyślnie przypisano testy');
     } else {
         alert('Nie udało się przypisać testów');
@@ -179,5 +179,5 @@ function handleAssignTestsButton() {
         "assignedTests": assignedTests
     };
 
-    callAwsLambda('PUT', 'candidatetests', afterUpdate, body, true);
+    callAwsLambda('PUT', `candidatetests?candidateId=${candidateId}`, afterUpdate, body, true);
 }
