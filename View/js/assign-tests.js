@@ -23,11 +23,11 @@ function simulation() {
     loadTests('f1a16aa7-dadb-4453-83a1-0f61785944bf', 'Adrian Warcholinski');
 }
 
-function getTests(response) {
+function afterGetTests(response) {
     tests = JSON.parse(response);
 }
 
-function getCandidateTests(response) {
+function afterGetCandidateTests(response) {
     let allCandidateTests = JSON.parse(response);
     for (let i = 0; i < allCandidateTests.length; i++) {
         let currentCandidateTests = allCandidateTests[i];
@@ -41,8 +41,8 @@ function loadTests(candId, candidateName) {
     candidateId = candId;
     $('#candidate-header').text(`Przypisz testy: ${candidateName}`);
 
-    callAwsLambda('GET', 'tests', getTests, false);
-    callAwsLambda('GET', 'candidatetests', getCandidateTests, false);
+    callAwsLambda('GET', 'tests', afterGetTests, false);
+    callAwsLambda('GET', 'candidatetests', afterGetCandidateTests, false);
 
     let testsData = getAllAndAssignedTestsIdsAndNames();
 
@@ -151,13 +151,9 @@ function getEmptyAssignedTest(testId) {
     }
 }
 
-function afterUpdate(response) {
+function afterUpdateAssignedTests(response) {
     let responseObject = JSON.parse(response);
-    if (responseObject.result) {
-        alert('Pomyślnie przypisano testy');
-    } else {
-        alert('Nie udało się przypisać testów');
-    }
+    alert(responseObject.result ? 'Pomyślnie przypisano testy' : 'Nie udało się przypisać testów');
 }
 
 function handleAssignTestsButton() {
@@ -179,5 +175,5 @@ function handleAssignTestsButton() {
         "assignedTests": assignedTests
     };
 
-    callAwsLambda('PUT', `candidatetests?candidateId=${candidateId}`, afterUpdate, body, true);
+    callAwsLambda('PUT', `candidatetests?candidateId=${candidateId}`, afterUpdateAssignedTests, body, true);
 }
