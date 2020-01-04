@@ -8,7 +8,7 @@
 </head>
 <body>
 <button class="naviButton" onclick="loadEditPage()">Edytuj konto</button>
-<button class="naviButton" onclick="logOutUser()">Wyloguj</button>
+<button class="naviButton" onclick="logOut()">Wyloguj</button>
 
 <div id="header"><!-- otworzenie diva header -->
     <h1>Lista twoich testów</h1>
@@ -26,6 +26,8 @@
 
 </ul>
 <script src="js/candidateTests.js"></script>
-<script src="js/MainView.js"></script>
+<script src="js/jquery-3.4.1.js"></script>
+<script src="js/vendor/aws-cognito-sdk.min.js"></script>
+<script src="js/vendor/amazon-cognito-identity.min.js"></script>
 </body>
 </html>
