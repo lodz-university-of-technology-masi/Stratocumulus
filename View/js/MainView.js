@@ -84,8 +84,13 @@ function clearIncludedView() {
     $("#includedContent").empty();
 }
 
-function showAddTestView() {
-    $("#includedContent").load("add-test.html");
+function showAddTestView(testObject) {
+    $("#includedContent").load("add-test.html",function () {
+        if(testObject!=null)
+            loadTest(testObject);
+            });
+
+
 
 }
 

@@ -212,7 +212,8 @@ function handleTranslateManuallyButton(event) {
     }
 
     alert(JSON.stringify(json));
-    // Display add-test.html filled with 'json'
+    clearIncludedView();
+    showAddTestView(json);
 }
 
 function handleAutoTranslateButton(event) {
@@ -228,11 +229,14 @@ function autoTranslate(translateLang, testJson) {
     xhttp.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             alert(this.responseText);
-            // Display add-test.html filled with response json
+            console.log(this.responseText);
+            clearIncludedView();
+            showAddTestView(JSON.parse(this.responseText));
         }
     };
 
     alert(JSON.stringify(testJson));
+    console.log(JSON.stringify(testJson));
 
     xhttp.open("POST", "https://ot28vqg79h.execute-api.us-east-1.amazonaws.com/dev/translate-test?lang=" + translateLang, true);
 
