@@ -114,30 +114,6 @@ var TestApp = window.TestApp || {};
 
     }
 
-
-    var lista = () => {
-        var params = {
-            UserPoolId: 'us-east-1_CY4O3GKHV',
-            AttributesToGet: [
-                'email', 'name', 'username'
-            ],
-        };
-
-        return new Promise((resolve, reject) => {
-            var provider = new AWS.CognitoIdentityServiceProvider();
-            provider.listUsers(params, (err, data) => {
-                if (err) {
-                    console.log(err);
-                    reject(err)
-                }
-                else {
-                    console.log("data", data);
-                    resolve(data)
-                }
-            })
-        });
-    }
-
     function signout() {
         if (cognitoUser != null) {
             cognitoUser.signOut();
@@ -186,6 +162,57 @@ var TestApp = window.TestApp || {};
         $('#verifyForm').submit(handleVerify);
 
     });
+    
+    function sendRequestToDB(id) {
+
+        var toSend =
+            {
+                "assignedTests": null,
+                "candidateId": id
+            };
+
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+
+            if (this.readyState === 4 && this.status === 200) {
+                console.log(this.responseText);
+            }
+        };
+
+        xhttp.open("POST", "https://ot28vqg79h.execute-api.us-east-1.amazonaws.com/dev/candidatetests", true);
+
+        xhttp.setRequestHeader('Content-Type', 'application/json');
+        xhttp.setRequestHeader('Authorization', getAccessToken());
+        xhttp.send(JSON.stringify(toSend));
+    }
+    
+    function getIdOfNewUser(desiredEmail) {
+        var email = desiredEmail;
+        var user = '';
+
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+
+            if (this.readyState === 4 && this.status === 200) {
+                user = this.responseText;
+                console.log(this.responseText);
+                getUserDetails(JSON.parse(user));
+            }
+        };
+
+        xhttp.open("GET", "https://ot28vqg79h.execute-api.us-east-1.amazonaws.com/dev/candidates?email=" + email, true);
+
+        xhttp.setRequestHeader('Content-Type', 'application/json');
+        xhttp.setRequestHeader('Authorization', getAccessToken());
+
+        xhttp.send();
+
+    }
+    
+    function getUserDetails(details) {
+        var gottenId = details.id;
+        sendRequestToDB(gottenId);
+    }
 
     function handleSignin(event) {
         var email = $('#emailInputSignin').val();
@@ -212,12 +239,11 @@ var TestApp = window.TestApp || {};
             alert('Konto zostało poprawnie utworzone!\nSprawdź swoją skrzynkę pocztową!');
             var cognitoUser = result.user;
             console.log('user name is ' + cognitoUser.getUsername());
+            getIdOfNewUser(email);
             var confirmation = ('Registration successful. Please check your email inbox or spam folder for your verification code.');
             if (confirmation) {
-                window.location.href = 'index.html';
-            }
-            else{
-                window.location.href = 'user-view.html';
+                
+              window.location.href = 'MainView.html';
             }
         };
         var onFailure = function registerFailure(err) {
@@ -273,6 +299,50 @@ var TestApp = window.TestApp || {};
                 alert(err);
             }
         );
+    }
+
+    function getAccessToken() {
+        var poolData = {
+            UserPoolId: 'us-east-1_CY4O3GKHV',
+            ClientId: 'thcc01b1nkqm7fti3p434r7un'
+        };
+
+        var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+
+        var email = 'adrianwarcholinski9@gmail.com';
+        var password = 'Qwerty123';
+
+        var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
+            Username: email,
+            Password: password
+        });
+
+        var cognitoUser = new AmazonCognitoIdentity.CognitoUser({
+            Username: email,
+            Pool: userPool
+        });
+
+        cognitoUser.authenticateUser(authenticationDetails, {
+            onSuccess: function printOkMessage() {
+                console.log('Authenticated successfully')
+            },
+            onFailure: function printFailedMessage() {
+                console.log('Authentication failed')
+            }
+        });
+
+        var idToken;
+
+        cognitoUser.getSession(function (err, session) {
+            if (err) {
+                console.log('Error');
+            } else {
+                console.log(':)')
+                idToken = session.getIdToken().getJwtToken();
+            }
+        });
+
+        return idToken;
     }
 
 }(jQuery));
