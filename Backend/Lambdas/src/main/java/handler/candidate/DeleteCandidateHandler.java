@@ -26,11 +26,12 @@ public class DeleteCandidateHandler implements RequestHandler<RequestInput, Requ
         RequestOutput output = getBasicOutput();
 
         JSONObject responseJson = new JSONObject();
-        if (input.getQueryStringParameters() != null && input.getQueryStringParameters().containsKey("username")) {
-            String username = input.getQueryStringParameters().get("username");
-            responseJson.put("result", tryDeleteUser(username));
+        if (input.getQueryStringParameters() != null && input.getQueryStringParameters().containsKey("email")) {
+            String email = input.getQueryStringParameters().get("email");
 
-            String candidateId = getUserIdByUsername(username);
+            String candidateId = getUserIdByUsername(email);
+
+            responseJson.put("result", tryDeleteUser(email));
             deleteCandidateTestsFromDatabase(candidateId);
         } else {
             responseJson.put("result", false);
@@ -42,7 +43,9 @@ public class DeleteCandidateHandler implements RequestHandler<RequestInput, Requ
     }
 
     private String getUserIdByUsername(String username) {
-        List<AttributeType> attributes = cognito.adminGetUser(new AdminGetUserRequest().withUsername(username)).getUserAttributes();
+        List<AttributeType> attributes = cognito.adminGetUser(new AdminGetUserRequest()
+                .withUsername(username)
+                .withUserPoolId(userPoolId)).getUserAttributes();
         for (AttributeType attribute : attributes) {
             if (attribute.getName().equals("sub")) {
                 return attribute.getValue();
@@ -62,7 +65,7 @@ public class DeleteCandidateHandler implements RequestHandler<RequestInput, Requ
     }
 
     private boolean tryDeleteUser(String username) {
-        cognito.adminGetUser(new AdminGetUserRequest().withUsername(username)).getUserAttributes();
+        cognito.adminGetUser(new AdminGetUserRequest().withUsername(username).withUserPoolId(userPoolId)).getUserAttributes();
         try {
             AdminDeleteUserResult result = cognito.adminDeleteUser(new AdminDeleteUserRequest()
                     .withUserPoolId(userPoolId)

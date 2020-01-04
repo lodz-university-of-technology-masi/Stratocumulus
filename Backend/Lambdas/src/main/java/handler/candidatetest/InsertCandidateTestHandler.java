@@ -24,9 +24,18 @@ public class InsertCandidateTestHandler implements RequestHandler<RequestInput, 
     }
 
     private void insertToDatabase(CandidateTests test) {
-        table.putItem(new Item()
-                .withString("candidateId", test.getCandidateId())
-                .withJSON("assignedTests", test.getTestsJson().replace("\\", "")));
+        String testsJson = test.getTestsJson();
+
+        Item item = new Item()
+                .withString("candidateId", test.getCandidateId());
+
+        if (testsJson != null) {
+            item = item.withJSON("assignedTests", testsJson.replace("\\", ""));
+        } else {
+            item = item.with("assignedTests", JSONObject.NULL);
+        }
+
+        table.putItem(item);
     }
 
     private RequestOutput getCandidateIdOutput(String candidateId) {

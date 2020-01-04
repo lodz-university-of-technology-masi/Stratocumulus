@@ -35,17 +35,24 @@ public class UpdateCandidateTestHandler implements RequestHandler<RequestInput, 
 
     private boolean updateCandidateTest(String id, CandidateTests test) {
         try {
+            ValueMap map = new ValueMap()
+                    .with(":candidate_id", id);
+
+            String testsJson = test.getTestsJson();
+
+            if (testsJson != null) {
+                map.withJSON(":assigned_tests", testsJson.replace("\\", ""));
+            } else {
+                map.withNull(":assigned_tests");
+            }
+
             table.updateItem(new UpdateItemSpec()
                     .withConditionExpression("candidateId = :candidate_id")
-                    .withPrimaryKey("id", id)
-                    .withUpdateExpression("SET #c = :candidate_id, " +
-                            "#a = :assigned_tests")
+                    .withPrimaryKey("candidateId", id)
+                    .withUpdateExpression("SET #a = :assigned_tests")
                     .withNameMap(new NameMap()
-                            .with("#c", "candidateId")
                             .with("#a", "assignedTests"))
-                    .withValueMap(new ValueMap()
-                            .with(":candidate_id", id)
-                            .withJSON(":assigned_tests", test.getTestsJson().replace("\\", "")))
+                    .withValueMap(map)
                     .withReturnValues(ReturnValue.ALL_OLD));
         } catch (ConditionalCheckFailedException e) {
             return false;

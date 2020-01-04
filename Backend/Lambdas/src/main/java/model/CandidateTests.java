@@ -12,8 +12,6 @@ public class CandidateTests implements Identifiable {
     private List<AssignedTest> assignedTests;
 
     public CandidateTests(String json) {
-        assignedTests = new ArrayList<>();
-
         JSONObject jsonObject = new JSONObject(json);
 
         setCandidateId(jsonObject);
@@ -48,11 +46,11 @@ public class CandidateTests implements Identifiable {
     }
 
     private void setAssignedTests(JSONObject jsonObject) {
-        if (jsonObject.has("assignedTests")) {
-            assignedTests.clear();
+        if (jsonObject.has("assignedTests") && jsonObject.get("assignedTests") != JSONObject.NULL) {
+            assignedTests = new ArrayList<>();
 
             JSONArray testsArray = jsonObject.getJSONArray("assignedTests");
-            for (int i=0; i<testsArray.length(); i++) {
+            for (int i = 0; i < testsArray.length(); i++) {
                 JSONObject testJsonObject = testsArray.getJSONObject(i);
                 assignedTests.add(new AssignedTest(testJsonObject));
             }
@@ -60,15 +58,17 @@ public class CandidateTests implements Identifiable {
     }
 
     public String getTestsJson() {
-        JSONArray testsArray = new JSONArray();
-
         if (assignedTests != null) {
+            JSONArray testsArray = new JSONArray();
+
             for (AssignedTest test : assignedTests) {
                 testsArray.put(test.toJsonObject());
             }
-        }
 
-        return testsArray.toString();
+            return testsArray.toString();
+        } else {
+            return null;
+        }
     }
 
     public String toJSON() {
@@ -85,6 +85,8 @@ public class CandidateTests implements Identifiable {
             }
 
             jsonObject.put("assignedTests", testsArray);
+        } else {
+            jsonObject.put("assignedTests", JSONObject.NULL);
         }
 
         return jsonObject.toString();

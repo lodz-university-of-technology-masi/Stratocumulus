@@ -12,8 +12,6 @@ public class AssignedTest {
     private List<String> answers;
 
     public AssignedTest(JSONObject jsonObject) {
-        answers = new ArrayList<>();
-
         setTestId(jsonObject);
         setAnswers(jsonObject);
     }
@@ -37,8 +35,8 @@ public class AssignedTest {
     }
 
     private void setAnswers(JSONObject jsonObject) {
-        if (jsonObject.has("answers")) {
-            answers.clear();
+        if (jsonObject.has("answers") && jsonObject.get("answers") != JSONObject.NULL) {
+            answers = new ArrayList<>();
 
             JSONArray answersArray = jsonObject.getJSONArray("answers");
             for (int i = 0; i < answersArray.length(); i++) {
@@ -66,6 +64,8 @@ public class AssignedTest {
             }
 
             jsonObject.put("answers", answers);
+        } else {
+            jsonObject.put("answers", JSONObject.NULL);
         }
 
         return jsonObject;

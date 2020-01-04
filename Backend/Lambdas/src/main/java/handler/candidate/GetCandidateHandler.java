@@ -27,20 +27,19 @@ public class GetCandidateHandler implements RequestHandler<RequestInput, Request
 
         List<Candidate> candidates = users.stream().map(Candidate::convertFromUserType).collect(Collectors.toList());
 
-        boolean isSingleUser = filterCandidatesByIdIfPassed(input, candidates);
+        List<Candidate> filteredCandidates = filterCandidatesByIdIfPassed(input, candidates);
 
-        return getRequestOutput(isSingleUser, candidates);
+        return getRequestOutput(filteredCandidates.size() == 1, filteredCandidates);
     }
 
-    private boolean filterCandidatesByIdIfPassed(RequestInput input, List<Candidate> candidates) {
-        if (input.getQueryStringParameters() != null && input.getQueryStringParameters().containsKey("id")) {
-            String id = input.getQueryStringParameters().get("id");
-            candidates = candidates.stream().filter(candidate -> candidate.getId().equals(id))
+    private List<Candidate> filterCandidatesByIdIfPassed(RequestInput input, List<Candidate> candidates) {
+        if (input.getQueryStringParameters() != null && input.getQueryStringParameters().containsKey("email")) {
+            String email = input.getQueryStringParameters().get("email");
+            return candidates.stream().filter(candidate -> candidate.getEmail().equals(email))
                     .collect(Collectors.toList());
-            return true;
         }
 
-        return false;
+        return candidates;
     }
 
     private RequestOutput getRequestOutput(boolean isSingleUser, List<Candidate> candidates) {
@@ -56,9 +55,17 @@ public class GetCandidateHandler implements RequestHandler<RequestInput, Request
     private RequestOutput setRequestBody(RequestOutput output, boolean isSingleUser, List<Candidate> candidates) {
         if (isSingleUser) {
             putCandidateIntoBody(output, candidates.get(0));
-        } else {
+        } else if (candidates.size() > 0) {
             putCandidatesIntoBody(output, candidates);
+        } else {
+            putNullIntoBody(output);
         }
+
+        return output;
+    }
+
+    private RequestOutput putNullIntoBody(RequestOutput output) {
+        output.setBody(null);
 
         return output;
     }
