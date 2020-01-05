@@ -13,18 +13,19 @@
     <script src="js/poolConfig.js"></script>
     <script src="js/cognito-auth.js"></script>
     <script src="js/vendor/aws-sdk-cognito-service-provider.js"></script>
-    <script src="js/assign-tests.js"></script>
+    <script src="js/mark-test.js"></script>
     <script src="js/cognito-utils.js"></script>
 </head>
-<body>
+
+<body onload="simulate()">
 
 <form>
     <div class="container">
-        <h1 align="center" id="candidate-header"></h1>
+        <h1 align="center" id="test-header"></h1>
 
-        <hr id="test-hr"/>
+        <hr id="answers-hr"/>
 
-        <button class="assign-tests-button" onclick="handleAssignTestsButton()" type="button">Przypisz testy</button>
+        <button class="save-marks-button" onclick="handleSaveMarksButton()" type="button">Zapisz ocenę</button>
     </div>
 </form>
 </body>

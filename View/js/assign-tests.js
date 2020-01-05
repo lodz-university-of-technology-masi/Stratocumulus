@@ -2,27 +2,6 @@ let tests;
 let candidateTests;
 let candidateId;
 
-function callAwsLambda(verb, endpoint, func, body, async) {
-    const xhttp = new XMLHttpRequest();
-
-    xhttp.onreadystatechange = function () {
-        if (this.readyState === 4 && this.status === 200) {
-            func(this.responseText);
-        }
-    };
-
-    xhttp.open(verb, `https://ot28vqg79h.execute-api.us-east-1.amazonaws.com/dev/${endpoint}`, async);
-
-    xhttp.setRequestHeader('Content-Type', 'application/json');
-    xhttp.setRequestHeader('Authorization', getAccessToken());
-
-    xhttp.send(JSON.stringify(body));
-}
-
-function simulation() {
-    loadTests('f1a16aa7-dadb-4453-83a1-0f61785944bf', 'Adrian Warcholinski');
-}
-
 function afterGetTests(response) {
     tests = JSON.parse(response);
 }
@@ -49,11 +28,11 @@ function loadTests(candId, candidateName) {
     let allTests = testsData.all;
     let assignedTests = testsData.assignedTests;
 
-    displayAllCheckboxs(allTests);
+    displayAllCheckboxes(allTests);
     checkAssignedCheckboxes(assignedTests);
 }
 
-function displayAllCheckboxs(tests) {
+function displayAllCheckboxes(tests) {
     for (let i = 0; i < tests.length; i++) {
         let test = tests[i];
         displayTestCheckbox(test.id, test.name);
@@ -119,18 +98,29 @@ function displayTestCheckbox(id, value) {
     const newTest = getCheckbox(id, value);
 
     $('#test-hr').append(newTest);
-    displayLabel(newTest);
+
+    displayLabel(newTest, isTestSolved(id));
 }
 
 function getCheckbox(id, value) {
     return $(`<input id="${id}" class="test-checkbox" type="checkbox" value="${value}"/>`);
 }
 
-function displayLabel(test) {
-    var label = $(`<label>${test.val()}</label>`);
-    var br = $(`<br/>`);
+function getButton(id, text) {
+    return $(`<button id="${id}" class=check-test-button type="button" onclick="handleCheckTestButton(this)">${text}</button>`);
+}
 
-    $('#test-hr').append(label).append(br);
+function displayLabel(test, isIncludeCheckButton) {
+    let label = $(`<label>${test.val()}</label>`);
+
+    let testHr = $('#test-hr');
+    testHr.append(label);
+
+    if (isIncludeCheckButton) {
+        testHr.append(getButton(`ct_${getAssignedTestByTestName(test.val()).id}`, 'Sprawdź test'));
+    }
+
+    testHr.append($('<br/>'));
 }
 
 function getAssignedTestByTestId(testId) {
@@ -138,6 +128,18 @@ function getAssignedTestByTestId(testId) {
         let assignedTest = candidateTests.assignedTests[i];
         if (assignedTest.testId === testId) {
             return assignedTest;
+        }
+    }
+
+    return null;
+}
+
+function getAssignedTestByTestName(testName) {
+    let numTests = tests.length;
+    for (let i = 0; i < numTests; i++) {
+        let test = tests[i];
+        if (test.name === testName) {
+            return test;
         }
     }
 
@@ -176,4 +178,9 @@ function handleAssignTestsButton() {
     };
 
     callAwsLambda('PUT', `candidatetests?candidateId=${candidateId}`, afterUpdateAssignedTests, body, true);
+}
+
+function handleCheckTestButton(event) {
+    let testId = event.id.replace('ct_', '');
+    alert(`Sprawdź test: ${testId}`);
 }

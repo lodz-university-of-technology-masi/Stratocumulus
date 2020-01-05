@@ -85,11 +85,10 @@ function clearIncludedView() {
 }
 
 function showAddTestView(testObject) {
-    $("#includedContent").load("add-test.html",function () {
-        if(testObject!=null)
+    $("#includedContent").load("add-test.html", function () {
+        if (testObject != null)
             loadTest(testObject);
-            });
-
+    });
 
 
 }
@@ -277,8 +276,8 @@ function parseCsv(text, name) {
 function logOutUser() {
 
     var poolData = {
-        UserPoolId : 'us-east-1_CY4O3GKHV',    //_config.cognito.userPoolId, // Your user pool id here
-        ClientId : 'thcc01b1nkqm7fti3p434r7un',    //_config.cognito.userPoolClientId, // Your client id here
+        UserPoolId: 'us-east-1_CY4O3GKHV',    //_config.cognito.userPoolId, // Your user pool id here
+        ClientId: 'thcc01b1nkqm7fti3p434r7un',    //_config.cognito.userPoolClientId, // Your client id here
     };
 
     var poolData2 = {
