@@ -135,28 +135,37 @@ function displayLabel(text) {
 }
 
 function handleSaveMarksButton() {
+    let results = getResults();
+
+    if (results.invalidAnswersIds.length === 0) {
+        let body = {
+            "results": results.resultsArray
+        };
+
+        // callAwsLambda('POST', 'results', afterSave, body, true);
+        window.location.href = 'MainView.html';
+    } else {
+        let message = 'Nieprawidłowe odpowiedzi na pytania o numerach: ';
+        for (let i = 0; i < results.invalidAnswersIds.length; i++) {
+            message += `${results.invalidAnswersIds[i]} `;
+        }
+        alert(message);
+    }
+}
+
+function getResults() {
     let resultsArray = [];
     let invalidAnswersIds = [];
     $('.result-input').each(function (index) {
-        if (this.value < 0 || this.value > 10) {
+        if (this.value < 0 || this.value > 10 || this.value === "") {
             invalidAnswersIds.push(index + 1);
         }
         resultsArray.push(this.value);
     });
 
-    if (invalidAnswersIds.length === 0) {
-        let body = {
-            "results": resultsArray
-        };
-
-        alert('Odpowiedzi są dobre');
-        // callAwsLambda('POST', 'results', afterSave, body, true);
-    } else {
-        let message = 'Nieprawidłowe odpowiedzi na pytania o numerach: ';
-        for (let i = 0; i < invalidAnswersIds.length; i++) {
-            message += `${invalidAnswersIds[i]} `;
-        }
-        alert(message);
+    return {
+        "resultsArray": resultsArray,
+        "invalidAnswersIds": invalidAnswersIds
     }
 }
 
