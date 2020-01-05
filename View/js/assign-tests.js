@@ -156,6 +156,7 @@ function getEmptyAssignedTest(testId) {
 function afterUpdateAssignedTests(response) {
     let responseObject = JSON.parse(response);
     alert(responseObject.result ? 'Pomyślnie przypisano testy' : 'Nie udało się przypisać testów');
+    window.location.href = 'MainView.html';
 }
 
 function handleAssignTestsButton() {
