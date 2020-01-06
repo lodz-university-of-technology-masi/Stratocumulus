@@ -22,6 +22,11 @@ function onPageLoad() {
 
 function reloadList() {
 
+    callAwsLambda('GET', 'tests', function(response){
+        populateTestList(JSON.parse(response));
+    },'',true  );
+
+    /*
     let response = '';
 
     var xhttp = new XMLHttpRequest();
@@ -38,7 +43,7 @@ function reloadList() {
     xhttp.setRequestHeader('Content-Type', 'application/json');
     xhttp.setRequestHeader('Authorization', getAccessToken());
     xhttp.send();
-
+*/
 
 }
 
