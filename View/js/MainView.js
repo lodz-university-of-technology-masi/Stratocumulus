@@ -266,7 +266,7 @@ function parseCsv(text, name) {
     }
 
     test.language = language;
-    test.questions = JSON.stringify(questions);
+    test.questions = questions;
     console.log(JSON.stringify(test));
     sendAddRequest(test);
 
