@@ -1,4 +1,4 @@
-package handler.test;
+package handler.candidatetest;
 
 import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.services.lambda.runtime.Context;
@@ -8,12 +8,12 @@ import handler.RequestUtils;
 import request.RequestInput;
 import request.RequestOutput;
 
-public class GetTestHandler implements RequestHandler<RequestInput, RequestOutput> {
+public class GetAllCandidateTestsHandler implements RequestHandler<RequestInput, RequestOutput> {
 
-    private Table table = DynamoDBUtils.getDynamoDB().getTable("Tests");
+    private Table table = DynamoDBUtils.getDynamoDB().getTable("CandidateTests");
 
     @Override
     public RequestOutput handleRequest(RequestInput input, Context context) {
-        return RequestUtils.getSingleItem("id", input, table);
+        return RequestUtils.getAllItems(table);
     }
 }

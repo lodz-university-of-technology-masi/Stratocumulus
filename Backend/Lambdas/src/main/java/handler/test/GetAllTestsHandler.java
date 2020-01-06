@@ -8,12 +8,12 @@ import handler.RequestUtils;
 import request.RequestInput;
 import request.RequestOutput;
 
-public class GetTestHandler implements RequestHandler<RequestInput, RequestOutput> {
+public class GetAllTestsHandler implements RequestHandler<RequestInput, RequestOutput> {
 
     private Table table = DynamoDBUtils.getDynamoDB().getTable("Tests");
 
     @Override
     public RequestOutput handleRequest(RequestInput input, Context context) {
-        return RequestUtils.getSingleItem("id", input, table);
+        return RequestUtils.getAllItems(table);
     }
 }

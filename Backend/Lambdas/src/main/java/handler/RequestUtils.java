@@ -14,18 +14,14 @@ public class RequestUtils {
         JSONObject responseJson = new JSONObject()
                 .put("result", result);
 
-        RequestOutput output = new RequestOutput();
-        output.setStatusCode(200);
+        RequestOutput output = getBasicOutput();
         output.setBody(responseJson.toString());
-
-        output.setAccessControlAllowOriginHeader();
 
         return output;
     }
 
     public static RequestOutput getItems(String keyPropertyName, RequestInput input, Table table) {
-        RequestOutput output = new RequestOutput();
-        output.setStatusCode(200);
+        RequestOutput output = getBasicOutput();
 
         if (input.getQueryStringParameters() != null && input.getQueryStringParameters().containsKey(keyPropertyName)) {
             String id = input.getQueryStringParameters().get(keyPropertyName);
@@ -39,7 +35,32 @@ public class RequestUtils {
             output.setBody(testsArray.toString());
         }
 
-        output.setAccessControlAllowOriginHeader();
+        return output;
+    }
+
+    public static RequestOutput getSingleItem(String keyPropertyName, RequestInput input, Table table) {
+        RequestOutput output = getBasicOutput();
+
+        if (input.getQueryStringParameters() != null && input.getQueryStringParameters().containsKey(keyPropertyName)) {
+            String id = input.getQueryStringParameters().get(keyPropertyName);
+            Item foundItem = table.getItem(keyPropertyName, id);
+
+            if (foundItem != null) {
+                output.setBody(foundItem.toJSON());
+            }
+        }
+
+        return output;
+    }
+
+    public static RequestOutput getAllItems(Table table) {
+        RequestOutput output = getBasicOutput();
+
+        JSONArray testsArray = new JSONArray();
+        for (Item outcome : table.scan()) {
+            testsArray.put(new JSONObject(outcome.toJSON()));
+        }
+        output.setBody(testsArray.toString());
 
         return output;
     }
@@ -48,10 +69,16 @@ public class RequestUtils {
         JSONObject responseJson = new JSONObject()
                 .put("id", object.getId());
 
-        RequestOutput output = new RequestOutput();
-        output.setStatusCode(200);
+        RequestOutput output = getBasicOutput();
+
         output.setBody(responseJson.toString());
 
+        return output;
+    }
+
+    public static RequestOutput getBasicOutput() {
+        RequestOutput output = new RequestOutput();
+        output.setStatusCode(200);
         output.setAccessControlAllowOriginHeader();
 
         return output;

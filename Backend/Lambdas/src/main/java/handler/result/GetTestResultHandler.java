@@ -1,4 +1,4 @@
-package handler.test;
+package handler.result;
 
 import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.services.lambda.runtime.Context;
@@ -8,9 +8,9 @@ import handler.RequestUtils;
 import request.RequestInput;
 import request.RequestOutput;
 
-public class GetTestHandler implements RequestHandler<RequestInput, RequestOutput> {
+public class GetTestResultHandler implements RequestHandler<RequestInput, RequestOutput> {
 
-    private Table table = DynamoDBUtils.getDynamoDB().getTable("Tests");
+    private Table table = DynamoDBUtils.getDynamoDB().getTable("TestsResults");
 
     @Override
     public RequestOutput handleRequest(RequestInput input, Context context) {

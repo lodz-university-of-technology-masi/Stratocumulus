@@ -14,6 +14,6 @@ public class GetCandidateTestHandler implements RequestHandler<RequestInput, Req
 
     @Override
     public RequestOutput handleRequest(RequestInput input, Context context) {
-        return RequestUtils.getItems("candidateId", input, table);
+        return RequestUtils.getSingleItem("candidateId", input, table);
     }
 }
