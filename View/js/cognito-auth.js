@@ -167,7 +167,7 @@ var TestApp = window.TestApp || {};
 
         var toSend =
             {
-                "assignedTests": null,
+                "assignedTests": [],
                 "candidateId": id
             };
 
@@ -184,6 +184,7 @@ var TestApp = window.TestApp || {};
         xhttp.setRequestHeader('Content-Type', 'application/json');
         xhttp.setRequestHeader('Authorization', getAccessToken());
         xhttp.send(JSON.stringify(toSend));
+        alert(JSON.stringify(toSend));
     }
     
     function getIdOfNewUser(desiredEmail) {
@@ -200,7 +201,7 @@ var TestApp = window.TestApp || {};
             }
         };
 
-        xhttp.open("GET", "https://ot28vqg79h.execute-api.us-east-1.amazonaws.com/dev/candidates?email=" + email, true);
+        xhttp.open("GET", "https://ot28vqg79h.execute-api.us-east-1.amazonaws.com/dev/candidate?email=" + email, true);
 
         xhttp.setRequestHeader('Content-Type', 'application/json');
         xhttp.setRequestHeader('Authorization', getAccessToken());
@@ -242,8 +243,7 @@ var TestApp = window.TestApp || {};
             getIdOfNewUser(email);
             var confirmation = ('Registration successful. Please check your email inbox or spam folder for your verification code.');
             if (confirmation) {
-                
-              window.location.href = 'MainView.html';
+            window.location.href = 'MainView.html';
             }
         };
         var onFailure = function registerFailure(err) {

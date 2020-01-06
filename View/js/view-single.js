@@ -88,12 +88,10 @@ function getAccessToken() {
         Username: email,
         Password: password
     });
-
     var cognitoUser = new AmazonCognitoIdentity.CognitoUser({
         Username: email,
         Pool: userPool
     });
-
     cognitoUser.authenticateUser(authenticationDetails, {
         onSuccess: function printOkMessage() {
             console.log('Authenticated successfully')
@@ -102,7 +100,6 @@ function getAccessToken() {
             console.log('Authentication failed')
         }
     });
-
     var idToken;
 
     cognitoUser.getSession(function (err, session) {
@@ -113,6 +110,5 @@ function getAccessToken() {
             idToken = session.getIdToken().getJwtToken();
         }
     });
-
     return idToken;
 }
