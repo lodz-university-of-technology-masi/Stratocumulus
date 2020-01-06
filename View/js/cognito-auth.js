@@ -200,7 +200,7 @@ var TestApp = window.TestApp || {};
             }
         };
 
-        xhttp.open("GET", "https://ot28vqg79h.execute-api.us-east-1.amazonaws.com/dev/candidates?email=" + email, true);
+        xhttp.open("GET", "https://ot28vqg79h.execute-api.us-east-1.amazonaws.com/dev/candidate?email=" + email, true);
 
         xhttp.setRequestHeader('Content-Type', 'application/json');
         xhttp.setRequestHeader('Authorization', getAccessToken());
