@@ -42,10 +42,11 @@ let sampleAnswers = [
 
 let sampleCandidateId = "f1a16aa7-dadb-4453-83a1-0f61785944bf";
 
-let sampleMarks = [5,8,1,2];
 
 function simulate() {
-    loadTestAndAnswers(sampleTest, sampleAnswers, sampleCandidateId, sampleMarks);
+
+  loadContent(sampleTest, sampleAnswers, sampleCandidateId);
+
 }
 
 // Above code will be removed in the future
@@ -62,19 +63,26 @@ let candidateId;
 
 let questionsCount = 0;
 
-function assignParams(orginalTest, answersGiven, userId, marksScored) {
+function assignParams(orginalTest, answersGiven, userId) {
     test = orginalTest;
     answers = answersGiven;
     candidateId = userId;
-    marks = marksScored;
 }
 
-function loadTestAndAnswers(test, answers, candidateId, marks) {
-    assignParams(test, answers, candidateId, marks);
 
+function loadContent(test, answers, candidateId) {
+
+    assignParams(test, answers, candidateId);
     $('#test-header').text(`Wyniki Testu: ${test.name}`);
 
-    displayQuestions();
+    let endpointString = "result?id="+candidateId+"_"+test.id;
+
+
+    callAwsLambda('GET', endpointString, function(response){
+        console.log(response);
+        marks = JSON.parse(response).results;
+        displayQuestions();
+    }, '', true);
 }
 
 function displayQuestions() {
