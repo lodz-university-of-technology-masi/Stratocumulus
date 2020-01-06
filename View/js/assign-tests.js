@@ -1,27 +1,27 @@
-let tests;
-let candidateTests;
-let candidateId;
+let __tests;
+let __candidateTests;
+let __candidateId;
 
 function afterGetTests(response) {
-    tests = JSON.parse(response);
+    __tests = JSON.parse(response);
 }
 
 function afterGetCandidateTests(response) {
     let allCandidateTests = JSON.parse(response);
     for (let i = 0; i < allCandidateTests.length; i++) {
         let currentCandidateTests = allCandidateTests[i];
-        if (currentCandidateTests.candidateId === candidateId) {
-            candidateTests = currentCandidateTests;
+        if (currentCandidateTests.candidateId === __candidateId) {
+            __candidateTests = currentCandidateTests;
         }
     }
 }
 
 function loadTests(candId, candidateName) {
-    candidateId = candId;
+    __candidateId = candId;
     $('#candidate-header').text(`Przypisz testy: ${candidateName}`);
 
-    callAwsLambda('GET', 'tests', afterGetTests, false);
-    callAwsLambda('GET', 'candidatetests', afterGetCandidateTests, false);
+    callAwsLambda('GET', 'tests', afterGetTests, true);
+    callAwsLambda('GET', 'candidatetests', afterGetCandidateTests, true);
 
     let testsData = getAllAndAssignedTestsIdsAndNames();
 
@@ -35,6 +35,7 @@ function loadTests(candId, candidateName) {
 function displayAllCheckboxes(tests) {
     for (let i = 0; i < tests.length; i++) {
         let test = tests[i];
+        // checkIfTestIsAlreadyMarked(__candidateId, test.id);
         displayTestCheckbox(test.id, test.name);
     }
 }
@@ -50,10 +51,10 @@ function getAllAndAssignedTestsIdsAndNames() {
     let allTests = [];
     let assignedTests = [];
 
-    const numTests = tests.length;
+    const numTests = __tests.length;
 
     for (let i = 0; i < numTests; i++) {
-        let test = tests[i];
+        let test = __tests[i];
         let idName = {
             "id": test.id,
             "name": test.name
@@ -72,9 +73,9 @@ function getAllAndAssignedTestsIdsAndNames() {
 }
 
 function isAssignedTest(id) {
-    const numAssignedTests = candidateTests.assignedTests.length;
+    const numAssignedTests = __candidateTests.assignedTests.length;
     for (let i = 0; i < numAssignedTests; i++) {
-        if (candidateTests.assignedTests[i].testId === id) {
+        if (__candidateTests.assignedTests[i].testId === id) {
             return true;
         }
     }
@@ -83,9 +84,9 @@ function isAssignedTest(id) {
 }
 
 function isTestSolved(id) {
-    const numAssignedTests = candidateTests.assignedTests.length;
+    const numAssignedTests = __candidateTests.assignedTests.length;
     for (let i = 0; i < numAssignedTests; i++) {
-        let assignedTest = candidateTests.assignedTests[i];
+        let assignedTest = __candidateTests.assignedTests[i];
         if (assignedTest.testId === id) {
             return assignedTest.answers !== null;
         }
@@ -98,6 +99,7 @@ function displayTestCheckbox(id, value) {
     const newTest = getCheckbox(id, value);
 
     $('#test-hr').append(newTest);
+    checkIfTestIsAlreadyMarked(__candidateId, id);
 
     displayLabel(newTest, isTestSolved(id));
 }
@@ -107,7 +109,8 @@ function getCheckbox(id, value) {
 }
 
 function getButton(id, text) {
-    return $(`<button id="${id}" class=check-test-button type="button" onclick="handleCheckTestButton(this)">${text}</button>`);
+    let onClick = `${_passedResults ? 'handleShowMarksButton(this)' : 'handleCheckTestButton(this)'}`;
+    return $(`<button id="${id}" class=check-test-button type="button" onclick=${onClick}>${text}</button>`);
 }
 
 function displayLabel(test, isIncludeCheckButton) {
@@ -117,15 +120,15 @@ function displayLabel(test, isIncludeCheckButton) {
     testHr.append(label);
 
     if (isIncludeCheckButton) {
-        testHr.append(getButton(`ct_${getAssignedTestByTestName(test.val()).id}`, 'Sprawdź test'));
+        testHr.append(getButton(`ct_${getAssignedTestByTestName(test.val()).id}`, _passedResults.results !== null ? 'Zobacz ocenę' : 'Oceń test'));
     }
 
     testHr.append($('<br/>'));
 }
 
 function getAssignedTestByTestId(testId) {
-    for (let i = 0; i < candidateTests.assignedTests.length; i++) {
-        let assignedTest = candidateTests.assignedTests[i];
+    for (let i = 0; i < __candidateTests.assignedTests.length; i++) {
+        let assignedTest = __candidateTests.assignedTests[i];
         if (assignedTest.testId === testId) {
             return assignedTest;
         }
@@ -135,9 +138,9 @@ function getAssignedTestByTestId(testId) {
 }
 
 function getAssignedTestByTestName(testName) {
-    let numTests = tests.length;
+    let numTests = __tests.length;
     for (let i = 0; i < numTests; i++) {
-        let test = tests[i];
+        let test = __tests[i];
         if (test.name === testName) {
             return test;
         }
@@ -165,7 +168,7 @@ function handleAssignTestsButton() {
     $('.test-checkbox').each(function () {
         if (this.checked) {
             let testId = this.id;
-            if (isAssignedTest(candidateTests, testId)) {
+            if (isAssignedTest(__candidateTests, testId)) {
                 let assignedTest = getAssignedTestByTestId(testId);
                 assignedTests.push(assignedTest);
             } else {
@@ -178,10 +181,61 @@ function handleAssignTestsButton() {
         "assignedTests": assignedTests
     };
 
-    callAwsLambda('PUT', `candidatetests?candidateId=${candidateId}`, afterUpdateAssignedTests, body, true);
+    callAwsLambda('PUT', `candidatetests?candidateId=${__candidateId}`, afterUpdateAssignedTests, body, true);
 }
+
+function getTestById(id) {
+    for (let i = 0; i < __tests.length; i++) {
+        if (__tests[i].id === id) {
+            return __tests[i];
+        }
+    }
+
+    return null;
+}
+
+function getAnswersByTestId(id) {
+    for (let i = 0; i < __candidateTests.assignedTests.length; i++) {
+        let assignedTest = __candidateTests.assignedTests[i];
+        if (assignedTest.testId === id) {
+            return assignedTest.answers;
+        }
+    }
+
+    return null;
+}
+
+function checkIfTestIsAlreadyMarked(candidateId, testId) {
+    let id = `${candidateId}_${testId}`;
+
+    callAwsLambda('GET', `result?id=${id}`, afterGetAnswers, null, false);
+}
+
+function afterGetAnswers(response) {
+    if (response !== '') {
+        _passedResults = JSON.parse(response);
+    }
+}
+
+let _passedResults;
 
 function handleCheckTestButton(event) {
     let testId = event.id.replace('ct_', '');
-    alert(`Sprawdź test: ${testId}`);
+
+    showMarkTestView({
+        "test": getTestById(testId),
+        "answers": getAnswersByTestId(testId),
+        "candidateId": __candidateId,
+        "points": undefined
+    })
+}
+
+function handleShowMarksButton(event) {
+    let testId = event.id.replace('ct_', '');
+    showMarkTestView({
+        "test": getTestById(testId),
+        "answers": getAnswersByTestId(testId),
+        "candidateId": __candidateId,
+        "points": _passedResults.results
+    })
 }

@@ -2,41 +2,6 @@ var originalJson;
 
 var questionsCount = 0;
 
-function loadSampleTest() {
-    var testJson =
-        {
-            "id": "2e67f777-b246-4af9-bc94-b63ec138c510",
-            "language": "PL",
-            "name": "Java ZMIANA",
-            "questions": [
-                {
-                    "answers": [
-                        "Metoda, która nie ma implementacji",
-                        "Metoda z implementacją, w której wykorzystujemy jedynie klasy abstrakcyjne",
-                        "Każda metoda klasy abstrakcyjnej",
-                        "Inaczej nazywamy ją metodą generyczną"
-                    ],
-                    "content": "Co to jest metoda abstrakcyjna?",
-                    "no": "1",
-                    "numAnswers": 4,
-                    "type": "c"
-                },
-                {
-                    "content": "Wyjaśnij różnice między inner-join i outer-join.",
-                    "no": "2",
-                    "type": "o"
-                },
-                {
-                    "content": "Jaką (maksymalnie) liczbę może przechowywać typ INT?",
-                    "no": "3",
-                    "type": "n"
-                }
-            ]
-        };
-
-    loadTest(testJson);
-}
-
 function loadTest(testJson) {
     originalJson = testJson;
 

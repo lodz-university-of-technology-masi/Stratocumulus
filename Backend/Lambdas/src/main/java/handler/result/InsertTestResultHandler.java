@@ -12,7 +12,7 @@ import request.RequestOutput;
 
 public class InsertTestResultHandler implements RequestHandler<RequestInput, RequestOutput> {
 
-    private Table table = DynamoDBUtils.getDynamoDB().getTable("TestResults");
+    private Table table = DynamoDBUtils.getDynamoDB().getTable("TestsResults");
 
     @Override
     public RequestOutput handleRequest(RequestInput input, Context context) {

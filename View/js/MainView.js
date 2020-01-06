@@ -110,11 +110,15 @@ function showDetailsUserView(testObject) {
     });
 }
 
-
 function showSuccessPopup(text) {
     document.getElementById("AlertMsg").innerText = text;
     document.getElementById("AlertMsg").parentElement.style.display = "inline-block";
+}
 
+function showMarkTestView(data) {
+    $('#includedContent').load('mark-test.html', function () {
+        loadTestAndAnswers(data.test, data.answers, data.candidateId, data.points);
+    });
 }
 
 function getAccessToken() {
