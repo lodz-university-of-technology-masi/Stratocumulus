@@ -37,13 +37,14 @@ body{
     width: 280px;
     border-color: #ff4500;
   }
-  .box input[type = "submit"]{
+  .box button{
     border:0;
     background: none;
     display: block;
     margin: 20px auto;
     text-align: center;
-    border: 2px solid #ff4500;
+    font-weight: bold;
+    border: 2px solid #3498db;
     padding: 14px 40px;
     outline: none;
     color: black;
@@ -51,6 +52,6 @@ body{
     transition: 0.25s;
     cursor: pointer;
   }
-  .box input[type = "submit"]:hover{
-    background: #ff4500;
+  .box button:hover{
+    border-color: #ff4500;
   }
