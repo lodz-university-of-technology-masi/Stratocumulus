@@ -54,15 +54,19 @@ ul li:hover {
 
 /* Set a style for the adding user button */
 .naviButton {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px 10px;
+    color: #000000;
+    display: inline-block;
+    padding: 10px;
     margin: 3px 0;
     cursor: pointer;
-    width: 100%;
-    opacity: 1;
-}
-
-.NaviButton:hover {
-    opacity: 1;
+    width: 50%;
+    align-content: center;
+    border: 2px solid black;
+    height: auto;
+    font-size: 14px;
+    margin-right: -2px;
+    background-color: GreenYellow;
+    text-align: center;
+    font-weight: bold;
+    transition: 0.5s;
 }
