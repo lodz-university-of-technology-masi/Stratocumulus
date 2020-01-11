@@ -4,9 +4,16 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="css/candidateTests.css">
+    <script src="js/candidateTests.js"></script>
+    <script src="js/jquery-3.4.1.js"></script>
+    <script src="js/vendor/aws-cognito-sdk.min.js"></script>
+    <script src="js/vendor/amazon-cognito-identity.min.js"></script>
+    <script src="js/lambda-utils.js"></script>
+    <script src="js/vendor/aws-sdk-cognito-service-provider.js"></script>
+    <script src="js/cognito-utils.js"></script>
 
 </head>
-<body>
+<body onload="loadTests()">
 <div>
     <button class="naviButton" onclick="loadEditPage()">Edytuj konto</button>
     <button class="naviButton" onclick="logOut()">Wyloguj</button>
@@ -18,24 +25,10 @@
 
 </div><!-- zamkniecie diva header -->
 
-<ul onload="loadTests()">
-
-
-<!--    <li>Test wiedzy o Javie<span class="close"  onclick="change_page()">Rozwiąż test</span></li>-->
-<!--    <li>Test ze znajomości komend Linuxa<span class="close" onclick="change_page()">Rozwiąż test</span></li>-->
-<!--    <li>Test ze znajomości Reacta<span class="close" onclick="change_page()">Rozwiąż test</span></li>-->
-<!--    <li>Test ze znajomości C++<span class="close"   onclick="change_page()">Rozwiąż test</span></li>-->
-<!--    <li>Test ze znajomości C#<span class="close" onclick="change_page()">Rozwiąż test</span></li>-->
-<!--    <li>Test ze znajomosci JS<span class="close" onclick="change_page()">Rozwiąż test</span></li>-->
+<ul id="candidateTestList">
 
 
 </ul>
-<script src="js/candidateTests.js"></script>
-<script src="js/jquery-3.4.1.js"></script>
-<script src="js/vendor/aws-cognito-sdk.min.js"></script>
-<script src="js/vendor/amazon-cognito-identity.min.js"></script>
 
-<script src="js/vendor/aws-sdk-cognito-service-provider.js"></script>
-<script src="js/cognito-utils.js"></script>
 </body>
 </html>

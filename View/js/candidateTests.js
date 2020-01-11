@@ -1,23 +1,9 @@
 var closebtns = document.getElementsByClassName("close");
 var i;
 
-/* Loop through the elements, and hide the parent, when clicked on */
-for (i = 0; i < closebtns.length; i++) {
-    closebtns[i].addEventListener("click", function() {
-        this.parentElement.style.display = 'none';
-    });}
+let userTestsAndAnswers = {};
 
-function openPage(pageUrl){
-    window.open(pageUrl);
-}
-
-function change_page(){
-    // similar behavior as an HTTP redirect
-    window.location.replace("solveTest.html");
-    //or
-    // similar behavior as clicking on a link
-    // window.location.href = "test.html";
-};
+var sampleCandidateId = "f1a16aa7-dadb-4453-83a1-0f61785944bf";
 
 function loadEditPage() {
         window.location.href = "view-and-edit-candidate.html";
@@ -114,80 +100,70 @@ function logOut() {
 
 }
 
-
-
-
-
-
-let __testy;
-let __testscandidates;
-let __candidateid;
-
-function getAllTests(response) {
-    __testy = JSON.parse(response);
+function log (text)
+{
+    console.log(text);
 }
 
-function getAllCandidateTests(response) {
-    let allCandidateTests = JSON.parse(response);
-    for (let i = 0; i < allCandidateTests.length; i++) {
-        let currentCandidateTests = allCandidateTests[i];
-        if (currentCandidateTests.candidateId === __candidateid) {
-            __testscandidates = currentCandidateTests;
-        }
-    }
-}
 
 function loadTests() {
-    __candidateid = getUserIdFromCognito();
-    callAwsLambda('GET', 'tests', getAllTests, true);
-    callAwsLambda('GET', 'candidatetests', getAllCandidateTests, true);
 
-    let assigned = getAssignedTests();
-    let assignedTests = assigned.assignedTests;
 
-    listAllAssignedTests(assignedTests);
+    callAwsLambda("GET", "candidatetest?candidateId=" + sampleCandidateId, loadUserTests,"",false);
+   //callAwsLambda("GET", "candidatetest?candidateId=" + getUserIdFromCognito(), loadUserTests,"",false);
+
+    log(userTestsAndAnswers);
+
+    populateTestList(userTestsAndAnswers);
 }
 
+function loadUserTests(response)
+{
+   let userAnswers = JSON.parse(response).assignedTests;
 
+    for(let i = 0 ; i< userAnswers.length ; i++)
+    {
+        let userTestAndAnswer =  {};
+        userTestAndAnswer.Answers = userAnswers[i];
+        userTestAndAnswer.Test = null;
+        userTestsAndAnswers[userAnswers[i].testId] = userTestAndAnswer;
 
-function listAllAssignedTests(assignedTests) {
-    for (let i = 0; i < assignedTests.length; i++) {
-        let assignedTest = assignedTests[i];
-        $('<div><li>aaa </li></div>')
-
+        callAwsLambda("GET", "test?id=" + userAnswers[i].testId, pushTestList,"",false);
     }
 
+
 }
 
-function getAssignedTests() {
-    let assignedTests = [];
+function pushTestList(test)
+{
+    let userTest = JSON.parse(test);
+    userTestsAndAnswers[userTest.id].Test= userTest;
+}
 
-    const numTests = __testy.length;
+function populateTestList(testsAndAnswersList) {
 
-    for (let i = 0; i < numTests; i++) {
-        let test = __testy[i];
-        let idName = {
-            "id": test.id,
-            "name": test.name
+    document.getElementById("candidateTestList").innerHTML = "";
+
+    for ( var key in testsAndAnswersList) {
+
+
+        let btn = document.createElement("BUTTON");
+        btn.innerHTML = testsAndAnswersList[key].Test.name;
+
+        btn.onclick = function () {
+            handleTestClick(testsAndAnswersList[key]);
         };
 
-        if (isAssignedTest(idName.id)) {
-            assignedTests.push(idName);
-        }
+        let li = document.createElement("li");
+        li.appendChild(btn);
+        document.getElementById("candidateTestList").appendChild(li);
     }
 
-    return {
-        "assignedTests": assignedTests
-    };
+
 }
 
-function isAssignedTest(id) {
-    const numAssignedTests = __testscandidates.assignedTests.length;
-    for (let i = 0; i < numAssignedTests; i++) {
-        if (__testscandidates.assignedTests[i].id === id) {
-            return true;
-        }
-    }
 
-    return false;
+function handleTestClick (testAndAnswer) {
+
+
 }
