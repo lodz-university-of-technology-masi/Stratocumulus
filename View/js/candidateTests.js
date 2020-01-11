@@ -113,3 +113,81 @@ function logOut() {
     )
 
 }
+
+
+
+
+
+
+let __testy;
+let __testscandidates;
+let __candidateid;
+
+function getAllTests(response) {
+    __testy = JSON.parse(response);
+}
+
+function getAllCandidateTests(response) {
+    let allCandidateTests = JSON.parse(response);
+    for (let i = 0; i < allCandidateTests.length; i++) {
+        let currentCandidateTests = allCandidateTests[i];
+        if (currentCandidateTests.candidateId === __candidateid) {
+            __testscandidates = currentCandidateTests;
+        }
+    }
+}
+
+function loadTests() {
+    __candidateid = getUserIdFromCognito();
+    callAwsLambda('GET', 'tests', getAllTests, true);
+    callAwsLambda('GET', 'candidatetests', getAllCandidateTests, true);
+
+    let assigned = getAssignedTests();
+    let assignedTests = assigned.assignedTests;
+
+    listAllAssignedTests(assignedTests);
+}
+
+
+
+function listAllAssignedTests(assignedTests) {
+    for (let i = 0; i < assignedTests.length; i++) {
+        let assignedTest = assignedTests[i];
+        $('<div><li>aaa </li></div>')
+
+    }
+
+}
+
+function getAssignedTests() {
+    let assignedTests = [];
+
+    const numTests = __testy.length;
+
+    for (let i = 0; i < numTests; i++) {
+        let test = __testy[i];
+        let idName = {
+            "id": test.id,
+            "name": test.name
+        };
+
+        if (isAssignedTest(idName.id)) {
+            assignedTests.push(idName);
+        }
+    }
+
+    return {
+        "assignedTests": assignedTests
+    };
+}
+
+function isAssignedTest(id) {
+    const numAssignedTests = __testscandidates.assignedTests.length;
+    for (let i = 0; i < numAssignedTests; i++) {
+        if (__testscandidates.assignedTests[i].id === id) {
+            return true;
+        }
+    }
+
+    return false;
+}

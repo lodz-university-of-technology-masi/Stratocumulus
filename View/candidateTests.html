@@ -18,19 +18,24 @@
 
 </div><!-- zamkniecie diva header -->
 
-<ul>
+<ul onload="loadTests()">
 
-    <li>Test wiedzy o Javie<span class="close"  onclick="change_page()">Rozwiąż test</span></li>
-    <li>Test ze znajomości komend Linuxa<span class="close" onclick="change_page()">Rozwiąż test</span></li>
-    <li>Test ze znajomości Reacta<span class="close" onclick="change_page()">Rozwiąż test</span></li>
-    <li>Test ze znajomości C++<span class="close"   onclick="change_page()">Rozwiąż test</span></li>
-    <li>Test ze znajomości C#<span class="close" onclick="change_page()">Rozwiąż test</span></li>
-    <li>Test ze znajomosci JS<span class="close" onclick="change_page()">Rozwiąż test</span></li>
+
+<!--    <li>Test wiedzy o Javie<span class="close"  onclick="change_page()">Rozwiąż test</span></li>-->
+<!--    <li>Test ze znajomości komend Linuxa<span class="close" onclick="change_page()">Rozwiąż test</span></li>-->
+<!--    <li>Test ze znajomości Reacta<span class="close" onclick="change_page()">Rozwiąż test</span></li>-->
+<!--    <li>Test ze znajomości C++<span class="close"   onclick="change_page()">Rozwiąż test</span></li>-->
+<!--    <li>Test ze znajomości C#<span class="close" onclick="change_page()">Rozwiąż test</span></li>-->
+<!--    <li>Test ze znajomosci JS<span class="close" onclick="change_page()">Rozwiąż test</span></li>-->
+
 
 </ul>
 <script src="js/candidateTests.js"></script>
 <script src="js/jquery-3.4.1.js"></script>
 <script src="js/vendor/aws-cognito-sdk.min.js"></script>
 <script src="js/vendor/amazon-cognito-identity.min.js"></script>
+
+<script src="js/vendor/aws-sdk-cognito-service-provider.js"></script>
+<script src="js/cognito-utils.js"></script>
 </body>
 </html>
