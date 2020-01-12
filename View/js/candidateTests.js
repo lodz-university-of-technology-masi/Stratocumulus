@@ -241,7 +241,7 @@ function changeToViewMarksView(testAndAnswers)
 
     $('#includedContent').load("view-marks.html",function (){
         reset();
-        loadContent(testAndAnswers.Test,testAndAnswers.Answers.answers, userId);
+        loadContent(testAndAnswers.Test,testAndAnswers.Answers.answers, testAndAnswers.Results.results);
     });
 }
 

@@ -65,26 +65,23 @@ var questionsCount = 0;
 var testScore = 0;
 
 
-function assignParams(orginalTest, answersGiven, userId) {
+function assignParams(orginalTest, answersGiven, results) {
     loadedTest = orginalTest;
     answers = answersGiven;
-    candidateId = userId;
+    marks = results;
 }
 
 
-function loadContent(test, answers, candidateId) {
+function loadContent(test, answers, results) {
 
-    assignParams(test, answers, candidateId);
+    assignParams(test, answers, results);
     $('#test-header').text(`Wyniki Testu: ${test.name}`);
 
-    let endpointString = "result?id="+candidateId+"_"+test.id;
 
 
-    callAwsLambda('GET', endpointString, function(response){
-        console.log(response);
-        marks = JSON.parse(response).results;
-        displayQuestions();
-    }, '', true);
+
+    displayQuestions();
+
 }
 
 function displayQuestions() {
