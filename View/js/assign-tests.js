@@ -34,9 +34,9 @@ function loadTests(candId, candidateName) {
     __candidateId = candId;
     $('#candidate-header').text(`Przypisz testy: ${candidateName}`);
 
-    callAwsLambda('GET', 'tests', afterGetTests, false);
-    callAwsLambda('GET', 'candidatetests', afterGetCandidateTests, false);
-    callAwsLambda('GET', 'results', afterGetResults, false);
+    callRecruiterAwsLambda('GET', 'tests', afterGetTests, false);
+    callRecruiterAwsLambda('GET', 'candidatetests', afterGetCandidateTests, false);
+    callRecruiterAwsLambda('GET', 'results', afterGetResults, false);
 
     let testsData = getAllAndAssignedTestsIdsAndNames();
 
@@ -206,7 +206,7 @@ function handleAssignTestsButton() {
         "assignedTests": assignedTests
     };
 
-    callAwsLambda('PUT', `candidatetests?candidateId=${__candidateId}`, afterUpdateAssignedTests, body, true);
+    callRecruiterAwsLambda('PUT', `candidatetests?candidateId=${__candidateId}`, afterUpdateAssignedTests, body, true);
 }
 
 function getTestById(id) {

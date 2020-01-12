@@ -22,9 +22,9 @@ function onPageLoad() {
 
 function reloadList() {
 
-    callAwsLambda('GET', 'tests', function(response){
+    callRecruiterAwsLambda('GET', 'tests', function (response) {
         populateTestList(JSON.parse(response));
-    },'',true  );
+    }, '', true);
 
     /*
     let response = '';

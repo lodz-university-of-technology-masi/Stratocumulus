@@ -143,7 +143,7 @@ function sendAnswers(answersArr){
 
    console.log(newTest);
 
-   callAwsLambda('PUT', 'candidatetests?='+ userId + '_' + candidateTest.testId, null, newTest, false);
+   callRecruiterAwsLambda('PUT', 'candidatetests?=' + userId + '_' + candidateTest.testId, null, newTest, false);
 }
 
 function parseCheckboxId (id){

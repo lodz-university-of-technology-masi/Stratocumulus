@@ -128,7 +128,7 @@ function loadTests() {
     userId = sampleCandidateID;
    // userId = getUserIdFromCognito();
 
-    callAwsLambda("GET", "candidatetest?candidateId=" + userId, loadUserTests,"",false);
+    callRecruiterAwsLambda("GET", "candidatetest?candidateId=" + userId, loadUserTests, "", false);
 
     log(userTestsAndAnswers);
 
@@ -149,20 +149,19 @@ function loadUserTests(response)
 {
    let userAnswers = JSON.parse(response).assignedTests;
 
-    for(let i = 0 ; i< userAnswers.length ; i++)
-    {
-        let userTestAndAnswer =  {};
+    for(let i = 0 ; i< userAnswers.length ; i++) {
+        let userTestAndAnswer = {};
         userTestAndAnswer.Answers = userAnswers[i];
         userTestAndAnswer.Test = null;
         userTestAndAnswer.Results = null;
         userTestsAndAnswers[userAnswers[i].testId] = userTestAndAnswer;
 
-        callAwsLambda("GET", "test?id=" + userAnswers[i].testId, pushTestList,"",false);
-        callAwsLambda('GET', "result?id="+userId+"_"+userAnswers[i].testId,  function(response){
+        callRecruiterAwsLambda("GET", "test?id=" + userAnswers[i].testId, pushTestList, "", false);
+        callRecruiterAwsLambda('GET', "result?id=" + userId + "_" + userAnswers[i].testId, function (response) {
             console.log(response);
-            if(response!='')
-            userTestAndAnswer.Results = JSON.parse(response);
-        },"",false);
+            if (response != '')
+                userTestAndAnswer.Results = JSON.parse(response);
+        }, "", false);
     }
 
 

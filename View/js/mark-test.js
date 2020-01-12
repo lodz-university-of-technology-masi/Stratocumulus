@@ -109,7 +109,7 @@ function handleSaveMarksButton() {
 
         alert(JSON.stringify(body));
 
-        callAwsLambda('POST', 'results', afterSave, body, false);
+        callRecruiterAwsLambda('POST', 'results', afterSave, body, false);
         window.location.href = 'MainView.html';
     } else {
         let message = 'Nieprawidłowe odpowiedzi na pytania o numerach: ';
