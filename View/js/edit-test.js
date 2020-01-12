@@ -160,7 +160,7 @@ function handleDeleteTestButton(event) {
     xhttp.open("DELETE", "https://ot28vqg79h.execute-api.us-east-1.amazonaws.com/dev/tests?id=" + testId, true);
 
     xhttp.setRequestHeader('Content-Type', 'application/json');
-    xhttp.setRequestHeader('Authorization', getAuthToken(getCognitoUser()));
+    xhttp.setRequestHeader('Authorization', getRecruiterToken());
 
     clearIncludedView();
 
@@ -206,7 +206,7 @@ function autoTranslate(translateLang, testJson) {
     xhttp.open("POST", "https://ot28vqg79h.execute-api.us-east-1.amazonaws.com/dev/translate-test?lang=" + translateLang, true);
 
     xhttp.setRequestHeader('Content-Type', 'application/json');
-    xhttp.setRequestHeader('Authorization', getAuthToken(getCognitoUser()));
+    xhttp.setRequestHeader('Authorization', getRecruiterToken());
 
     xhttp.send(JSON.stringify(testJson));
 }
@@ -264,48 +264,21 @@ function sendEditRequest(body) {
     xhttp.open("PUT", "https://ot28vqg79h.execute-api.us-east-1.amazonaws.com/dev/tests?id=" + testId, true);
 
     xhttp.setRequestHeader('Content-Type', 'application/json');
-    xhttp.setRequestHeader('Authorization', getAuthToken(getCognitoUser()));
+    xhttp.setRequestHeader('Authorization', getRecruiterToken());
 
     console.log(JSON.stringify(body));
 
     xhttp.send(JSON.stringify(body));
 }
 
-function getCognitoUser() {
-    var poolData = {
-        UserPoolId: 'us-east-1_CY4O3GKHV',
-        ClientId: 'thcc01b1nkqm7fti3p434r7un'
-    };
+function getRecruiterToken(){
 
-    var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+    return sessionStorage.getItem('recruiterToken');
 
-    var cognitoUser = userPool.getCurrentUser();
-
-    if (cognitoUser != null) {
-        cognitoUser.getSession(function (err, session) {
-            if (err) {
-                alert(err);
-                return;
-            }
-            console.log('session validity: ' + session.isValid());
-        });
-    }
-    else {
-        alert("Blad pobierania uzytkownika!");
-    }
-
-    return cognitoUser;
 }
 
-function getAuthToken(user) {
+function getCandidateToken(){
 
-    user.getSession(function (err, session) {
-        if (err) {
-            console.log('Error');
-        } else {
-            console.log(':)')
-            idToken = session.getIdToken().getJwtToken();
-        }
-    });
-    return idToken;
+    return sessionStorage.getItem('candidateToken');
+
 }

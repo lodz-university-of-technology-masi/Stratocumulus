@@ -21,7 +21,6 @@ function signInButton() {
     var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
     var recruiterPool = new AmazonCognitoIdentity.CognitoUserPool(poolData2);
 
-
     var userData = {
         Username : document.getElementById("inputUsername").value,
         Pool : userPool,
@@ -35,8 +34,10 @@ function signInButton() {
     var cognitoRecruiter = new AWSCognito.CognitoIdentityServiceProvider.CognitoUser(recruiterData);
     cognitoUser.authenticateUser(authenticationDetails, {
         onSuccess: function (result) {
-            console.log('access token + ' + result.getAccessToken().getJwtToken());
-            //window.location.href = 'candidateTests.html';
+            var token = result.getAccessToken().getJwtToken()
+            console.log('access token + ' + token);
+            sessionStorage.clear();
+            sessionStorage.setItem('candidateToken', token);
             window.location.replace("candidateTests.html");
         },
 
@@ -46,13 +47,12 @@ function signInButton() {
             // console.log('access token + ' + result.getAccessToken().getJwtToken());
             // window.location.href = 'MainView.html';
 
-
-
-
             cognitoRecruiter.authenticateUser(authenticationDetails, {
                 onSuccess: function (result) {
-                    console.log('access token + ' + result.getAccessToken().getJwtToken());
-                    //window.location.href = 'candidateTests.html';
+                    var token = result.getAccessToken().getJwtToken()
+                    console.log('access token + ' + result);
+                    sessionStorage.clear();
+                    sessionStorage.setItem('recruiterToken', token);
                     window.location.replace("MainView.html");
                 },
 
@@ -67,10 +67,6 @@ function signInButton() {
                 },
 
             });
-
-
-
-
 
         },
 

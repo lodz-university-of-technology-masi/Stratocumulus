@@ -126,50 +126,6 @@ function showMarkTestView(data) {
     });
 }
 
-function getAccessToken() {
-
-    var poolData = {
-        UserPoolId: 'us-east-1_CY4O3GKHV',
-        ClientId: 'thcc01b1nkqm7fti3p434r7un'
-    };
-
-    var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
-
-    var email = 'adrianwarcholinski9@gmail.com';
-    var password = 'Qwerty123';
-
-    var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
-        Username: email,
-        Password: password
-    });
-
-    var cognitoUser = new AmazonCognitoIdentity.CognitoUser({
-        Username: email,
-        Pool: userPool
-    });
-
-    cognitoUser.authenticateUser(authenticationDetails, {
-        onSuccess: function printOkMessage() {
-            console.log('Authenticated successfully')
-        },
-        onFailure: function printFailedMessage() {
-            console.log('Authentication failed')
-        }
-    });
-
-    var idToken;
-
-    cognitoUser.getSession(function (err, session) {
-        if (err) {
-            console.log('Error');
-        } else {
-            console.log(':)')
-            idToken = session.getIdToken().getJwtToken();
-        }
-    });
-
-    return idToken;
-}
 
 function getUserList() {
     let userList = '';
@@ -187,7 +143,7 @@ function getUserList() {
     xhttp.open("GET", "https://ot28vqg79h.execute-api.us-east-1.amazonaws.com/dev/candidates", true);
 
     xhttp.setRequestHeader('Content-Type', 'application/json');
-    xhttp.setRequestHeader('Authorization', getAccessToken());
+    xhttp.setRequestHeader('Authorization',getRecruiterToken());
 
     xhttp.send();
 }
@@ -285,16 +241,11 @@ function parseCsv(text, name) {
 function logOutUser() {
 
     var poolData = {
-        UserPoolId: 'us-east-1_CY4O3GKHV',    //_config.cognito.userPoolId, // Your user pool id here
-        ClientId: 'thcc01b1nkqm7fti3p434r7un',    //_config.cognito.userPoolClientId, // Your client id here
-    };
-
-    var poolData2 = {
         UserPoolId: 'us-east-1_lWqCuNtQd',   //_config.cognito.recruiterPoolId,
         ClientId: '4rv0ibelu8sc3hi2dmjo05g5ku',  //_config.cognito.recruiterPoolClientId,
     };
 
-    var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData2);
+    var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
 
     var cognitoUser = userPool.getCurrentUser();
 
@@ -317,5 +268,17 @@ function logOutUser() {
             }
         }
     )
+
+}
+
+function getRecruiterToken(){
+
+    return sessionStorage.getItem('recruiterToken');
+
+}
+
+function getCandidateToken(){
+
+    return sessionStorage.getItem('candidateToken');
 
 }
