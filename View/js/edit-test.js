@@ -160,7 +160,7 @@ function handleDeleteTestButton(event) {
     xhttp.open("DELETE", "https://ot28vqg79h.execute-api.us-east-1.amazonaws.com/dev/tests?id=" + testId, true);
 
     xhttp.setRequestHeader('Content-Type', 'application/json');
-    xhttp.setRequestHeader('Authorization', getAccessToken());
+    xhttp.setRequestHeader('Authorization', getAuthToken(getCognitoUser()));
 
     clearIncludedView();
 
@@ -206,7 +206,7 @@ function autoTranslate(translateLang, testJson) {
     xhttp.open("POST", "https://ot28vqg79h.execute-api.us-east-1.amazonaws.com/dev/translate-test?lang=" + translateLang, true);
 
     xhttp.setRequestHeader('Content-Type', 'application/json');
-    xhttp.setRequestHeader('Authorization', getAccessToken());
+    xhttp.setRequestHeader('Authorization', getAuthToken(getCognitoUser()));
 
     xhttp.send(JSON.stringify(testJson));
 }
@@ -264,45 +264,14 @@ function sendEditRequest(body) {
     xhttp.open("PUT", "https://ot28vqg79h.execute-api.us-east-1.amazonaws.com/dev/tests?id=" + testId, true);
 
     xhttp.setRequestHeader('Content-Type', 'application/json');
-    xhttp.setRequestHeader('Authorization', getAccessToken());
+    xhttp.setRequestHeader('Authorization', getAuthToken(getCognitoUser()));
 
     console.log(JSON.stringify(body));
 
     xhttp.send(JSON.stringify(body));
 }
 
-function getAccessToken() {
-    var email = 'adrianwarcholinski9@gmail.com';
-    var password = 'Qwerty123';
-
-    var cognitoUser = getCognitoUser(email);
-
-    var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
-        Username: email,
-        Password: password
-    });
-
-    cognitoUser.authenticateUser(authenticationDetails, {
-        onSuccess: function printOkMessage() {
-            console.log('Authenticated successfully')
-        },
-        onFailure: function printFailedMessage() {
-            console.log('Authentication failed')
-        }
-    });
-
-    var token;
-
-    cognitoUser.getSession(function (err, session) {
-        if (!err) {
-            token = session.getIdToken().getJwtToken();
-        }
-    });
-
-    return token;
-}
-
-function getCognitoUser(email) {
+function getCognitoUser() {
     var poolData = {
         UserPoolId: 'us-east-1_CY4O3GKHV',
         ClientId: 'thcc01b1nkqm7fti3p434r7un'
@@ -310,8 +279,33 @@ function getCognitoUser(email) {
 
     var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
 
-    return new AmazonCognitoIdentity.CognitoUser({
-        Username: email,
-        Pool: userPool
+    var cognitoUser = userPool.getCurrentUser();
+
+    if (cognitoUser != null) {
+        cognitoUser.getSession(function (err, session) {
+            if (err) {
+                alert(err);
+                return;
+            }
+            console.log('session validity: ' + session.isValid());
+        });
+    }
+    else {
+        alert("Blad pobierania uzytkownika!");
+    }
+
+    return cognitoUser;
+}
+
+function getAuthToken(user) {
+
+    user.getSession(function (err, session) {
+        if (err) {
+            console.log('Error');
+        } else {
+            console.log(':)')
+            idToken = session.getIdToken().getJwtToken();
+        }
     });
+    return idToken;
 }

@@ -62,7 +62,7 @@ function deletion(email, name) {
     xhttp.open("DELETE", "https://ot28vqg79h.execute-api.us-east-1.amazonaws.com/dev/candidates?email=" + email, true);
 
     xhttp.setRequestHeader('Content-Type', 'application/json');
-    xhttp.setRequestHeader('Authorization', getAccessToken());
+    xhttp.setRequestHeader('Authorization', getAuthToken(getCognitoUser()));
 
     xhttp.send();
 
@@ -72,8 +72,7 @@ function isEmpty(str) {
     return (!str || 0 === str.length);
 }
 
-function getAccessToken() {
-
+function getCognitoUser() {
     var poolData = {
         UserPoolId: 'us-east-1_CY4O3GKHV',
         ClientId: 'thcc01b1nkqm7fti3p434r7un'
@@ -81,28 +80,27 @@ function getAccessToken() {
 
     var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
 
-    var email = 'adrianwarcholinski9@gmail.com';
-    var password = 'Qwerty123';
+    var cognitoUser = userPool.getCurrentUser();
 
-    var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
-        Username: email,
-        Password: password
-    });
-    var cognitoUser = new AmazonCognitoIdentity.CognitoUser({
-        Username: email,
-        Pool: userPool
-    });
-    cognitoUser.authenticateUser(authenticationDetails, {
-        onSuccess: function printOkMessage() {
-            console.log('Authenticated successfully')
-        },
-        onFailure: function printFailedMessage() {
-            console.log('Authentication failed')
-        }
-    });
-    var idToken;
+    if (cognitoUser != null) {
+        cognitoUser.getSession(function (err, session) {
+            if (err) {
+                alert(err);
+                return;
+            }
+            console.log('session validity: ' + session.isValid());
+        });
+    }
+    else {
+        alert("Blad pobierania uzytkownika!");
+    }
 
-    cognitoUser.getSession(function (err, session) {
+    return cognitoUser;
+}
+
+function getAuthToken(user) {
+
+    user.getSession(function (err, session) {
         if (err) {
             console.log('Error');
         } else {
