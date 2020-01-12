@@ -74,11 +74,23 @@ function getUserIdFromCognito() {
     xhttp.open("GET", "https://ot28vqg79h.execute-api.us-east-1.amazonaws.com/dev/candidate?email=" + userEmail, false);
 
     xhttp.setRequestHeader('Content-Type', 'application/json');
-    xhttp.setRequestHeader('Authorization', getAuthToken(cognitoUser));
+    xhttp.setRequestHeader('Authorization', getCandidateToken());
 
     xhttp.send();
 
     return idToReturn;
+
+}
+
+function getRecruiterToken(){
+
+    return sessionStorage.getItem('recruiterToken');
+
+}
+
+function getCandidateToken(){
+
+    return sessionStorage.getItem('candidateToken');
 
 }
 
@@ -229,9 +241,15 @@ function clearElementClassList(element,classToAdd, ListToRemove){
 
 
 
-function changeToSolveView ()
+function changeToSolveView (testAndAnswers)
 {
+    $('#includedContent').empty();
 
+
+    $('#includedContent').load("solveTest.html",function (){
+        resetSolveTest();
+        loadSolveTestContent(testAndAnswers.Test, testAndAnswers.Answers,userId);
+    });
 }
 
 function changeToViewMarksView(testAndAnswers)
@@ -240,8 +258,8 @@ function changeToViewMarksView(testAndAnswers)
 
 
     $('#includedContent').load("view-marks.html",function (){
-        reset();
-        loadContent(testAndAnswers.Test,testAndAnswers.Answers.answers, testAndAnswers.Results.results);
+        resetViewMarks();
+        loadViewMarksContent(testAndAnswers.Test,testAndAnswers.Answers.answers, testAndAnswers.Results.results);
     });
 }
 

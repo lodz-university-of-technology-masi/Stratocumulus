@@ -175,7 +175,7 @@ var TestApp = window.TestApp || {};
         xhttp.open("POST", "https://ot28vqg79h.execute-api.us-east-1.amazonaws.com/dev/candidatetests", true);
 
         xhttp.setRequestHeader('Content-Type', 'application/json');
-        xhttp.setRequestHeader('Authorization', getAuthToken(getCognitoUser()));
+        xhttp.setRequestHeader('Authorization', getRecruiterToken());
         xhttp.send(JSON.stringify(toSend));
         alert(JSON.stringify(toSend));
     }
@@ -197,7 +197,7 @@ var TestApp = window.TestApp || {};
         xhttp.open("GET", "https://ot28vqg79h.execute-api.us-east-1.amazonaws.com/dev/candidate?email=" + email, true);
 
         xhttp.setRequestHeader('Content-Type', 'application/json');
-        xhttp.setRequestHeader('Authorization', getAuthToken(getCognitoUser()));
+        xhttp.setRequestHeader('Authorization', getRecruiterToken());
 
         xhttp.send();
 
@@ -294,43 +294,16 @@ var TestApp = window.TestApp || {};
         );
     }
 
-    function getCognitoUser() {
-        var poolData = {
-            UserPoolId: 'us-east-1_CY4O3GKHV',
-            ClientId: 'thcc01b1nkqm7fti3p434r7un'
-        };
+    function getRecruiterToken(){
 
-        var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+        return sessionStorage.getItem('recruiterToken');
 
-        var cognitoUser = userPool.getCurrentUser();
-
-        if (cognitoUser != null) {
-            cognitoUser.getSession(function (err, session) {
-                if (err) {
-                    alert(err);
-                    return;
-                }
-                console.log('session validity: ' + session.isValid());
-            });
-        }
-        else {
-            alert("Blad pobierania uzytkownika!");
-        }
-
-        return cognitoUser;
     }
 
-    function getAuthToken(user) {
+    function getCandidateToken(){
 
-        user.getSession(function (err, session) {
-            if (err) {
-                console.log('Error');
-            } else {
-                console.log(':)')
-                idToken = session.getIdToken().getJwtToken();
-            }
-        });
-        return idToken;
+        return sessionStorage.getItem('candidateToken');
+
     }
 
 }(jQuery));
