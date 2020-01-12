@@ -55,40 +55,26 @@ function getAuthToken(user) {
 
 function getUserIdFromCognito() {
 
-    var cognitoUser = getCognitoUser();
-    var userEmail = cognitoUser.getUsername();
-    var user = '';
-    var idToReturn;
-
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function () {
-
-        if (this.readyState === 4 && this.status === 200) {
-            user = this.responseText;
-            console.log(this.responseText);
-            var parsed = JSON.parse(user);
-            idToReturn = parsed.id;
-        }
-    };
-
-    xhttp.open("GET", "https://ot28vqg79h.execute-api.us-east-1.amazonaws.com/dev/candidate?email=" + userEmail, false);
-
-    xhttp.setRequestHeader('Content-Type', 'application/json');
-    xhttp.setRequestHeader('Authorization', getCandidateToken());
-
-    xhttp.send();
-
-    return idToReturn;
-
+    let cognitoUser = getCognitoUser();
+    callCandidateAwsLambda("GET", `candidate?email=${cognitoUser.getUsername()}`, afterGetUserId, '', false);
 }
 
-function getRecruiterToken(){
+function afterGetUserId(response) {
+    let user = response;
+    console.log(response);
+    let parsed = JSON.parse(user);
+    idToReturn = parsed.id;
+}
+
+let idToReturn;
+
+function getRecruiterToken() {
 
     return sessionStorage.getItem('recruiterToken');
 
 }
 
-function getCandidateToken(){
+function getCandidateToken() {
 
     return sessionStorage.getItem('candidateToken');
 
@@ -128,7 +114,7 @@ function loadTests() {
     userId = sampleCandidateID;
    // userId = getUserIdFromCognito();
 
-    callRecruiterAwsLambda("GET", "candidatetest?candidateId=" + userId, loadUserTests, "", false);
+    callCandidateAwsLambda("GET", "candidatetest?candidateId=" + userId, loadUserTests, "", false);
 
     log(userTestsAndAnswers);
 
@@ -156,8 +142,8 @@ function loadUserTests(response)
         userTestAndAnswer.Results = null;
         userTestsAndAnswers[userAnswers[i].testId] = userTestAndAnswer;
 
-        callRecruiterAwsLambda("GET", "test?id=" + userAnswers[i].testId, pushTestList, "", false);
-        callRecruiterAwsLambda('GET', "result?id=" + userId + "_" + userAnswers[i].testId, function (response) {
+        callCandidateAwsLambda("GET", "test?id=" + userAnswers[i].testId, pushTestList, "", false);
+        callCandidateAwsLambda('GET', "result?id=" + userId + "_" + userAnswers[i].testId, function (response) {
             console.log(response);
             if (response != '')
                 userTestAndAnswer.Results = JSON.parse(response);

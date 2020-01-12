@@ -128,24 +128,13 @@ function showMarkTestView(data) {
 
 
 function getUserList() {
-    let userList = '';
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function () {
+    callRecruiterAwsLambda("GET", "candidates", afterGetUsers, '', true);
+}
 
-
-        if (this.readyState === 4 && this.status === 200) {
-            userList = this.responseText;
-            console.log(this.responseText);
-            populateUserList(JSON.parse(userList));
-        }
-    };
-
-    xhttp.open("GET", "https://ot28vqg79h.execute-api.us-east-1.amazonaws.com/dev/candidates", true);
-
-    xhttp.setRequestHeader('Content-Type', 'application/json');
-    xhttp.setRequestHeader('Authorization',getRecruiterToken());
-
-    xhttp.send();
+function afterGetUsers(response) {
+    let userList = response;
+    console.log(this.responseText);
+    populateUserList(JSON.parse(userList));
 }
 
 function handleImport(fileList) {

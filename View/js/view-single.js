@@ -42,44 +42,20 @@ function handleDeletion(event) {
     }
 }
 
-function deletion(email, name) {
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function () {
+function deletion(email) {
+    callRecruiterAwsLambda("DELETE", `candidates?email=${email}`, afterDeleteCandidate, '', true);
+}
 
-        if (this.readyState === 4 && this.status === 200) {
-            console.log(this.responseText);
-            if(JSON.parse(this.responseText).result){
-                alert("Pomyślnie usunięto użytkownika: " + name + " | " + email);
-                window.location.href = 'MainView.html';
-            }
-            else {
-                alert("Błąd podczas usuwania użytkownika: " + name + " | " + email);
-            }
-
-        }
-    };
-
-    xhttp.open("DELETE", "https://ot28vqg79h.execute-api.us-east-1.amazonaws.com/dev/candidates?email=" + email, true);
-
-    xhttp.setRequestHeader('Content-Type', 'application/json');
-    xhttp.setRequestHeader('Authorization', getRecruiterToken());
-
-    xhttp.send();
-
+function afterDeleteCandidate(response) {
+    console.log(response);
+    if (JSON.parse(this.responseText).result) {
+        alert("Pomyślnie usunięto użytkownika");
+        window.location.href = 'MainView.html';
+    } else {
+        alert("Błąd podczas usuwania użytkownika");
+    }
 }
 
 function isEmpty(str) {
     return (!str || 0 === str.length);
-}
-
-function getRecruiterToken(){
-
-    return sessionStorage.getItem('recruiterToken');
-
-}
-
-function getCandidateToken(){
-
-    return sessionStorage.getItem('candidateToken');
-
 }

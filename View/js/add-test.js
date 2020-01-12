@@ -208,33 +208,11 @@ function readClosedQuestionFromHtml(questionJson, questionNo) {
 }
 
 function sendAddRequest(body) {
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function () {
-
-        if (this.readyState === 4 && this.status === 200) {
-            console.log(this.responseText);
-            reloadList();
-            showSuccessPopup("Pomyslnie dodano nowy test");
-        }
-
-    };
-
-    xhttp.open("POST", "https://ot28vqg79h.execute-api.us-east-1.amazonaws.com/dev/tests", true);
-
-    xhttp.setRequestHeader('Content-Type', 'application/json');
-    xhttp.setRequestHeader('Authorization', getRecruiterToken());
-
-    xhttp.send(JSON.stringify(body));
+    callRecruiterAwsLambda("POST", "tests", afterAddTest, body, true);
 }
 
-function getRecruiterToken(){
-
-    return sessionStorage.getItem('recruiterToken');
-
-}
-
-function getCandidateToken(){
-
-    return sessionStorage.getItem('candidateToken');
-
+function afterAddTest(response) {
+    console.log(response);
+    reloadList();
+    showSuccessPopup("Pomyslnie dodano nowy test");
 }
