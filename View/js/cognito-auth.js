@@ -172,7 +172,7 @@ var TestApp = window.TestApp || {};
             }
         };
 
-        xhttp.open("POST", "https://ot28vqg79h.execute-api.us-east-1.amazonaws.com/dev/candidatetests", true);
+        xhttp.open("POST", "https://rj55i1bsub.execute-api.us-east-1.amazonaws.com/dev/candidatetests", true);
 
         xhttp.setRequestHeader('Content-Type', 'application/json');
         xhttp.setRequestHeader('Authorization', getRecruiterToken());
@@ -194,7 +194,7 @@ var TestApp = window.TestApp || {};
             }
         };
 
-        xhttp.open("GET", "https://ot28vqg79h.execute-api.us-east-1.amazonaws.com/dev/candidate?email=" + email, true);
+        xhttp.open("GET", "https://sv8dll1cp6.execute-api.us-east-1.amazonaws.com/dev/candidate?email=" + email, true);
 
         xhttp.setRequestHeader('Content-Type', 'application/json');
         xhttp.setRequestHeader('Authorization', getRecruiterToken());
