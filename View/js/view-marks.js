@@ -53,28 +53,24 @@ function simulate() {
 */
 
 
-let maxScore = 10;
-let testScore = 0;
 
-let test;
-let answers;
-let marks;
-let candidateId;
+var loadedTest;
+var answers;
+var marks;
+var candidateId;
+var maxScore = 10 ;
 
 
-let questionsCount = 0;
-
+var questionsCount = 0;
+var testScore = 0;
 
 
 function assignParams(orginalTest, answersGiven, userId) {
-    test = orginalTest;
+    loadedTest = orginalTest;
     answers = answersGiven;
     candidateId = userId;
 }
 
-function testMarksView(){
-    console.log("Wszystko OK");
-}
 
 function loadContent(test, answers, candidateId) {
 
@@ -92,7 +88,7 @@ function loadContent(test, answers, candidateId) {
 }
 
 function displayQuestions() {
-    let questions = test.questions;
+    let questions = loadedTest.questions;
     for (let i = 0; i < questions.length; i++) {
         displayQuestion(questions[i]);
     }

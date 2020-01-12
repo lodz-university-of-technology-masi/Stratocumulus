@@ -1,9 +1,9 @@
 var closebtns = document.getElementsByClassName("close");
 var i;
 
-
 var userId;
 let userTestsAndAnswers = {};
+
 
 
 
@@ -239,7 +239,7 @@ function changeToViewMarksView(testAndAnswers)
     $('#includedContent').empty();
 
 
-    $('#includedContent').load('view-marks.html',function (){
+    $('#includedContent').load("view-marks.html",function (){
         reset();
         loadContent(testAndAnswers.Test,testAndAnswers.Answers.answers, userId);
     });
