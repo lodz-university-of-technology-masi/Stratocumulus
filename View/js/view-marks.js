@@ -72,28 +72,25 @@ function assignParams(orginalTest, answersGiven, results) {
 }
 
 
-function loadContent(test, answers, results) {
+function loadViewMarksContent(test, answers, results) {
 
     assignParams(test, answers, results);
     $('#test-header').text(`Wyniki Testu: ${test.name}`);
 
-
-
-
-    displayQuestions();
+    displayQuestionsAndMarks();
 
 }
 
-function displayQuestions() {
+function displayQuestionsAndMarks() {
     let questions = loadedTest.questions;
     for (let i = 0; i < questions.length; i++) {
-        displayQuestion(questions[i]);
+        displayQuestionAndMark(questions[i]);
     }
 
     displayLabel("TOTAL SCORE: " + testScore + "/" + maxScore*questionsCount, "score" );
 }
 
-function displayQuestion(question) {
+function displayQuestionAndMark(question) {
     questionsCount++;
 
     displayLabel(`${questionsCount}. ${question.content}`);
@@ -147,7 +144,11 @@ function displayLabel(text, type) {
     $('#answers-hr').append(label).append($('<br/>'));
 }
 
-function reset () {
+function resetViewMarks() {
     testScore = 0;
     questionsCount = 0;
+}
+
+function getAnswers(){
+
 }
