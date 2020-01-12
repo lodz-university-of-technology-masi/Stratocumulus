@@ -1,9 +1,13 @@
 var closebtns = document.getElementsByClassName("close");
 var i;
 
+
+var userId;
 let userTestsAndAnswers = {};
 
-var sampleCandidateId = "f1a16aa7-dadb-4453-83a1-0f61785944bf";
+
+
+var sampleCandidateID = "f1a16aa7-dadb-4453-83a1-0f61785944bf";
 
 function loadEditPage() {
         window.location.href = "view-and-edit-candidate.html";
@@ -109,12 +113,24 @@ function log (text)
 function loadTests() {
 
 
-    callAwsLambda("GET", "candidatetest?candidateId=" + sampleCandidateId, loadUserTests,"",false);
-   //callAwsLambda("GET", "candidatetest?candidateId=" + getUserIdFromCognito(), loadUserTests,"",false);
+    userId = sampleCandidateID;
+   // userId = getUserIdFromCognito();
+
+    callAwsLambda("GET", "candidatetest?candidateId=" + userId, loadUserTests,"",false);
 
     log(userTestsAndAnswers);
 
     populateTestList(userTestsAndAnswers);
+
+  //  reloadStylesheets();
+
+}
+
+function reloadStylesheets() {
+    var queryString = '?reload=' + new Date().getTime();
+    $('link[rel="stylesheet"]').each(function () {
+        this.href = this.href.replace(/\?.*|$/, queryString);
+    });
 }
 
 function loadUserTests(response)
@@ -126,13 +142,21 @@ function loadUserTests(response)
         let userTestAndAnswer =  {};
         userTestAndAnswer.Answers = userAnswers[i];
         userTestAndAnswer.Test = null;
+        userTestAndAnswer.Results = null;
         userTestsAndAnswers[userAnswers[i].testId] = userTestAndAnswer;
 
         callAwsLambda("GET", "test?id=" + userAnswers[i].testId, pushTestList,"",false);
+        callAwsLambda('GET', "result?id="+userId+"_"+userAnswers[i].testId,  function(response){
+            console.log(response);
+            if(response!='')
+            userTestAndAnswer.Results = JSON.parse(response);
+        },"",false);
     }
 
 
 }
+
+
 
 function pushTestList(test)
 {
@@ -144,26 +168,80 @@ function populateTestList(testsAndAnswersList) {
 
     document.getElementById("candidateTestList").innerHTML = "";
 
-    for ( var key in testsAndAnswersList) {
+
+    for ( let key in testsAndAnswersList) {
 
 
         let btn = document.createElement("BUTTON");
+
         btn.innerHTML = testsAndAnswersList[key].Test.name;
 
-        btn.onclick = function () {
-            handleTestClick(testsAndAnswersList[key]);
-        };
+        if(testsAndAnswersList[key].Results == null && testsAndAnswersList[key].Answers.answers == null){
+
+            btn.disabled=false;
+            clearElementClassList(btn,"unsolvedTest",["markedTest","solvedTest"])
+
+            btn.onclick = function () {
+              changeToSolveView(testsAndAnswersList[key]);
+            };
+
+
+        }
+
+        if(testsAndAnswersList[key].Results == null && testsAndAnswersList[key].Answers.answers != null) {
+            btn.disabled = true;
+
+            clearElementClassList(btn,"solvedTest",["markedTest","unsolvedTest"])
+        }
+
+        if(testsAndAnswersList[key].Results != null)
+        {
+            btn.disabled = false;
+
+            clearElementClassList(btn,"markedTest",["solvedTest","unsolvedTest"])
+
+            btn.onclick = function () {
+                changeToViewMarksView(testsAndAnswersList[key]);
+            };
+        }
+
 
         let li = document.createElement("li");
         li.appendChild(btn);
+
         document.getElementById("candidateTestList").appendChild(li);
     }
 
 
 }
 
+function clearElementClassList(element,classToAdd, ListToRemove){
 
-function handleTestClick (testAndAnswer) {
 
+    for(let i = 0; i<ListToRemove.length;i++)
+    {
+        if(element.classList.contains(ListToRemove[i]))
+            element.classList.remove(ListToRemove[i]);
+    }
+
+    element.classList.add(classToAdd);
+}
+
+
+
+function changeToSolveView ()
+{
 
 }
+
+function changeToViewMarksView(testAndAnswers)
+{
+    $('#includedContent').empty();
+
+
+    $('#includedContent').load('view-marks.html',function (){
+        reset();
+        loadContent(testAndAnswers.Test,testAndAnswers.Answers.answers, userId);
+    });
+}
+

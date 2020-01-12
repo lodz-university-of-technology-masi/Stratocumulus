@@ -1,3 +1,4 @@
+/*
 let sampleTest = {
     "id": "2e67f777-b246-4af9-bc94-b63ec138c510",
     "language": "PL",
@@ -49,10 +50,10 @@ function simulate() {
 
 }
 
-// Above code will be removed in the future
+*/
+
 
 let maxScore = 10;
-
 let testScore = 0;
 
 let test;
@@ -63,12 +64,17 @@ let candidateId;
 
 let questionsCount = 0;
 
+
+
 function assignParams(orginalTest, answersGiven, userId) {
     test = orginalTest;
     answers = answersGiven;
     candidateId = userId;
 }
 
+function testMarksView(){
+    console.log("Wszystko OK");
+}
 
 function loadContent(test, answers, candidateId) {
 
@@ -146,4 +152,9 @@ function displayLabel(text, type) {
     let label = $(`<label>${text}</label>`).attr({class:type});
 
     $('#answers-hr').append(label).append($('<br/>'));
+}
+
+function reset () {
+    testScore = 0;
+    questionsCount = 0;
 }
