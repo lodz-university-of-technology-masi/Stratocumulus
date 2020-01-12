@@ -10,52 +10,50 @@ function callAwsLambda(verb, endpoint, func, body, async) {
     xhttp.open(verb, `https://ot28vqg79h.execute-api.us-east-1.amazonaws.com/dev/${endpoint}`, async);
 
     xhttp.setRequestHeader('Content-Type', 'application/json');
-    xhttp.setRequestHeader('Authorization', getAccessToken());
+    xhttp.setRequestHeader('Authorization', getAuthToken(getCognitoUser()));
 
     xhttp.send(JSON.stringify(body));
 }
 
-function getAccessToken() {
-    let email = 'adrianwarcholinski9@gmail.com';
-    let password = 'Qwerty123';
-
-    let cognitoUser = getCognitoUser(email);
-
-    let authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
-        Username: email,
-        Password: password
-    });
-
-    cognitoUser.authenticateUser(authenticationDetails, {
-        onSuccess: function printOkMessage() {
-            console.log('Authenticated successfully')
-        },
-        onFailure: function printFailedMessage() {
-            console.log('Authentication failed')
-        }
-    });
-
-    let token;
-
-    cognitoUser.getSession(function (err, session) {
-        if (!err) {
-            token = session.getIdToken().getJwtToken();
-        }
-    });
-
-    return token;
-}
-
-function getCognitoUser(email) {
-    let poolData = {
+function getCognitoUser() {
+    var poolData = {
         UserPoolId: 'us-east-1_CY4O3GKHV',
         ClientId: 'thcc01b1nkqm7fti3p434r7un'
     };
+    var poolData2 = {
+        UserPoolId: 'us-east-1_lWqCuNtQd',   //_config.cognito.recruiterPoolId,
+        ClientId: '4rv0ibelu8sc3hi2dmjo05g5ku',  //_config.cognito.recruiterPoolClientId,
+    };
 
-    let userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+    var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData2);
 
-    return new AmazonCognitoIdentity.CognitoUser({
-        Username: email,
-        Pool: userPool
+    var cognitoUser = userPool.getCurrentUser();
+
+    if (cognitoUser != null) {
+        cognitoUser.getSession(function (err, session) {
+            if (err) {
+                alert(err);
+                return;
+            }
+            console.log('session validity: ' + session.isValid());
+        });
+    }
+    else {
+        alert("Blad pobierania uzytkownika!");
+    }
+
+    return cognitoUser;
+}
+
+function getAuthToken(user) {
+
+    user.getSession(function (err, session) {
+        if (err) {
+            console.log('Error');
+        } else {
+            console.log(':)')
+            idToken = session.getIdToken().getJwtToken();
+        }
     });
+    return idToken;
 }

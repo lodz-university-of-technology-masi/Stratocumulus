@@ -114,13 +114,6 @@ var TestApp = window.TestApp || {};
 
     }
 
-    function signout() {
-        if (cognitoUser != null) {
-            cognitoUser.signOut();
-        }
-        cognitoUser.globalSignOut();
-    }
-
     function signin(email, password, onSuccess, onFailure) {
         var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
             Username: email,
@@ -182,7 +175,7 @@ var TestApp = window.TestApp || {};
         xhttp.open("POST", "https://ot28vqg79h.execute-api.us-east-1.amazonaws.com/dev/candidatetests", true);
 
         xhttp.setRequestHeader('Content-Type', 'application/json');
-        xhttp.setRequestHeader('Authorization', getAccessToken());
+        xhttp.setRequestHeader('Authorization', getAuthToken(getCognitoUser()));
         xhttp.send(JSON.stringify(toSend));
         alert(JSON.stringify(toSend));
     }
@@ -204,7 +197,7 @@ var TestApp = window.TestApp || {};
         xhttp.open("GET", "https://ot28vqg79h.execute-api.us-east-1.amazonaws.com/dev/candidate?email=" + email, true);
 
         xhttp.setRequestHeader('Content-Type', 'application/json');
-        xhttp.setRequestHeader('Authorization', getAccessToken());
+        xhttp.setRequestHeader('Authorization', getAuthToken(getCognitoUser()));
 
         xhttp.send();
 
@@ -301,7 +294,7 @@ var TestApp = window.TestApp || {};
         );
     }
 
-    function getAccessToken() {
+    function getCognitoUser() {
         var poolData = {
             UserPoolId: 'us-east-1_CY4O3GKHV',
             ClientId: 'thcc01b1nkqm7fti3p434r7un'
@@ -309,31 +302,27 @@ var TestApp = window.TestApp || {};
 
         var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
 
-        var email = 'adrianwarcholinski9@gmail.com';
-        var password = 'Qwerty123';
+        var cognitoUser = userPool.getCurrentUser();
 
-        var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails({
-            Username: email,
-            Password: password
-        });
+        if (cognitoUser != null) {
+            cognitoUser.getSession(function (err, session) {
+                if (err) {
+                    alert(err);
+                    return;
+                }
+                console.log('session validity: ' + session.isValid());
+            });
+        }
+        else {
+            alert("Blad pobierania uzytkownika!");
+        }
 
-        var cognitoUser = new AmazonCognitoIdentity.CognitoUser({
-            Username: email,
-            Pool: userPool
-        });
+        return cognitoUser;
+    }
 
-        cognitoUser.authenticateUser(authenticationDetails, {
-            onSuccess: function printOkMessage() {
-                console.log('Authenticated successfully')
-            },
-            onFailure: function printFailedMessage() {
-                console.log('Authentication failed')
-            }
-        });
+    function getAuthToken(user) {
 
-        var idToken;
-
-        cognitoUser.getSession(function (err, session) {
+        user.getSession(function (err, session) {
             if (err) {
                 console.log('Error');
             } else {
@@ -341,7 +330,6 @@ var TestApp = window.TestApp || {};
                 idToken = session.getIdToken().getJwtToken();
             }
         });
-
         return idToken;
     }
 
