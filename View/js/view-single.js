@@ -48,7 +48,7 @@ function deletion(email) {
 
 function afterDeleteCandidate(response) {
     console.log(response);
-    if (JSON.parse(this.responseText).result) {
+    if (JSON.parse(response).result) {
         alert("Pomyślnie usunięto użytkownika");
         window.location.href = 'MainView.html';
     } else {
