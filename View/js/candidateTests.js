@@ -114,6 +114,7 @@ function loadTests() {
     userId = sampleCandidateID;
    // userId = getUserIdFromCognito();
 
+    console.log("candidatetest?candidateId=" + userId);
     callCandidateAwsLambda("GET", "candidatetest?candidateId=" + userId, loadUserTests, "", false);
 
     log(userTestsAndAnswers);

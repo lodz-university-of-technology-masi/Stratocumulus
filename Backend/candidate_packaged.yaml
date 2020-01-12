@@ -1,0 +1,135 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'Lambdas using DynamoDB
+
+  '
+Globals:
+  Function:
+    Timeout: 20
+Resources:
+  CandidateApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      Auth:
+        AddDefaultAuthorizerToCorsPreflight: false
+        DefaultAuthorizer: CandidateAuthorizer
+        Authorizers:
+          CandidateAuthorizer:
+            UserPoolArn: arn:aws:cognito-idp:us-east-1:378648381617:userpool/us-east-1_CY4O3GKHV
+            Identity:
+              Header: Authorization
+          RecruiterAuthorizer:
+            UserPoolArn: arn:aws:cognito-idp:us-east-1:378648381617:userpool/us-east-1_lWqCuNtQd
+            Identity:
+              Header: Authorization
+      Cors:
+        AllowMethods: '''*'''
+        AllowHeaders: '''*'''
+        AllowOrigin: '''*'''
+      StageName: dev
+  GetTest:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://stratocumulus-candidate-bucket/bd00e7a1aeb7ea1af52caaad91b4ad3f
+      Handler: handler.test.GetTestHandler::handleRequest
+      Policies: AmazonDynamoDBFullAccess
+      Runtime: java8
+      MemorySize: 512
+      Environment:
+        Variables:
+          PARAM1: VALUE
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: CandidateApi
+            Path: /test
+            Method: get
+  GetCandidateTest:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://stratocumulus-candidate-bucket/bd00e7a1aeb7ea1af52caaad91b4ad3f
+      Handler: handler.candidatetest.GetCandidateTestHandler::handleRequest
+      Policies: AmazonDynamoDBFullAccess
+      Runtime: java8
+      MemorySize: 512
+      Environment:
+        Variables:
+          PARAM1: VALUE
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: CandidateApi
+            Path: /candidatetest
+            Method: get
+  UpdateCandidateTest:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://stratocumulus-candidate-bucket/bd00e7a1aeb7ea1af52caaad91b4ad3f
+      Handler: handler.candidatetest.UpdateCandidateTestHandler::handleRequest
+      Policies: AmazonDynamoDBFullAccess
+      Runtime: java8
+      MemorySize: 512
+      Environment:
+        Variables:
+          PARAM1: VALUE
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: CandidateApi
+            Path: /candidatetests
+            Method: put
+  GetCandidate:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://stratocumulus-candidate-bucket/bd00e7a1aeb7ea1af52caaad91b4ad3f
+      Handler: handler.candidate.GetCandidateHandler::handleRequest
+      Policies:
+      - Statement:
+        - Sid: AllowCognito
+          Effect: Allow
+          Action:
+          - cognito-idp:*
+          Resource: '*'
+      Runtime: java8
+      MemorySize: 512
+      Environment:
+        Variables:
+          PARAM1: VALUE
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: CandidateApi
+            Path: /candidate
+            Method: get
+  GetTestResult:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://stratocumulus-candidate-bucket/bd00e7a1aeb7ea1af52caaad91b4ad3f
+      Handler: handler.result.GetTestResultHandler::handleRequest
+      Policies: AmazonDynamoDBFullAccess
+      Runtime: java8
+      MemorySize: 512
+      Environment:
+        Variables:
+          PARAM1: VALUE
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: CandidateApi
+            Path: /result
+            Method: get
+Outputs:
+  CandidateApi:
+    Description: API Gateway
+    Value:
+      Fn::Sub: https://${CandidateApi}.execute-api.${AWS::Region}.amazonaws.com/dev/

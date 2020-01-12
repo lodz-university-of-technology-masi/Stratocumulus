@@ -1,0 +1,270 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'Lambdas using DynamoDB
+
+  '
+Globals:
+  Function:
+    Timeout: 20
+Resources:
+  RecruiterApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      Auth:
+        AddDefaultAuthorizerToCorsPreflight: false
+        DefaultAuthorizer: RecruiterAuthorizer
+        Authorizers:
+          RecruiterAuthorizer:
+            UserPoolArn: arn:aws:cognito-idp:us-east-1:378648381617:userpool/us-east-1_lWqCuNtQd
+            Identity:
+              Header: Authorization
+      Cors:
+        AllowMethods: '''*'''
+        AllowHeaders: '''*'''
+        AllowOrigin: '''*'''
+      StageName: dev
+  InsertTest:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://stratocumulus-recruiter-bucket/bd00e7a1aeb7ea1af52caaad91b4ad3f
+      Handler: handler.test.InsertTestHandler::handleRequest
+      Policies: AmazonDynamoDBFullAccess
+      Runtime: java8
+      MemorySize: 512
+      Environment:
+        Variables:
+          PARAM1: VALUE
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: RecruiterApi
+            Path: /tests
+            Method: post
+  DeleteTest:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://stratocumulus-recruiter-bucket/bd00e7a1aeb7ea1af52caaad91b4ad3f
+      Handler: handler.test.DeleteTestHandler::handleRequest
+      Policies: AmazonDynamoDBFullAccess
+      Runtime: java8
+      MemorySize: 512
+      Environment:
+        Variables:
+          PARAM1: VALUE
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: RecruiterApi
+            Path: /tests
+            Method: delete
+  GetAllTests:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://stratocumulus-recruiter-bucket/bd00e7a1aeb7ea1af52caaad91b4ad3f
+      Handler: handler.test.GetAllTestsHandler::handleRequest
+      Policies: AmazonDynamoDBFullAccess
+      Runtime: java8
+      MemorySize: 512
+      Environment:
+        Variables:
+          PARAM1: VALUE
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: RecruiterApi
+            Path: /tests
+            Method: get
+  UpdateTest:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://stratocumulus-recruiter-bucket/bd00e7a1aeb7ea1af52caaad91b4ad3f
+      Handler: handler.test.UpdateTestHandler::handleRequest
+      Policies: AmazonDynamoDBFullAccess
+      Runtime: java8
+      MemorySize: 512
+      Environment:
+        Variables:
+          PARAM1: VALUE
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: RecruiterApi
+            Path: /tests
+            Method: put
+  InsertCandidateTest:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://stratocumulus-recruiter-bucket/bd00e7a1aeb7ea1af52caaad91b4ad3f
+      Handler: handler.candidatetest.InsertCandidateTestHandler::handleRequest
+      Policies: AmazonDynamoDBFullAccess
+      Runtime: java8
+      MemorySize: 512
+      Environment:
+        Variables:
+          PARAM1: VALUE
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: RecruiterApi
+            Path: /candidatetests
+            Method: post
+  DeleteCandidateTest:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://stratocumulus-recruiter-bucket/bd00e7a1aeb7ea1af52caaad91b4ad3f
+      Handler: handler.candidatetest.DeleteCandidateTestHandler::handleRequest
+      Policies: AmazonDynamoDBFullAccess
+      Runtime: java8
+      MemorySize: 512
+      Environment:
+        Variables:
+          PARAM1: VALUE
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: RecruiterApi
+            Path: /candidatetests
+            Method: delete
+  GetAllCandidateTests:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://stratocumulus-recruiter-bucket/bd00e7a1aeb7ea1af52caaad91b4ad3f
+      Handler: handler.candidatetest.GetAllCandidateTestsHandler::handleRequest
+      Policies: AmazonDynamoDBFullAccess
+      Runtime: java8
+      MemorySize: 512
+      Environment:
+        Variables:
+          PARAM1: VALUE
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: RecruiterApi
+            Path: /candidatetests
+            Method: get
+  GetAllCandidates:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://stratocumulus-recruiter-bucket/bd00e7a1aeb7ea1af52caaad91b4ad3f
+      Handler: handler.candidate.GetAllCandidatesHandler::handleRequest
+      Policies:
+      - Statement:
+        - Sid: AllowCognito
+          Effect: Allow
+          Action:
+          - cognito-idp:*
+          Resource: '*'
+      Runtime: java8
+      MemorySize: 512
+      Environment:
+        Variables:
+          PARAM1: VALUE
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: RecruiterApi
+            Path: /candidates
+            Method: get
+  DeleteCandidate:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://stratocumulus-recruiter-bucket/bd00e7a1aeb7ea1af52caaad91b4ad3f
+      Handler: handler.candidate.DeleteCandidateHandler::handleRequest
+      Policies:
+      - AmazonDynamoDBFullAccess
+      - Statement:
+        - Sid: AllowCognito
+          Effect: Allow
+          Action:
+          - cognito-idp:*
+          Resource: '*'
+      Runtime: java8
+      MemorySize: 512
+      Environment:
+        Variables:
+          PARAM1: VALUE
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: RecruiterApi
+            Path: /candidates
+            Method: delete
+  TranslateTest:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://stratocumulus-recruiter-bucket/bd00e7a1aeb7ea1af52caaad91b4ad3f
+      Handler: handler.test.TranslateTestHandler::handleRequest
+      Runtime: java8
+      MemorySize: 512
+      Environment:
+        Variables:
+          PARAM1: VALUE
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: RecruiterApi
+            Path: /translate-test
+            Method: post
+  GetAllTestResults:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://stratocumulus-recruiter-bucket/bd00e7a1aeb7ea1af52caaad91b4ad3f
+      Handler: handler.result.GetAllTestResultsHandler::handleRequest
+      Policies: AmazonDynamoDBFullAccess
+      Runtime: java8
+      MemorySize: 512
+      Environment:
+        Variables:
+          PARAM1: VALUE
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: RecruiterApi
+            Path: /results
+            Method: get
+  InsertTestResult:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://stratocumulus-recruiter-bucket/bd00e7a1aeb7ea1af52caaad91b4ad3f
+      Handler: handler.result.InsertTestResultHandler::handleRequest
+      Policies: AmazonDynamoDBFullAccess
+      Runtime: java8
+      MemorySize: 512
+      Environment:
+        Variables:
+          PARAM1: VALUE
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: RecruiterApi
+            Path: /results
+            Method: post
+Outputs:
+  RecruiterApi:
+    Description: API Gateway
+    Value:
+      Fn::Sub: https://${RecruiterApi}.execute-api.${AWS::Region}.amazonaws.com/dev/
