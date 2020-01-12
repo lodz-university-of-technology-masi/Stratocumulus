@@ -34,7 +34,7 @@ function signInButton() {
     var cognitoRecruiter = new AWSCognito.CognitoIdentityServiceProvider.CognitoUser(recruiterData);
     cognitoUser.authenticateUser(authenticationDetails, {
         onSuccess: function (result) {
-            var token = result.getAccessToken().getJwtToken()
+            var token = result.getIdToken().getJwtToken()
             console.log('access token + ' + token);
             sessionStorage.clear();
             sessionStorage.setItem('candidateToken', token);
@@ -49,7 +49,7 @@ function signInButton() {
 
             cognitoRecruiter.authenticateUser(authenticationDetails, {
                 onSuccess: function (result) {
-                    var token = result.getAccessToken().getJwtToken()
+                    var token = result.getIdToken().getJwtToken()
                     console.log('access token + ' + result);
                     sessionStorage.clear();
                     sessionStorage.setItem('recruiterToken', token);
