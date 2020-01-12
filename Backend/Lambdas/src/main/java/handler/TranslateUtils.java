@@ -2,12 +2,11 @@ package handler;
 
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 public class TranslateUtils {
 
@@ -26,7 +25,11 @@ public class TranslateUtils {
     }
 
     public static String translate(String text, String sourceLang, String targetLang) {
-        text = text.replace(" ", "+");
+        try {
+            text = URLEncoder.encode(text, StandardCharsets.UTF_8.toString());
+        } catch (UnsupportedEncodingException e) {
+            return "";
+        }
 
         try {
             String responseString = request("https://translate.yandex.net/api/v1.5/tr.json/translate?key=" + API_KEY + "&text=" + text + "&lang=" + sourceLang + "-" + targetLang);

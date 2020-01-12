@@ -1,6 +1,7 @@
 let __tests;
 let __candidateTests;
 let __candidateId;
+let __testResults;
 
 function afterGetTests(response) {
     __tests = JSON.parse(response);
@@ -16,12 +17,26 @@ function afterGetCandidateTests(response) {
     }
 }
 
+function afterGetResults(response) {
+    let testResults = [];
+    let allResults = JSON.parse(response);
+    for (let i = 0; i < allResults.length; i++) {
+        let result = allResults[i];
+        if (result.id.includes(__candidateId)) {
+            testResults.push(result);
+        }
+    }
+
+    __testResults = testResults;
+}
+
 function loadTests(candId, candidateName) {
     __candidateId = candId;
     $('#candidate-header').text(`Przypisz testy: ${candidateName}`);
 
-    callAwsLambda('GET', 'tests', afterGetTests, true);
-    callAwsLambda('GET', 'candidatetests', afterGetCandidateTests, true);
+    callAwsLambda('GET', 'tests', afterGetTests, false);
+    callAwsLambda('GET', 'candidatetests', afterGetCandidateTests, false);
+    callAwsLambda('GET', 'results', afterGetResults, false);
 
     let testsData = getAllAndAssignedTestsIdsAndNames();
 
@@ -35,7 +50,6 @@ function loadTests(candId, candidateName) {
 function displayAllCheckboxes(tests) {
     for (let i = 0; i < tests.length; i++) {
         let test = tests[i];
-        // checkIfTestIsAlreadyMarked(__candidateId, test.id);
         displayTestCheckbox(test.id, test.name);
     }
 }
@@ -99,7 +113,6 @@ function displayTestCheckbox(id, value) {
     const newTest = getCheckbox(id, value);
 
     $('#test-hr').append(newTest);
-    checkIfTestIsAlreadyMarked(__candidateId, id);
 
     displayLabel(newTest, isTestSolved(id));
 }
@@ -109,21 +122,33 @@ function getCheckbox(id, value) {
 }
 
 function getButton(id, text) {
-    let onClick = `${_passedResults ? 'handleShowMarksButton(this)' : 'handleCheckTestButton(this)'}`;
+    let onClick = `${getTestResultByTestId(id) !== null ? 'handleShowMarksButton(this)' : 'handleCheckTestButton(this)'}`;
     return $(`<button id="${id}" class=check-test-button type="button" onclick=${onClick}>${text}</button>`);
 }
 
-function displayLabel(test, isIncludeCheckButton) {
-    let label = $(`<label>${test.val()}</label>`);
+function displayLabel(testCheckbox, isIncludeCheckButton) {
+    let label = $(`<label>${testCheckbox.val()}</label>`);
 
     let testHr = $('#test-hr');
     testHr.append(label);
 
     if (isIncludeCheckButton) {
-        testHr.append(getButton(`ct_${getAssignedTestByTestName(test.val()).id}`, _passedResults.results !== null ? 'Zobacz ocenę' : 'Oceń test'));
+        let test = getAssignedTestByTestName(testCheckbox.val());
+        testHr.append(getButton(`ct_${test.id}`, getTestResultByTestId(test.id) !== null ? 'Zobacz ocenę' : 'Oceń test'));
     }
 
     testHr.append($('<br/>'));
+}
+
+function getTestResultByTestId(testId) {
+    let id = `${__candidateId}_${testId}`;
+    for (let i = 0; i < __testResults.length; i++) {
+        if (__testResults.id === id) {
+            return __testResults[i];
+        }
+    }
+
+    return null;
 }
 
 function getAssignedTestByTestId(testId) {
@@ -168,7 +193,7 @@ function handleAssignTestsButton() {
     $('.test-checkbox').each(function () {
         if (this.checked) {
             let testId = this.id;
-            if (isAssignedTest(__candidateTests, testId)) {
+            if (isAssignedTest(testId)) {
                 let assignedTest = getAssignedTestByTestId(testId);
                 assignedTests.push(assignedTest);
             } else {
@@ -205,19 +230,11 @@ function getAnswersByTestId(id) {
     return null;
 }
 
-function checkIfTestIsAlreadyMarked(candidateId, testId) {
-    let id = `${candidateId}_${testId}`;
-
-    callAwsLambda('GET', `result?id=${id}`, afterGetAnswers, null, false);
-}
-
 function afterGetAnswers(response) {
     if (response !== '') {
-        _passedResults = JSON.parse(response);
+        __testResults = JSON.parse(response);
     }
 }
-
-let _passedResults;
 
 function handleCheckTestButton(event) {
     let testId = event.id.replace('ct_', '');

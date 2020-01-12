@@ -25,6 +25,8 @@ function getAccessToken() {
         }
     });
 
+    console.log(`Token: ${token}`);
+
     return token;
 }
 
