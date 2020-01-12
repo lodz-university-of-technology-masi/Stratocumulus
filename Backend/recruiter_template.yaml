@@ -26,29 +26,6 @@ Resources:
         AllowOrigin: "'*'"
       StageName: dev
 
-  CandidateApi:
-    Type: AWS::Serverless::Api
-    Properties:
-      Auth:
-        AddDefaultAuthorizerToCorsPreflight: False
-        DefaultAuthorizer: CandidateAuthorizer
-        Authorizers:
-          CandidateAuthorizer:
-            UserPoolArn: arn:aws:cognito-idp:us-east-1:378648381617:userpool/us-east-1_CY4O3GKHV
-            Identity:
-              Header: Authorization
-          RecruiterAuthorizer:
-              UserPoolArn: arn:aws:cognito-idp:us-east-1:378648381617:userpool/us-east-1_lWqCuNtQd
-              Identity:
-                Header: Authorization
-      Cors:
-        AllowMethods: "'*'"
-        AllowHeaders: "'*'"
-        AllowOrigin: "'*'"
-      StageName: dev
-
-
-
   InsertTest:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
@@ -86,25 +63,6 @@ Resources:
             RestApiId: !Ref RecruiterApi
             Path: /tests
             Method: delete
-
-  GetTest:
-    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
-    Properties:
-      CodeUri: Lambdas
-      Handler: handler.test.GetTestHandler::handleRequest
-      Policies: AmazonDynamoDBFullAccess
-      Runtime: java8
-      MemorySize: 512
-      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
-        Variables:
-          PARAM1: VALUE
-      Events:
-        HelloWorld:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
-          Properties:
-            RestApiId: !Ref CandidateApi
-            Path: /test
-            Method: get
 
   GetAllTests:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
@@ -182,25 +140,6 @@ Resources:
             Path: /candidatetests
             Method: delete
 
-  GetCandidateTest:
-    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
-    Properties:
-      CodeUri: Lambdas
-      Handler: handler.candidatetest.GetCandidateTestHandler::handleRequest
-      Policies: AmazonDynamoDBFullAccess
-      Runtime: java8
-      MemorySize: 512
-      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
-        Variables:
-          PARAM1: VALUE
-      Events:
-        HelloWorld:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
-          Properties:
-            RestApiId: !Ref CandidateApi
-            Path: /candidatetest
-            Method: get
-
   GetAllCandidateTests:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
@@ -218,51 +157,6 @@ Resources:
           Properties:
             RestApiId: !Ref RecruiterApi
             Path: /candidatetests
-            Method: get
-
-  UpdateCandidateTest:
-    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
-    Properties:
-      CodeUri: Lambdas
-      Handler: handler.candidatetest.UpdateCandidateTestHandler::handleRequest
-      Policies: AmazonDynamoDBFullAccess
-      Runtime: java8
-      MemorySize: 512
-      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
-        Variables:
-          PARAM1: VALUE
-      Events:
-        HelloWorld:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
-          Properties:
-            RestApiId: !Ref CandidateApi
-            Path: /candidatetests
-            Method: put
-
-  GetCandidate:
-    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
-    Properties:
-      CodeUri: Lambdas
-      Handler: handler.candidate.GetCandidateHandler::handleRequest
-      Policies:
-        - Statement:
-            - Sid: AllowCognito
-              Effect: "Allow"
-              Action: [
-                "cognito-idp:*"
-              ]
-              Resource: '*'
-      Runtime: java8
-      MemorySize: 512
-      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
-        Variables:
-          PARAM1: VALUE
-      Events:
-        HelloWorld:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
-          Properties:
-            RestApiId: !Ref CandidateApi
-            Path: /candidate
             Method: get
 
   GetAllCandidates:
@@ -336,25 +230,6 @@ Resources:
             Path: /translate-test
             Method: post
 
-  GetTestResult:
-    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
-    Properties:
-      CodeUri: Lambdas
-      Handler: handler.result.GetTestResultHandler::handleRequest
-      Policies: AmazonDynamoDBFullAccess
-      Runtime: java8
-      MemorySize: 512
-      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
-        Variables:
-          PARAM1: VALUE
-      Events:
-        HelloWorld:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
-          Properties:
-            RestApiId: !Ref CandidateApi
-            Path: /result
-            Method: get
-
   GetAllTestResults:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
@@ -397,6 +272,3 @@ Outputs:
   RecruiterApi:
     Description: "API Gateway"
     Value: !Sub "https://${RecruiterApi}.execute-api.${AWS::Region}.amazonaws.com/dev/"
-  CandidateApi:
-    Description: "API Gateway"
-    Value: !Sub "https://${CandidateApi}.execute-api.${AWS::Region}.amazonaws.com/dev/"
