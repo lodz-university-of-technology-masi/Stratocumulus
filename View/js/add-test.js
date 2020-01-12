@@ -219,7 +219,7 @@ function sendAddRequest(body) {
 
     };
 
-    xhttp.open("POST", "https://ot28vqg79h.execute-api.us-east-1.amazonaws.com/dev/tests", true);
+    xhttp.open("POST", "https://rj55i1bsub.execute-api.us-east-1.amazonaws.com/dev/tests", true);
 
     xhttp.setRequestHeader('Content-Type', 'application/json');
     xhttp.setRequestHeader('Authorization', getRecruiterToken());

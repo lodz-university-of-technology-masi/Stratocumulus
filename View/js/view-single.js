@@ -59,7 +59,7 @@ function deletion(email, name) {
         }
     };
 
-    xhttp.open("DELETE", "https://ot28vqg79h.execute-api.us-east-1.amazonaws.com/dev/candidates?email=" + email, true);
+    xhttp.open("DELETE", "https://rj55i1bsub.execute-api.us-east-1.amazonaws.com/dev/candidates?email=" + email, true);
 
     xhttp.setRequestHeader('Content-Type', 'application/json');
     xhttp.setRequestHeader('Authorization', getRecruiterToken());

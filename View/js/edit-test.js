@@ -157,7 +157,7 @@ function handleDeleteTestButton(event) {
     };
 
     var testId = originalJson.id;
-    xhttp.open("DELETE", "https://ot28vqg79h.execute-api.us-east-1.amazonaws.com/dev/tests?id=" + testId, true);
+    xhttp.open("DELETE", "https://rj55i1bsub.execute-api.us-east-1.amazonaws.com/dev/tests?id=" + testId, true);
 
     xhttp.setRequestHeader('Content-Type', 'application/json');
     xhttp.setRequestHeader('Authorization', getRecruiterToken());
@@ -203,7 +203,7 @@ function autoTranslate(translateLang, testJson) {
     alert(JSON.stringify(testJson));
     console.log(JSON.stringify(testJson));
 
-    xhttp.open("POST", "https://ot28vqg79h.execute-api.us-east-1.amazonaws.com/dev/translate-test?lang=" + translateLang, true);
+    xhttp.open("POST", "https://rj55i1bsub.execute-api.us-east-1.amazonaws.com/dev/translate-test?lang=" + translateLang, true);
 
     xhttp.setRequestHeader('Content-Type', 'application/json');
     xhttp.setRequestHeader('Authorization', getRecruiterToken());
@@ -261,7 +261,7 @@ function sendEditRequest(body) {
     };
 
     var testId = originalJson.id;
-    xhttp.open("PUT", "https://ot28vqg79h.execute-api.us-east-1.amazonaws.com/dev/tests?id=" + testId, true);
+    xhttp.open("PUT", "https://rj55i1bsub.execute-api.us-east-1.amazonaws.com/dev/tests?id=" + testId, true);
 
     xhttp.setRequestHeader('Content-Type', 'application/json');
     xhttp.setRequestHeader('Authorization', getRecruiterToken());

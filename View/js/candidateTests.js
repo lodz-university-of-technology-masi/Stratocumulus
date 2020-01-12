@@ -71,7 +71,7 @@ function getUserIdFromCognito() {
         }
     };
 
-    xhttp.open("GET", "https://ot28vqg79h.execute-api.us-east-1.amazonaws.com/dev/candidate?email=" + userEmail, false);
+    xhttp.open("GET", "https://sv8dll1cp6.execute-api.us-east-1.amazonaws.com/dev/candidate?email=" + userEmail, false);
 
     xhttp.setRequestHeader('Content-Type', 'application/json');
     xhttp.setRequestHeader('Authorization', getCandidateToken());
