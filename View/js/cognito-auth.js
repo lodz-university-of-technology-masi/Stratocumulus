@@ -174,7 +174,7 @@ var TestApp = window.TestApp || {};
     }
     
     function getIdOfNewUser(desiredEmail) {
-        callRecruiterAwsLambda("GET", `candidate?email=${desiredEmail}`, afterGetNewUserId, '', true, userRoles.CANDIDATE);
+        callCandidateAwsLambda("GET", `candidate?email=${desiredEmail}`, afterGetNewUserId, '', true, userRoles.RECRUITER);
     }
 
     function afterGetNewUserId(response) {
