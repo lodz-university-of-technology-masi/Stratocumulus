@@ -12,7 +12,7 @@ function callRecruiterAwsLambda(verb, endpoint, func, body, async, role) {
         }
     };
 
-    xhttp.open(verb, `https://rj55i1bsub.execute-api.us-east-1.amazonaws.com/dev/${endpoint}`, async);
+    xhttp.open(verb, `https://4lduoan74b.execute-api.us-east-1.amazonaws.com/dev/${endpoint}`, async);
 
     let token = role === userRoles.CANDIDATE ? getCandidateToken() : getRecruiterToken();
 

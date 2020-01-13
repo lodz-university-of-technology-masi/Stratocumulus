@@ -268,6 +268,53 @@ Resources:
             Path: /results
             Method: post
 
+  UpdateCandidateTest:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: Lambdas
+      Handler: handler.candidatetest.UpdateCandidateTestHandler::handleRequest
+      Policies: AmazonDynamoDBFullAccess
+      Runtime: java8
+      MemorySize: 512
+      Environment:
+        Variables:
+          PARAM1: VALUE
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: RecruiterApi
+            Path: /candidatetests
+            Method: put
+
+
+  GetCandidate:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: Lambdas
+      Handler: handler.candidate.GetCandidateHandler::handleRequest
+      Policies:
+        - Statement:
+            - Sid: AllowCognito
+              Effect: "Allow"
+              Action: [
+                "cognito-idp:*"
+              ]
+              Resource: '*'
+      Runtime: java8
+      MemorySize: 512
+      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+        Variables:
+          PARAM1: VALUE
+      Events:
+        HelloWorld:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            RestApiId: !Ref RecruiterApi
+            Path: /candidate
+            Method: get
+
 Outputs:
   RecruiterApi:
     Description: "API Gateway"

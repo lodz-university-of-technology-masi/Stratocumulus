@@ -2,7 +2,7 @@ let _test;
 let _answers;
 let _candidateId;
 
-let _questionsCount = 0;
+let __questionsCount = 0;
 let _results;
 
 function assignParams(testToCheck, answersToCheck, candId) {
@@ -14,7 +14,7 @@ function assignParams(testToCheck, answersToCheck, candId) {
 function loadTestAndAnswers(test, answers, candidateId, points) {
     assignParams(test, answers, candidateId);
 
-    _questionsCount = 0;
+    __questionsCount = 0;
 
     $('#test-header').text(points === undefined ? `Wpisz oceny: ${test.name}` : `Zobacz oceny: ${test.name}`);
 
@@ -39,15 +39,15 @@ function displayQuestions() {
 }
 
 function displayQuestion(question) {
-    _questionsCount++;
+    __questionsCount++;
 
-    displayQuestionLabel(`${_questionsCount}. ${question.content}`);
+    displayQuestionLabel(`${__questionsCount}. ${question.content}`);
 
     if (question.type === 'c') {
         displayCheckboxes(question);
         checkChosenAnswers();
     } else {
-        displayQuestionLabel(`Odpowiedź: ${_answers[_questionsCount - 1]}`);
+        displayQuestionLabel(`Odpowiedź: ${_answers[__questionsCount - 1]}`);
     }
 
     displayResultTextBox();
@@ -56,7 +56,7 @@ function displayQuestion(question) {
 }
 
 function displayResultTextBox() {
-    $('#answers-hr').append(getNumberInput(`r${_questionsCount}`, 'Ocena: '));
+    $('#answers-hr').append(getNumberInput(`r${__questionsCount}`, 'Ocena: '));
 }
 
 function getNumberInput(id, text) {
@@ -64,17 +64,17 @@ function getNumberInput(id, text) {
 }
 
 function checkChosenAnswers() {
-    let answersIds = JSON.parse(_answers[_questionsCount - 1]);
+    let answersIds = JSON.parse(_answers[__questionsCount - 1]);
     for (let i = 0; i < answersIds.length; i++) {
         let answerId = answersIds[i];
-        $(`#q${_questionsCount}a${answerId - 1}`).prop('checked', true);
+        $(`#q${__questionsCount}a${answerId - 1}`).prop('checked', true);
     }
 }
 
 function displayCheckboxes(question) {
     let answers = question.answers;
     for (let i = 0; i < answers.length; i++) {
-        displayCheckbox(`q${_questionsCount}a${i}`, answers[i]);
+        displayCheckbox(`q${__questionsCount}a${i}`, answers[i]);
     }
 
     $('#answers-hr').append($('<br/>'));

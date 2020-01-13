@@ -164,9 +164,8 @@ var TestApp = window.TestApp || {};
                 "candidateId": id
             };
 
-        alert("exit: " + toSend);
 
-        callRecruiterAwsLambda("POST", `candidatetests`, afterPostEmptyCandidate, JSON.stringify(toSend), true, userRoles.RECRUITER);
+        callRecruiterAwsLambda("POST", `candidatetests`, afterPostEmptyCandidate, toSend, true, userRoles.RECRUITER);
 }
 
     function afterPostEmptyCandidate(response) {
@@ -174,18 +173,25 @@ var TestApp = window.TestApp || {};
     }
     
     function getIdOfNewUser(desiredEmail) {
-        alert("email: " + desiredEmail)
-        callRecruiterAwsLambda("GET", `candidate?email=${desiredEmail}`, afterGetNewUserId, '', true, userRoles.CANDIDATE);
+        email = desiredEmail;
+        callRecruiterAwsLambda("GET", `candidates`, afterGetUserList, '', false, userRoles.RECRUITER);
     }
 
-    function afterGetNewUserId(response) {
-        alert("res: " + JSON.parse(response))
-        getUserDetails(JSON.parse(response));
+    let email;
+
+    function afterGetUserList(response) {
+        let usersList = JSON.parse(response);
+
+        for (let i=0; i<usersList.length; i++) {
+            let user = usersList[i];
+            if (user.email === email) {
+                getUserDetails(user);
+            }
+        }
     }
     
     function getUserDetails(details) {
         var gottenId = details.id;
-        alert("id: " + gottenId)
         sendRequestToDB(gottenId);
     }
 
@@ -217,7 +223,7 @@ var TestApp = window.TestApp || {};
             getIdOfNewUser(email);
             var confirmation = ('Registration successful. Please check your email inbox or spam folder for your verification code.');
             if (confirmation) {
-            //window.location.href = 'MainView.html';
+            window.location.href = 'MainView.html';
             }
         };
         var onFailure = function registerFailure(err) {
