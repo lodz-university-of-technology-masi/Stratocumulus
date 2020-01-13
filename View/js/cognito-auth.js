@@ -165,7 +165,7 @@ var TestApp = window.TestApp || {};
             };
 
 
-        callRecruiterAwsLambda("POST", `candidatetests`, afterPostEmptyCandidate, toSend, true, userRoles.RECRUITER);
+        callRecruiterAwsLambda("POST", `candidatetests`, afterPostEmptyCandidate, toSend, false, userRoles.RECRUITER);
 }
 
     function afterPostEmptyCandidate(response) {
@@ -174,25 +174,15 @@ var TestApp = window.TestApp || {};
     
     function getIdOfNewUser(desiredEmail) {
         email = desiredEmail;
-        callRecruiterAwsLambda("GET", `candidates`, afterGetUserList, '', false, userRoles.RECRUITER);
+        callRecruiterAwsLambda("GET", `candidate?email=${desiredEmail}`, afterGetUserList, '', false, userRoles.RECRUITER);
     }
 
     let email;
 
     function afterGetUserList(response) {
-        let usersList = JSON.parse(response);
-
-        for (let i=0; i<usersList.length; i++) {
-            let user = usersList[i];
-            if (user.email === email) {
-                getUserDetails(user);
-            }
-        }
-    }
-    
-    function getUserDetails(details) {
-        var gottenId = details.id;
-        sendRequestToDB(gottenId);
+        let user = JSON.parse(response);
+        console.log(user);
+        sendRequestToDB(user.id);
     }
 
     function handleSignin(event) {

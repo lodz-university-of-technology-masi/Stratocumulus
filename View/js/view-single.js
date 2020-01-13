@@ -11,7 +11,7 @@ function loadData(userJson) {
     $('#userFullName').val(name);
     $('#userEmail').val(email);
     $('#userId').val(uuid);
-    $('#setButton').val("Przypisz testy użytkownikowi " + name)
+    $('#setButton').val("Przypisz testy dla " + name)
 
 }
 

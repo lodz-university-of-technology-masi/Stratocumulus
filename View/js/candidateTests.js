@@ -1,10 +1,8 @@
 var closebtns = document.getElementsByClassName("close");
 var i;
-
-var userId;
 var originalCandidateTestList;
 let userTestsAndAnswers = {};
-
+let userId;
 
 
 
@@ -57,35 +55,17 @@ function getAuthToken(user) {
 function getUserIdFromCognito() {
 
     let cognitoUser = getCognitoUser();
+    console.log(cognitoUser);
     callCandidateAwsLambda("GET", `candidate?email=${cognitoUser.getUsername()}`, afterGetUserId, '', false, userRoles.CANDIDATE);
 }
 
+
+
 function afterGetUserId(response) {
-    let user = response;
-    console.log(response);
-    let parsed = JSON.parse(user);
-    idToReturn = parsed.id;
+    let user = JSON.parse(response);
+    console.log(user);
+    userId = user.id;
 }
-
-let idToReturn;
-
-function getRecruiterToken() {
-
-    return sessionStorage.getItem('recruiterToken');
-
-}
-
-function getCandidateToken() {
-
-    return sessionStorage.getItem('candidateToken');
-
-}
-
-function getUserIdAndReturn(parsed){
-alert(parsed.id);
-    return parsed.id;
-}
-
 
 function logOut() {
 
@@ -111,12 +91,8 @@ function log (text)
 
 function loadTests() {
 
-
-    userId = sampleCandidateID;
-   // userId = getUserIdFromCognito();
-
-
-
+  getUserIdFromCognito();
+  
     console.log("candidatetest?candidateId=" + userId);
     callCandidateAwsLambda("GET", "candidatetest?candidateId=" + userId, loadUserTests, "", false, userRoles.CANDIDATE);
 
