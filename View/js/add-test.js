@@ -32,10 +32,10 @@ function loadSampleTest() {
             ]
         };
 
-    loadTest(testJson);
+    loadAddTest(testJson);
 }
 
-function loadTest(testJson) {
+function loadAddTest(testJson) {
     originalJson = testJson;
 
     var name = testJson.name;

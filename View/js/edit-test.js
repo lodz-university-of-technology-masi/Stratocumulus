@@ -1,9 +1,11 @@
-let originalJson;
+let _originalJson;
 
-let questionsCount = 0;
+let ___questionsCount = 0;
 
-function loadTest(testJson) {
-    originalJson = testJson;
+function loadEditTest(testJson) {
+    _originalJson = testJson;
+
+    ___questionsCount = 0;
 
     let name = testJson.name;
     let language = testJson.language;
@@ -13,7 +15,7 @@ function loadTest(testJson) {
     $('.select-language').val(language);
 
     displayInputs(questions);
-    displayQuestions(questions);
+    _displayQuestions(questions);
 }
 
 function displayInputs(questions) {
@@ -28,7 +30,7 @@ function displayInputs(questions) {
     });
 }
 
-function displayQuestions(questions) {
+function _displayQuestions(questions) {
     $('[id^=content]').each(function (index) {
         let question = questions[index];
         this.value = question.content;
@@ -44,18 +46,18 @@ function displayQuestions(questions) {
 }
 
 function addNewClosedQuestion() {
-    questionsCount++;
+    ___questionsCount++;
 
     addNewClosedQuestion.counter++;
     let newDiv = document.createElement("div");
     newDiv.className = "question_div";
-    let id = "q" + questionsCount.toString();
+    let id = "q" + ___questionsCount.toString();
     let answer1Id = id + "a1";
     let answer2Id = id + "a2";
     let answer3Id = id + "a3";
     let answer4Id = id + "a4";
-    let deleteButtonId = "d" + questionsCount.toString();
-    let contentId = 'content' + questionsCount.toString();
+    let deleteButtonId = "d" + ___questionsCount.toString();
+    let contentId = 'content' + ___questionsCount.toString();
     newDiv.setAttribute("id", id);
 
     newDiv.innerHTML = "       <nobr> <label class=\"question_label\">\n" +
@@ -74,13 +76,13 @@ function addNewClosedQuestion() {
 }
 
 function addNewOpenQuestion() {
-    questionsCount++;
+    ___questionsCount++;
 
     addNewOpenQuestion.counter++;
     let newDiv = document.createElement("div");
     newDiv.className = "question_div";
-    let id = "q" + questionsCount.toString();
-    let deleteButtonId = "d" + questionsCount.toString();
+    let id = "q" + ___questionsCount.toString();
+    let deleteButtonId = "d" + ___questionsCount.toString();
     newDiv.setAttribute("id", id);
 
     newDiv.innerHTML = "        <nobr>\n" +
@@ -89,20 +91,20 @@ function addNewOpenQuestion() {
         "            </label>\n" +
         "            <button id=\"" + deleteButtonId + "\" type=\"button\" class=\"delete_question_button\" onclick=\"deleteQuestion(this)\">Usuń</button>\n" +
         "        </nobr>\n" +
-        "        <input class='open' id='content" + questionsCount.toString() + "' type=\"text\">";
+        "        <input class='open' id='content" + ___questionsCount.toString() + "' type=\"text\">";
 
     let questionHr = document.getElementById("question_hr");
     questionHr.appendChild(newDiv);
 }
 
 function addNewNumericQuestion() {
-    questionsCount++;
+    ___questionsCount++;
 
     addNewOpenQuestion.counter++;
     let newDiv = document.createElement("div");
     newDiv.className = "question_div";
-    let id = "q" + questionsCount.toString();
-    let deleteButtonId = "d" + questionsCount.toString();
+    let id = "q" + ___questionsCount.toString();
+    let deleteButtonId = "d" + ___questionsCount.toString();
     newDiv.setAttribute("id", id);
 
     newDiv.innerHTML = "        <nobr>\n" +
@@ -111,7 +113,7 @@ function addNewNumericQuestion() {
         "            </label>\n" +
         "            <button id=\"" + deleteButtonId + "\" type=\"button\" class=\"delete_question_button\" onclick=\"deleteQuestion(this)\">Usuń</button>\n" +
         "        </nobr>\n" +
-        "        <input class='numeric' id='content" + questionsCount.toString() + "' type=\"text\">";
+        "        <input class='numeric' id='content" + ___questionsCount.toString() + "' type=\"text\">";
 
     let questionHr = document.getElementById("question_hr");
     questionHr.appendChild(newDiv);
@@ -146,14 +148,14 @@ function handleSaveTestButton(event) {
 }
 
 function handleDeleteTestButton(event) {
-    let testId = originalJson.id;
+    let testId = _originalJson.id;
     callRecruiterAwsLambda("DELETE", `tests?id=${testId}`, afterDeleteTest, '', true);
 }
 
 function afterDeleteTest(response) {
     console.log(response);
     reloadList();
-    showSuccessPopup("Pomyslnie usunieto test: " + originalJson.name);
+    showSuccessPopup("Pomyslnie usunieto test: " + _originalJson.name);
 }
 
 function handleTranslateManuallyButton(event) {
@@ -183,10 +185,8 @@ function autoTranslate(translateLang, testJson) {
 }
 
 function afterAutoTranslate(response) {
-    alert(response);
-    console.log(this.responseText);
     clearIncludedView();
-    showAddTestView(JSON.parse(this.responseText));
+    showAddTestView(JSON.parse(response));
 }
 
 function readQuestionsFromHtml() {
@@ -228,13 +228,13 @@ function readClosedQuestionFromHtml(questionJson, questionNo) {
 }
 
 function sendEditRequest(body) {
+    alert(JSON.stringify(_originalJson));
     callRecruiterAwsLambda("PUT", `tests?id=${testId}`, afterEditTest, body, true);
 }
 
 function afterEditTest(response) {
-    console.log(response);
     reloadList();
-    showSuccessPopup("Pomyslnie edytowano test: " + originalJson.name);
+    showSuccessPopup("Pomyslnie edytowano test: " + _originalJson.name);
 }
 
 function getRecruiterToken() {

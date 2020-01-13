@@ -92,7 +92,7 @@ function clearIncludedView() {
 function showAddTestView(testObject) {
     $("#includedContent").load("add-test.html", function () {
         if (testObject != null)
-            loadTest(testObject);
+            loadAddTest(testObject);
     });
 
 
@@ -105,7 +105,7 @@ function showAddUserView() {
 
 function showEditTestView(testObject) {
     $("#includedContent").load("edit-test.html", function () {
-        loadTest(testObject);
+        loadEditTest(testObject);
     });
 }
 
