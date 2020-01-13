@@ -174,19 +174,14 @@ var TestApp = window.TestApp || {};
     }
     
     function getIdOfNewUser(desiredEmail) {
-        alert("email: " + desiredEmail)
         callRecruiterAwsLambda("GET", `candidate?email=${desiredEmail}`, afterGetNewUserId, '', true, userRoles.CANDIDATE);
     }
 
     function afterGetNewUserId(response) {
         alert("res: " + JSON.parse(response))
-        getUserDetails(JSON.parse(response));
-    }
-    
-    function getUserDetails(details) {
-        var gottenId = details.id;
-        alert("id: " + gottenId)
-        sendRequestToDB(gottenId);
+        var parsed = JSON.parse(response);
+        var id = parsed.id;
+        sendRequestToDB(id);
     }
 
     function handleSignin(event) {
