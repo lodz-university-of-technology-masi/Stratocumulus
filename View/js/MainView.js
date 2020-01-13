@@ -145,7 +145,6 @@ function handleImport(fileList) {
     reader.onload = function () {
         console.log(reader.result);
         parseCsv(reader.result, fileList[0].name);
-
     };
 
     reader.readAsText(fileList[0]);
@@ -201,7 +200,7 @@ function parseCsv(text, name) {
             question.content = fragments[3];
 
             if (question.type === "c") {
-                question.numAnswers = fragments[4]
+                question.numAnswers = fragments[4];
                 question.answers = [];
                 for (let k = 0; k < question.numAnswers; k++)
                     question.answers.push(fragments[5 + k]);
@@ -216,15 +215,15 @@ function parseCsv(text, name) {
     }
 
     if (language_err === true) {
-        // niespojnojsc jezyka
+        alert("Niepoprawny plik CSV - niespójność języka pytań");
+        return;
     }
 
     test.language = language;
     test.questions = questions;
     console.log(JSON.stringify(test));
     sendAddRequest(test);
-
-
+    document.getElementById('selectedFile').value = null;
 }
 
 function logOutUser() {

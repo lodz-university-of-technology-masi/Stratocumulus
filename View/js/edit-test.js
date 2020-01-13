@@ -150,10 +150,10 @@ function handleSaveTestButton(event) {
 function handleDeleteTestButton(event) {
     let testId = _originalJson.id;
     callRecruiterAwsLambda("DELETE", `tests?id=${testId}`, afterDeleteTest, '', true, userRoles.RECRUITER);
+    clearIncludedView();
 }
 
 function afterDeleteTest(response) {
-    console.log(response);
     reloadList();
     showSuccessPopup("Pomyslnie usunieto test: " + _originalJson.name);
 }
@@ -235,16 +235,4 @@ function sendEditRequest(body) {
 function afterEditTest(response) {
     reloadList();
     showSuccessPopup("Pomyslnie edytowano test: " + _originalJson.name);
-}
-
-function getRecruiterToken() {
-
-    return sessionStorage.getItem('recruiterToken');
-
-}
-
-function getCandidateToken() {
-
-    return sessionStorage.getItem('candidateToken');
-
 }

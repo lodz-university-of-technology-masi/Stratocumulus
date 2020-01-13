@@ -41,7 +41,7 @@
             <ul id="TestListId"></ul>
             <button id="addTestButton" onclick="showAddTestView()">add test</button>
             <div>
-                <input type="file" id="selectedFile" accept=".csv" onchange="handleImport(this.files)" style="display: none;"/>
+                <input type="file" id="selectedFile" accept=".csv" onchange="handleImport(this.files);" style="display: none;"/>
                 <input type="button" value="Import Test"  onclick="document.getElementById('selectedFile').click();"/>
             </div>
 

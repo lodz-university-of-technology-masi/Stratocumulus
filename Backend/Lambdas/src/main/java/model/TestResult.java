@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TestResult implements Identifiable {
-    private static final String ID_DELIMITER = System.getenv("ID_DELIMITER");
 
     private String id;
     private List<Integer> points;
@@ -26,7 +25,7 @@ public class TestResult implements Identifiable {
 
     private void setId(JSONObject jsonObject) {
         if (jsonObject.has("candidateId") && jsonObject.has("testId")) {
-            id = jsonObject.getString("candidateId") + ID_DELIMITER + jsonObject.getString("testId");
+            id = jsonObject.getString("candidateId") + "_" + jsonObject.getString("testId");
         }
     }
 

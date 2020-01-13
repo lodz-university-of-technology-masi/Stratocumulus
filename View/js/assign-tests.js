@@ -237,23 +237,35 @@ function afterGetAnswers(response) {
     }
 }
 
+function getPoints(testId) {
+    for (let i=0; i<__testResults.length; i++) {
+        let id = `${__candidateId}_${testId}`;
+        if (__testResults[i].id === id) {
+            return __testResults[i].results;
+        }
+    }
+
+    return null;
+}
+
 function handleCheckTestButton(event) {
     let testId = event.id.replace('ct_', '');
-
+    alert(JSON.stringify(getPoints(testId)));
     showMarkTestView({
         "test": getTestById(testId),
         "answers": getAnswersByTestId(testId),
         "candidateId": __candidateId,
-        "points": undefined
+        "points": getPoints(testId)
     })
 }
 
 function handleShowMarksButton(event) {
     let testId = event.id.replace('ct_', '');
+    alert(JSON.stringify(getPoints(testId)));
     showMarkTestView({
         "test": getTestById(testId),
         "answers": getAnswersByTestId(testId),
         "candidateId": __candidateId,
-        "points": _passedResults.results
-    })
+        "points": getPoints(testId)
+    });
 }

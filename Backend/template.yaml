@@ -283,9 +283,10 @@ Resources:
         HelloWorld:
           Type: Api
           Properties:
-            RestApiId: !Ref RecruiterApi
-            Path: /candidate
-            Method: get
+            RestApiId:
+              Ref: RecruiterApi
+            Path: /candidatetests
+            Method: put
 
 
   GetCandidate:
