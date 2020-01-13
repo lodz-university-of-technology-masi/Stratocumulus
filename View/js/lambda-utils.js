@@ -1,4 +1,9 @@
-function callRecruiterAwsLambda(verb, endpoint, func, body, async) {
+const userRoles = {
+    CANDIDATE: 'candidate',
+    RECRUITER: 'recruiter'
+};
+
+function callRecruiterAwsLambda(verb, endpoint, func, body, async, role) {
     const xhttp = new XMLHttpRequest();
 
     xhttp.onreadystatechange = function () {
@@ -9,13 +14,15 @@ function callRecruiterAwsLambda(verb, endpoint, func, body, async) {
 
     xhttp.open(verb, `https://rj55i1bsub.execute-api.us-east-1.amazonaws.com/dev/${endpoint}`, async);
 
+    let token = role === userRoles.CANDIDATE ? getCandidateToken() : getRecruiterToken();
+
     xhttp.setRequestHeader('Content-Type', 'application/json');
-    xhttp.setRequestHeader('Authorization', getRecruiterToken());
+    xhttp.setRequestHeader('Authorization', token);
 
     xhttp.send(JSON.stringify(body));
 }
 
-function callCandidateAwsLambda(verb, endpoint, func, body, async) {
+function callCandidateAwsLambda(verb, endpoint, func, body, async, role) {
     const xhttp = new XMLHttpRequest();
 
     xhttp.onreadystatechange = function () {
@@ -24,10 +31,12 @@ function callCandidateAwsLambda(verb, endpoint, func, body, async) {
         }
     };
 
+    let token = role === userRoles.CANDIDATE ? getCandidateToken() : getRecruiterToken();
+
     xhttp.open(verb, `https://sv8dll1cp6.execute-api.us-east-1.amazonaws.com/dev/${endpoint}`, async);
 
     xhttp.setRequestHeader('Content-Type', 'application/json');
-    xhttp.setRequestHeader('Authorization', getCandidateToken());
+    xhttp.setRequestHeader('Authorization', token);
 
     xhttp.send(JSON.stringify(body));
 }
