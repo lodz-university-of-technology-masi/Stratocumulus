@@ -164,47 +164,28 @@ var TestApp = window.TestApp || {};
                 "candidateId": id
             };
 
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function () {
+        alert("exit: " + toSend);
 
-            if (this.readyState === 4 && this.status === 200) {
-                console.log(this.responseText);
-            }
-        };
+        callRecruiterAwsLambda("POST", `candidatetests`, afterPostEmptyCandidate, JSON.stringify(toSend), true, userRoles.RECRUITER);
+}
 
-        xhttp.open("POST", "https://rj55i1bsub.execute-api.us-east-1.amazonaws.com/dev/candidatetests", true);
-
-        xhttp.setRequestHeader('Content-Type', 'application/json');
-        xhttp.setRequestHeader('Authorization', getRecruiterToken());
-        xhttp.send(JSON.stringify(toSend));
-        alert(JSON.stringify(toSend));
+    function afterPostEmptyCandidate(response) {
+        console.log(response);
     }
     
     function getIdOfNewUser(desiredEmail) {
-        var email = desiredEmail;
-        var user = '';
+        alert("email: " + desiredEmail)
+        callRecruiterAwsLambda("GET", `candidate?email=${desiredEmail}`, afterGetNewUserId, '', true, userRoles.CANDIDATE);
+    }
 
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function () {
-
-            if (this.readyState === 4 && this.status === 200) {
-                user = this.responseText;
-                console.log(this.responseText);
-                getUserDetails(JSON.parse(user));
-            }
-        };
-
-        xhttp.open("GET", "https://sv8dll1cp6.execute-api.us-east-1.amazonaws.com/dev/candidate?email=" + email, true);
-
-        xhttp.setRequestHeader('Content-Type', 'application/json');
-        xhttp.setRequestHeader('Authorization', getRecruiterToken());
-
-        xhttp.send();
-
+    function afterGetNewUserId(response) {
+        alert("res: " + JSON.parse(response))
+        getUserDetails(JSON.parse(response));
     }
     
     function getUserDetails(details) {
         var gottenId = details.id;
+        alert("id: " + gottenId)
         sendRequestToDB(gottenId);
     }
 
@@ -236,7 +217,7 @@ var TestApp = window.TestApp || {};
             getIdOfNewUser(email);
             var confirmation = ('Registration successful. Please check your email inbox or spam folder for your verification code.');
             if (confirmation) {
-            window.location.href = 'MainView.html';
+            //window.location.href = 'MainView.html';
             }
         };
         var onFailure = function registerFailure(err) {
@@ -294,16 +275,5 @@ var TestApp = window.TestApp || {};
         );
     }
 
-    function getRecruiterToken(){
-
-        return sessionStorage.getItem('recruiterToken');
-
-    }
-
-    function getCandidateToken(){
-
-        return sessionStorage.getItem('candidateToken');
-
-    }
 
 }(jQuery));
