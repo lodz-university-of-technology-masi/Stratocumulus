@@ -208,7 +208,7 @@ function readClosedQuestionFromHtml(questionJson, questionNo) {
 }
 
 function sendAddRequest(body) {
-    callRecruiterAwsLambda("POST", "tests", afterAddTest, body, true);
+    callRecruiterAwsLambda("POST", "tests", afterAddTest, body, true, userRoles.RECRUITER);
 }
 
 function afterAddTest(response) {

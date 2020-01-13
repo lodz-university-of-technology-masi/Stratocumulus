@@ -24,7 +24,7 @@ function reloadList() {
 
     callRecruiterAwsLambda('GET', 'tests', function (response) {
         populateTestList(JSON.parse(response));
-    }, '', true);
+    }, '', true, userRoles.RECRUITER);
 
     /*
     let response = '';
@@ -128,7 +128,7 @@ function showMarkTestView(data) {
 
 
 function getUserList() {
-    callRecruiterAwsLambda("GET", "candidates", afterGetUsers, '', true);
+    callRecruiterAwsLambda("GET", "candidates", afterGetUsers, '', true, userRoles.RECRUITER);
 }
 
 function afterGetUsers(response) {

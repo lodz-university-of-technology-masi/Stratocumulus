@@ -206,7 +206,7 @@ function handleAssignTestsButton() {
         "assignedTests": assignedTests
     };
 
-    callRecruiterAwsLambda('PUT', `candidatetests?candidateId=${__candidateId}`, afterUpdateAssignedTests, body, true);
+    callRecruiterAwsLambda('PUT', `candidatetests?candidateId=${__candidateId}`, afterUpdateAssignedTests, body, true, userRoles.RECRUITER);
 }
 
 function getTestById(id) {

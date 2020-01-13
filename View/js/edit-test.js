@@ -149,7 +149,7 @@ function handleSaveTestButton(event) {
 
 function handleDeleteTestButton(event) {
     let testId = _originalJson.id;
-    callRecruiterAwsLambda("DELETE", `tests?id=${testId}`, afterDeleteTest, '', true);
+    callRecruiterAwsLambda("DELETE", `tests?id=${testId}`, afterDeleteTest, '', true, userRoles.RECRUITER);
 }
 
 function afterDeleteTest(response) {
@@ -181,7 +181,7 @@ function handleAutoTranslateButton(event) {
 }
 
 function autoTranslate(translateLang, testJson) {
-    callRecruiterAwsLambda("POST", `translate-test?lang=${translateLang}`, afterAutoTranslate, testJson, true);
+    callRecruiterAwsLambda("POST", `translate-test?lang=${translateLang}`, afterAutoTranslate, testJson, true, userRoles.RECRUITER);
 }
 
 function afterAutoTranslate(response) {
@@ -229,7 +229,7 @@ function readClosedQuestionFromHtml(questionJson, questionNo) {
 
 function sendEditRequest(body) {
     alert(JSON.stringify(_originalJson));
-    callRecruiterAwsLambda("PUT", `tests?id=${testId}`, afterEditTest, body, true);
+    callRecruiterAwsLambda("PUT", `tests?id=${testId}`, afterEditTest, body, true, userRoles.RECRUITER);
 }
 
 function afterEditTest(response) {

@@ -43,7 +43,7 @@ function handleDeletion(event) {
 }
 
 function deletion(email) {
-    callRecruiterAwsLambda("DELETE", `candidates?email=${email}`, afterDeleteCandidate, '', true);
+    callRecruiterAwsLambda("DELETE", `candidates?email=${email}`, afterDeleteCandidate, '', true, userRoles.RECRUITER);
 }
 
 function afterDeleteCandidate(response) {

@@ -56,7 +56,7 @@ function getAuthToken(user) {
 function getUserIdFromCognito() {
 
     let cognitoUser = getCognitoUser();
-    callCandidateAwsLambda("GET", `candidate?email=${cognitoUser.getUsername()}`, afterGetUserId, '', false);
+    callCandidateAwsLambda("GET", `candidate?email=${cognitoUser.getUsername()}`, afterGetUserId, '', false, userRoles.CANDIDATE);
 }
 
 function afterGetUserId(response) {
@@ -115,7 +115,7 @@ function loadTests() {
    // userId = getUserIdFromCognito();
 
     console.log("candidatetest?candidateId=" + userId);
-    callCandidateAwsLambda("GET", "candidatetest?candidateId=" + userId, loadUserTests, "", false);
+    callCandidateAwsLambda("GET", "candidatetest?candidateId=" + userId, loadUserTests, "", false, userRoles.CANDIDATE);
 
     log(userTestsAndAnswers);
 
@@ -143,12 +143,12 @@ function loadUserTests(response)
         userTestAndAnswer.Results = null;
         userTestsAndAnswers[userAnswers[i].testId] = userTestAndAnswer;
 
-        callCandidateAwsLambda("GET", "test?id=" + userAnswers[i].testId, pushTestList, "", false);
+        callCandidateAwsLambda("GET", "test?id=" + userAnswers[i].testId, pushTestList, "", false, userRoles.CANDIDATE);
         callCandidateAwsLambda('GET', "result?id=" + userId + "_" + userAnswers[i].testId, function (response) {
             console.log(response);
             if (response != '')
                 userTestAndAnswer.Results = JSON.parse(response);
-        }, "", false);
+        }, "", false, userRoles.CANDIDATE);
     }
 
 
