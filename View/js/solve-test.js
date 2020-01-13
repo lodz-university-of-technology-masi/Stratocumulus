@@ -1,14 +1,14 @@
 var loadedTest;
 var candidateTest;
-var candidateId;
 var questionsCount = 0;
+var testIndex;
 
-function loadSolveTestContent(test, originalTest, id) {
+function loadSolveTestContent(test, originalTest, index) {
 
     $('#test-header').text(`ROZWIĄZYWANIE TESTU: ${test.name}`);
     loadedTest = test;
     candidateTest = originalTest;
-    candidateId = id;
+    testIndex = index;
 
     displayQuestions();
 }
@@ -139,11 +139,18 @@ function sendAnswers(answersArr){
     newTest.answers = answersArr;
     newTest.testId = candidateTest.testId;
 
-   console.log(candidateTest);
+   originalCandidateTestList.assignedTests[testIndex] = newTest;
 
-   console.log(newTest);
+   let body = originalCandidateTestList;
 
-   callCandidateAwsLambda('PUT', 'candidatetests?=' + userId + '_' + candidateTest.testId, null, newTest, false, userRoles.CANDIDATE);
+   console.log(body);
+
+
+   callCandidateAwsLambda('PUT', 'candidatetests?candidateId=' + userId, console.log, body, false, userRoles.CANDIDATE);
+
+    loadTests();
+    clearIncludedView();
+
 }
 
 function parseCheckboxId (id){

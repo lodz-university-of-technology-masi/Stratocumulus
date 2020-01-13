@@ -2,6 +2,7 @@ var closebtns = document.getElementsByClassName("close");
 var i;
 
 var userId;
+var originalCandidateTestList;
 let userTestsAndAnswers = {};
 
 
@@ -114,6 +115,8 @@ function loadTests() {
     userId = sampleCandidateID;
    // userId = getUserIdFromCognito();
 
+
+
     console.log("candidatetest?candidateId=" + userId);
     callCandidateAwsLambda("GET", "candidatetest?candidateId=" + userId, loadUserTests, "", false, userRoles.CANDIDATE);
 
@@ -134,11 +137,13 @@ function reloadStylesheets() {
 
 function loadUserTests(response)
 {
-   let userAnswers = JSON.parse(response).assignedTests;
+    originalCandidateTestList = JSON.parse(response);
+   let userAnswers = originalCandidateTestList.assignedTests;
 
     for(let i = 0 ; i< userAnswers.length ; i++) {
         let userTestAndAnswer = {};
         userTestAndAnswer.Answers = userAnswers[i];
+        userTestAndAnswer.Index = i;
         userTestAndAnswer.Test = null;
         userTestAndAnswer.Results = null;
         userTestsAndAnswers[userAnswers[i].testId] = userTestAndAnswer;
@@ -185,14 +190,13 @@ function populateTestList(testsAndAnswersList) {
 
 
         }
-
-        if(testsAndAnswersList[key].Results == null && testsAndAnswersList[key].Answers.answers != null) {
+        else if(testsAndAnswersList[key].Results == null && testsAndAnswersList[key].Answers.answers != null) {
             btn.disabled = true;
 
             clearElementClassList(btn,"solvedTest",["markedTest","unsolvedTest"])
         }
 
-        if(testsAndAnswersList[key].Results != null)
+        else if(testsAndAnswersList[key].Results != null &&  testsAndAnswersList[key].Answers.answers != null)
         {
             btn.disabled = false;
 
@@ -201,6 +205,10 @@ function populateTestList(testsAndAnswersList) {
             btn.onclick = function () {
                 changeToViewMarksView(testsAndAnswersList[key]);
             };
+        }
+        else
+        {
+            console.log('NIEKOMPATYBILNOSC W BAZIE DANYCh!!!!!');
         }
 
 
@@ -229,18 +237,18 @@ function clearElementClassList(element,classToAdd, ListToRemove){
 
 function changeToSolveView (testAndAnswers)
 {
-    $('#includedContent').empty();
+    clearIncludedView();
 
 
     $('#includedContent').load("solveTest.html",function (){
         resetSolveTest();
-        loadSolveTestContent(testAndAnswers.Test, testAndAnswers.Answers,userId);
+        loadSolveTestContent(testAndAnswers.Test, testAndAnswers.Answers, testAndAnswers.Index);
     });
 }
 
 function changeToViewMarksView(testAndAnswers)
 {
-    $('#includedContent').empty();
+    clearIncludedView();
 
 
     $('#includedContent').load("view-marks.html",function (){
@@ -249,3 +257,6 @@ function changeToViewMarksView(testAndAnswers)
     });
 }
 
+function clearIncludedView(){
+    $('#includedContent').empty();
+}
