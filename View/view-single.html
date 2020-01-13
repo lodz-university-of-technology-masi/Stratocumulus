@@ -22,7 +22,7 @@
         <label for="userId"><b>Unikalny identyfikator użytkownika w Cognito</b></label>
         <input type="text" pattern=".*" name="fullName" id="userId" disabled="true">
         <input type="button" id="setButton" class="editButton" onclick="setUserTests()">
-        <input type="submit" class="editButton" value="Usuń użytkownia">
+        <input class="editButton" onclick="handleDeletion()" type="submit" value="Usuń użytkownia">
     </form>
 </section>
 <script src="js/jquery-3.4.1.js"></script>

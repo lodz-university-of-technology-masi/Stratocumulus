@@ -33,7 +33,7 @@ function handleDeletion(event) {
     var desiredName = $('#userFullName').val();
     var desiredUUID = $('#userId').val();
 
-    event.preventDefault();
+    // event.preventDefault();
 
     if (!isEmpty(desiredEmail) && !isEmpty(desiredName) && !isEmpty(desiredUUID)) {
         deletion(desiredEmail, desiredName);
@@ -43,7 +43,7 @@ function handleDeletion(event) {
 }
 
 function deletion(email) {
-    callRecruiterAwsLambda("DELETE", `candidates?email=${email}`, afterDeleteCandidate, '', true, userRoles.RECRUITER);
+    callRecruiterAwsLambda("DELETE", `candidates?email=${email}`, afterDeleteCandidate, '', false, userRoles.RECRUITER);
 }
 
 function afterDeleteCandidate(response) {
