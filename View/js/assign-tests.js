@@ -143,7 +143,7 @@ function displayLabel(testCheckbox, isIncludeCheckButton) {
 function getTestResultByTestId(testId) {
     let id = `${__candidateId}_${testId}`;
     for (let i = 0; i < __testResults.length; i++) {
-        if (__testResults.id === id) {
+        if (__testResults[i].id === id) {
             return __testResults[i];
         }
     }
@@ -206,7 +206,6 @@ function handleAssignTestsButton() {
         "assignedTests": assignedTests
     };
 
-    alert(JSON.stringify(body));
     callRecruiterAwsLambda('PUT', `candidatetests?candidateId=${__candidateId}`, afterUpdateAssignedTests, body, true, userRoles.RECRUITER);
 }
 
@@ -250,7 +249,6 @@ function getPoints(testId) {
 
 function handleCheckTestButton(event) {
     let testId = event.id.replace('ct_', '');
-    alert(JSON.stringify(getPoints(testId)));
     showMarkTestView({
         "test": getTestById(testId),
         "answers": getAnswersByTestId(testId),
@@ -261,7 +259,6 @@ function handleCheckTestButton(event) {
 
 function handleShowMarksButton(event) {
     let testId = event.id.replace('ct_', '');
-    alert(JSON.stringify(getPoints(testId)));
     showMarkTestView({
         "test": getTestById(testId),
         "answers": getAnswersByTestId(testId),
