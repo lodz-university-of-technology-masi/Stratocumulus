@@ -20,6 +20,19 @@ function onPageLoad() {
     getUserList();
 }
 
+function setUserLabel() {
+    var poolData = {
+        UserPoolId: 'us-east-1_lWqCuNtQd',   //_config.cognito.recruiterPoolId,
+        ClientId: '4rv0ibelu8sc3hi2dmjo05g5ku',  //_config.cognito.recruiterPoolClientId,
+    };
+
+    var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+
+    var cognitoUser = userPool.getCurrentUser().getUsername();
+
+    document.getElementById("nameLabel").innerHTML = cognitoUser;
+}
+
 function reloadList() {
 
     callRecruiterAwsLambda('GET', 'tests', function (response) {
