@@ -50,6 +50,10 @@ public class Test implements Identifiable {
         }
     }
 
+    public String getRecruiterEmail() {
+        return recruiterEmail;
+    }
+
     private void setRandomId() {
         this.id = UUID.randomUUID().toString();
     }
