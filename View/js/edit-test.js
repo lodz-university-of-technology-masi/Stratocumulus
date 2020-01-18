@@ -140,7 +140,7 @@ function getFilledTestJson() {
 function handleSaveTestButton(event) {
     let json = getFilledTestJson();
 
-    console.log(json);
+    json.recruiterEmail = getCurrentRecruiterEmail();
 
     clearIncludedView();
 
@@ -228,11 +228,10 @@ function readClosedQuestionFromHtml(questionJson, questionNo) {
 }
 
 function sendEditRequest(body) {
-    alert(JSON.stringify(_originalJson));
-    callRecruiterAwsLambda("PUT", `tests?id=${testId}`, afterEditTest, body, true, userRoles.RECRUITER);
+    callRecruiterAwsLambda("PUT", `tests?id=${_originalJson.id}`, afterEditTest, body, true, userRoles.RECRUITER);
 }
 
 function afterEditTest(response) {
     reloadList();
-    showSuccessPopup("Pomyslnie edytowano test: " + _originalJson.name);
+    showSuccessPopup("Pomyślnie edytowano test: " + _originalJson.name);
 }

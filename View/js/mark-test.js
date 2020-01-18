@@ -20,8 +20,9 @@ function loadTestAndAnswers(test, answers, candidateId, points) {
 
     displayQuestions();
 
+    _results = points;
+
     if (points !== null) {
-        _results = points;
         $('#save-marks-button').remove();
 
         $('.result-input').each(function (index) {

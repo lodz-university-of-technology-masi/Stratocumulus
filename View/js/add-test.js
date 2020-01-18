@@ -1,7 +1,7 @@
-var questionsCount = 0;
+let questionsCount = 0;
 
 function loadSampleTest() {
-    var testJson =
+    let testJson =
         {
             "id": "2e67f777-b246-4af9-bc94-b63ec138c510",
             "language": "PL",
@@ -38,9 +38,9 @@ function loadSampleTest() {
 function loadAddTest(testJson) {
     originalJson = testJson;
 
-    var name = testJson.name;
-    var language = testJson.language;
-    var questions = testJson.questions;
+    let name = testJson.name;
+    let language = testJson.language;
+    let questions = testJson.questions;
 
     $('#testNameInput').val(name);
     $('.select-language').val(language);
@@ -63,13 +63,13 @@ function displayInputs(questions) {
 
 function displayQuestions(questions) {
     $('[id^=content]').each(function (index) {
-        var question = questions[index];
+        let question = questions[index];
         this.value = question.content;
 
         if (this.className === 'closed') {
-            for (var i = 0; i < 4; i++) {
-                var answerContent = question.answers[i];
-                var answerId = 'q' + (index + 1) + 'a' + (i + 1).toString();
+            for (let i = 0; i < 4; i++) {
+                let answerContent = question.answers[i];
+                let answerId = 'q' + (index + 1) + 'a' + (i + 1).toString();
                 $('#' + answerId).val(answerContent);
             }
         }
@@ -80,14 +80,14 @@ function addNewClosedQuestion() {
     questionsCount++;
 
     addNewClosedQuestion.counter++;
-    var newDiv = document.createElement("div");
+    let newDiv = document.createElement("div");
     newDiv.className = "question_div";
-    var id = "q" + questionsCount.toString();
-    var answer1Id = id + "a1";
-    var answer2Id = id + "a2";
-    var answer3Id = id + "a3";
-    var answer4Id = id + "a4";
-    var deleteButtonId = "d" + questionsCount.toString();
+    let id = "q" + questionsCount.toString();
+    let answer1Id = id + "a1";
+    let answer2Id = id + "a2";
+    let answer3Id = id + "a3";
+    let answer4Id = id + "a4";
+    let deleteButtonId = "d" + questionsCount.toString();
     newDiv.setAttribute("id", id);
 
     newDiv.innerHTML = "       <nobr> <label class=\"question_label\">\n" +
@@ -101,7 +101,7 @@ function addNewClosedQuestion() {
         "        <input id=\"" + answer3Id + "\" type=\"text\">" +
         "        <input id=\"" + answer4Id + "\" type=\"text\">";
 
-    var questionHr = document.getElementById("question_hr");
+    let questionHr = document.getElementById("question_hr");
     questionHr.appendChild(newDiv);
 }
 
@@ -109,10 +109,10 @@ function addNewOpenQuestion() {
     questionsCount++;
 
     addNewOpenQuestion.counter++;
-    var newDiv = document.createElement("div");
+    let newDiv = document.createElement("div");
     newDiv.className = "question_div";
-    var id = "q" + questionsCount.toString();
-    var deleteButtonId = "d" + questionsCount.toString();
+    let id = "q" + questionsCount.toString();
+    let deleteButtonId = "d" + questionsCount.toString();
     newDiv.setAttribute("id", id);
 
     newDiv.innerHTML = "        <nobr>\n" +
@@ -123,7 +123,7 @@ function addNewOpenQuestion() {
         "        </nobr>\n" +
         "        <input class='open' id='content" + questionsCount.toString() + "' type=\"text\">";
 
-    var questionHr = document.getElementById("question_hr");
+    let questionHr = document.getElementById("question_hr");
     questionHr.appendChild(newDiv);
 }
 
@@ -131,10 +131,10 @@ function addNewNumericQuestion() {
     questionsCount++;
 
     addNewOpenQuestion.counter++;
-    var newDiv = document.createElement("div");
+    let newDiv = document.createElement("div");
     newDiv.className = "question_div";
-    var id = "q" + questionsCount.toString();
-    var deleteButtonId = "d" + questionsCount.toString();
+    let id = "q" + questionsCount.toString();
+    let deleteButtonId = "d" + questionsCount.toString();
     newDiv.setAttribute("id", id);
 
     newDiv.innerHTML = "        <nobr>\n" +
@@ -145,23 +145,24 @@ function addNewNumericQuestion() {
         "        </nobr>\n" +
         "        <input class='numeric' id='content" + questionsCount.toString() + "' type=\"text\">";
 
-    var questionHr = document.getElementById("question_hr");
+    let questionHr = document.getElementById("question_hr");
     questionHr.appendChild(newDiv);
 }
 
 function deleteQuestion(button) {
-    var id = button.getAttribute("id").replace("d", "q");
-    var questionLabel = document.getElementById(id);
+    let id = button.getAttribute("id").replace("d", "q");
+    let questionLabel = document.getElementById(id);
     questionLabel.remove();
 }
 
 function handleAddTestButton(event) {
-    var testName = $("#testNameInput").val();
-
-    var testJson = {
+    let testName = $("#testNameInput").val();
+    
+    let testJson = {
         "name": testName,
         "language": $('.select-language').val(),
-        "questions": readQuestionsFromHtml()
+        "questions": readQuestionsFromHtml(),
+        "recruiterEmail": getCurrentRecruiterEmail()
     };
 
     console.log(testJson);
@@ -171,13 +172,13 @@ function handleAddTestButton(event) {
 }
 
 function readQuestionsFromHtml() {
-    var questionsJson = [];
+    let questionsJson = [];
 
     $('[id^=content]').each(function (index) {
-        var questionContent = this.value;
-        var questionNo = this.id.replace("content", "");
+        let questionContent = this.value;
+        let questionNo = this.id.replace("content", "");
 
-        var questionJson = {
+        let questionJson = {
             "no": questionNo,
             "content": questionContent
         };
@@ -198,9 +199,9 @@ function readClosedQuestionFromHtml(questionJson, questionNo) {
     questionJson.numAnswers = 4;
     questionJson.answers = [];
 
-    for (var i = 0; i < 4; i++) {
-        var answerId = 'q' + questionNo + 'a' + (i + 1).toString();
-        var answerContent = $('#' + answerId).val();
+    for (let i = 0; i < 4; i++) {
+        let answerId = 'q' + questionNo + 'a' + (i + 1).toString();
+        let answerContent = $('#' + answerId).val();
         questionJson.answers.push(answerContent);
     }
 

@@ -22,21 +22,25 @@ function onPageLoad() {
 }
 
 function setUserLabel() {
-    var poolData = {
+    document.getElementById("nameLabel").innerHTML = getCurrentRecruiterEmail();
+}
+
+function getCurrentRecruiterEmail() {
+    let poolData = {
         UserPoolId: 'us-east-1_lWqCuNtQd',   //_config.cognito.recruiterPoolId,
         ClientId: '4rv0ibelu8sc3hi2dmjo05g5ku',  //_config.cognito.recruiterPoolClientId,
     };
 
-    var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+    let userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
 
-    var cognitoUser = userPool.getCurrentUser().getUsername();
-
-    document.getElementById("nameLabel").innerHTML = cognitoUser;
+    return userPool.getCurrentUser().getUsername();
 }
 
 function reloadList() {
 
-    callRecruiterAwsLambda('GET', 'tests', function (response) {
+    let recruiterEmail = getCurrentRecruiterEmail();
+
+    callRecruiterAwsLambda('GET', `tests?recruiterEmail=${recruiterEmail}`, function (response) {
         populateTestList(JSON.parse(response));
     }, '', true, userRoles.RECRUITER);
 
@@ -235,6 +239,7 @@ function parseCsv(text, name) {
 
     test.language = language;
     test.questions = questions;
+    test.recruiterEmail = getCurrentRecruiterEmail();
     console.log(JSON.stringify(test));
     sendAddRequest(test);
     document.getElementById('selectedFile').value = null;

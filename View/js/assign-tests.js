@@ -34,7 +34,9 @@ function loadTests(candId, candidateName) {
     __candidateId = candId;
     $('#candidate-header').text(`Przypisz testy: ${candidateName}`);
 
-    callRecruiterAwsLambda('GET', 'tests', afterGetTests, false);
+    let email = getCurrentRecruiterEmail();
+
+    callRecruiterAwsLambda('GET', `tests?recruiterEmail=${email}`, afterGetTests, false);
     callRecruiterAwsLambda('GET', 'candidatetests', afterGetCandidateTests, false);
     callRecruiterAwsLambda('GET', 'results', afterGetResults, false);
 
