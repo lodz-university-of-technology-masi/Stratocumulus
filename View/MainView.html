@@ -28,21 +28,21 @@
         </div>
 
         <button class="userButton" onclick="logOutUser()">Wyloguj</button>
-        <button class="userButton" onclick="showSuccessPopup('kliknales usera')">User</button>
+        <button class="userButton" id="nameLabel" disabled="disabled"></button>
     </div>
 
     <div class="itemList">
         <div id="UserContentId">
             <ul id="UserListId"></ul>
-            <button id="addUserButton" onclick="showAddUserView()">add user</button>
+            <button id="addUserButton" onclick="showAddUserView()">Dodaj kandydata</button>
         </div>
 
         <div id="TestContentId">
             <ul id="TestListId"></ul>
-            <button id="addTestButton" onclick="showAddTestView()">add test</button>
+            <button id="addTestButton" onclick="showAddTestView()">Dodaj test</button>
             <div>
                 <input type="file" id="selectedFile" accept=".csv" onchange="handleImport(this.files);" style="display: none;"/>
-                <input type="button" value="Import Test"  onclick="document.getElementById('selectedFile').click();"/>
+                <input type="button" value="Importuj test"  onclick="document.getElementById('selectedFile').click();"/>
             </div>
 
         </div>

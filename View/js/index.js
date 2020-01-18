@@ -6,7 +6,7 @@ function signInButton() {
     };
 
     //var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(authenticationData);
-    var authenticationDetails = new AWSCognito.CognitoIdentityServiceProvider.AuthenticationDetails(authenticationData);
+    var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(authenticationData);
 
     var poolData = {
         UserPoolId : 'us-east-1_CY4O3GKHV',    //_config.cognito.userPoolId, // Your user pool id here
@@ -30,8 +30,8 @@ function signInButton() {
         Pool: recruiterPool,
     };
 
-    var cognitoUser = new AWSCognito.CognitoIdentityServiceProvider.CognitoUser(userData);
-    var cognitoRecruiter = new AWSCognito.CognitoIdentityServiceProvider.CognitoUser(recruiterData);
+    var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+    var cognitoRecruiter = new AmazonCognitoIdentity.CognitoUser(recruiterData);
     cognitoUser.authenticateUser(authenticationDetails, {
         onSuccess: function (result) {
             var token = result.getIdToken().getJwtToken()

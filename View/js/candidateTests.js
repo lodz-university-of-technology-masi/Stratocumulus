@@ -29,6 +29,7 @@ function getCognitoUser() {
                 return;
             }
             console.log('session validity: ' + session.isValid());
+            document.getElementById("labelName").innerHTML = cognitoUser.getUsername();
         });
     }
     else {
