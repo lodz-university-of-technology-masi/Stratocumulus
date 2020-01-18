@@ -13,6 +13,7 @@ public class Test implements Identifiable {
     private String id;
     private String name;
     private String language;
+    private String recruiterEmail;
     private List<Question> questions;
 
     public Test(String jsonString) {
@@ -21,6 +22,7 @@ public class Test implements Identifiable {
         setId(json);
         setName(json);
         setLanguage(json);
+        setRecruiterId(json);
         setQuestions(json);
     }
 
@@ -39,6 +41,12 @@ public class Test implements Identifiable {
             id = json.getString("id");
         } else {
             setRandomId();
+        }
+    }
+
+    private void setRecruiterId(JSONObject json) {
+        if (json.has("recruiterEmail")) {
+            recruiterEmail = json.getString("recruiterEmail");
         }
     }
 
@@ -123,6 +131,10 @@ public class Test implements Identifiable {
             jsonObject.put("language", language);
         }
 
+        if (recruiterEmail != null) {
+            jsonObject.put("recruiterEmail", recruiterEmail);
+        }
+
         if (questions != null) {
             JSONArray questionsArray = new JSONArray();
             for (Question question : questions) {
@@ -139,6 +151,7 @@ public class Test implements Identifiable {
         Test translatedTest = new Test();
         translatedTest.language = targetLang.toUpperCase();
         translatedTest.name = TranslateUtils.translate(name, sourceLang, targetLang);
+        translatedTest.recruiterEmail = recruiterEmail;
 
         for (Question question : this.questions) {
             translatedTest.addQuestion(question.translate(sourceLang, targetLang));

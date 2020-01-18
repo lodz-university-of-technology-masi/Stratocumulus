@@ -14,6 +14,6 @@ public class GetTestHandler implements RequestHandler<RequestInput, RequestOutpu
 
     @Override
     public RequestOutput handleRequest(RequestInput input, Context context) {
-        return RequestUtils.getSingleItem("id", input, table);
+         return RequestUtils.getSingleItem("id", input, table);
     }
 }
