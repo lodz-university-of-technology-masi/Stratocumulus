@@ -18,6 +18,7 @@ function showUsers() {
 function onPageLoad() {
     reloadList();
     getUserList();
+    setUserLabel()
 }
 
 function setUserLabel() {
