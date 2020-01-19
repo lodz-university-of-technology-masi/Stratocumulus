@@ -167,7 +167,6 @@ function handleTranslateManuallyButton(event) {
         json.language = 'PL';
     }
 
-    alert(JSON.stringify(json));
     clearIncludedView();
     showAddTestView(json);
 }
