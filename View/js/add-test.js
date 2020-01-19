@@ -157,18 +157,47 @@ function deleteQuestion(button) {
 
 function handleAddTestButton(event) {
     let testName = $("#testNameInput").val();
-    
+
+    let questions = readQuestionsFromHtml();
+
     let testJson = {
         "name": testName,
         "language": $('.select-language').val(),
-        "questions": readQuestionsFromHtml(),
+        "questions": questions,
         "recruiterEmail": getCurrentRecruiterEmail()
     };
 
-    console.log(testJson);
+    let validationMessage = validateTest(testName, questions);
 
-    clearIncludedView();
-    sendAddRequest(testJson);
+    if (validationMessage === '') {
+        clearIncludedView();
+        sendAddRequest(testJson);
+    } else {
+        alert(validationMessage);
+    }
+}
+
+function validateTest(content, questions) {
+    let message = '';
+
+    if (content === '') {
+        message += 'Test nie może mieć pustego tytułu.\n'
+    }
+
+    for (let i=0; i<questions.length; i++) {
+        let question = questions[i];
+        if (question.content === '') {
+            message += `Pytanie ${i+1} nie ma treści\n`;
+        }
+        for (let q=0; q<question.answers.length; q++) {
+            let answer = question.answers[q];
+            if (answer === '') {
+                message += `Pytanie nr ${i+1} ma pustą odpowiedź nr ${q+1}\n`;
+            }
+        }
+    }
+
+    return message;
 }
 
 function readQuestionsFromHtml() {
