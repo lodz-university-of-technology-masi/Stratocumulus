@@ -108,8 +108,6 @@ function handleSaveMarksButton() {
             "points": results.resultsArray,
         };
 
-        alert(JSON.stringify(body));
-
         callRecruiterAwsLambda('POST', 'results', afterSave, body, false, userRoles.RECRUITER);
         window.location.href = 'MainView.html';
     } else {
