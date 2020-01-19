@@ -194,6 +194,13 @@ function parseCsv(text, name) {
             let fragments = text_to_get.split(";");
             let question = new Object();
 
+            if(fragments.length < 5)
+            {
+                alert('Dane zdają się byc niekompletne');
+                return;
+            }
+
+
             question.no = fragments[0];
 
 
@@ -220,7 +227,7 @@ function parseCsv(text, name) {
             if (question.type == "c" && !isNumeric(fragments[4])) {
                 alert('Napotkano niepoprawny format odpowiedzi dla pytania zamknietego');
                 return;
-            }
+        }
 
             if (question.type == "c" && fragments.length-6 != fragments[4]) {
                 alert('Roznica miedzy zadeklarowana iloscia odpowiedzi a napotkana');
