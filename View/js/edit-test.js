@@ -142,9 +142,14 @@ function handleSaveTestButton(event) {
 
     json.recruiterEmail = getCurrentRecruiterEmail();
 
-    clearIncludedView();
+    let validationMessage = validateTest(json.name, json.questions);
 
-    sendEditRequest(json);
+    if (validationMessage === '') {
+        clearIncludedView();
+        sendEditRequest(json);
+    } else {
+        alert(validationMessage);
+    }
 }
 
 function handleDeleteTestButton(event) {

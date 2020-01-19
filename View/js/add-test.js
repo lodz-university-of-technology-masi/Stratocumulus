@@ -189,10 +189,12 @@ function validateTest(content, questions) {
         if (question.content === '') {
             message += `Pytanie ${i+1} nie ma treści\n`;
         }
-        for (let q=0; q<question.answers.length; q++) {
-            let answer = question.answers[q];
-            if (answer === '') {
-                message += `Pytanie nr ${i+1} ma pustą odpowiedź nr ${q+1}\n`;
+        if (question.type === 'c') {
+            for (let q=0; q<question.answers.length; q++) {
+                let answer = question.answers[q];
+                if (answer === '') {
+                    message += `Pytanie nr ${i+1} ma pustą odpowiedź nr ${q+1}\n`;
+                }
             }
         }
     }
