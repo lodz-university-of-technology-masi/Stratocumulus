@@ -196,37 +196,55 @@ function parseCsv(text, name) {
 
             question.no = fragments[0];
 
-            //ToDo: Poprawic kiedy będzie juztyp liczbowy
 
-            if (fragments[1] === 'W')
+
+            if (fragments[1] == 'W')
                 question.type = 'c';
-            if (fragments[1] === 'O')
+            if (fragments[1] == 'O')
                 question.type = 'o';
-            if (fragments[1] === "L")
+            if (fragments[1] == "L")
                 question.type = 'n';
 
             console.log(i);
             console.log(language);
             console.log(fragments[2]);
 
-            if (language === '') {
+            if (language == '') {
                 language = fragments[2];
-            } else if (language !== fragments[2]) {
+            } else if (language != fragments[2]) {
                 language_err = true;
             }
 
             question.content = fragments[3];
 
-            if (question.type === "c") {
+            if (question.type == "c" && !isNumeric(fragments[4])) {
+                alert('Napotkano niepoprawny format odpowiedzi dla pytania zamknietego');
+                return;
+            }
+
+            if (question.type == "c" && fragments.length-6 != fragments[4]) {
+                alert('Roznica miedzy zadeklarowana iloscia odpowiedzi a napotkana');
+                return;
+            }
+
+            if (question.type == "c") {
                 question.numAnswers = fragments[4];
                 question.answers = [];
-                for (let k = 0; k < question.numAnswers; k++)
+                for (let k = 0; k < question.numAnswers; k++) {
+
+                    if (fragments[5 + k] == '') {
+                        alert('Napotkano pustą odpowiedz w pyaniu zamknietym');
+                        return;
+                    }
+
                     question.answers.push(fragments[5 + k]);
+                }
 
             }
 
-            if (question.type === "c" && fragments[4] !== "|") {
-                // Some error
+            if (question.type == "o" && fragments[4] != "|") {
+                alert('Napotkano niepoprawny format odpowiedzi dla pytania otwartego');
+                return;
             }
             questions.push(question);
         }
@@ -244,6 +262,11 @@ function parseCsv(text, name) {
     sendAddRequest(test);
     document.getElementById('selectedFile').value = null;
 }
+
+function isNumeric(value) {
+    return /^\d+$/.test(value);
+}
+
 
 function logOutUser() {
 
