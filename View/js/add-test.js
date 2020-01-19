@@ -36,7 +36,7 @@ function loadSampleTest() {
 }
 
 function loadAddTest(testJson) {
-    originalJson = testJson;
+    questionsCount = 0;
 
     let name = testJson.name;
     let language = testJson.language;
@@ -45,23 +45,23 @@ function loadAddTest(testJson) {
     $('#testNameInput').val(name);
     $('.select-language').val(language);
 
-    displayInputs(questions);
-    displayQuestions(questions);
+    displayLoadedInputs(questions);
+    displayLoadedQuestions(questions);
 }
 
-function displayInputs(questions) {
+function displayLoadedInputs(questions) {
     questions.forEach(function (question) {
         if (question.type === 'c') {
-            addNewClosedQuestion();
+            addNewEmptyClosedQuestion();
         } else if (question.type === 'o') {
-            addNewOpenQuestion();
+            addNewEmptyOpenQuestion();
         } else if (question.type === 'n') {
-            addNewNumericQuestion();
+            addNewEmptyNumericQuestion();
         }
     });
 }
 
-function displayQuestions(questions) {
+function displayLoadedQuestions(questions) {
     $('[id^=content]').each(function (index) {
         let question = questions[index];
         this.value = question.content;
@@ -76,10 +76,10 @@ function displayQuestions(questions) {
     });
 }
 
-function addNewClosedQuestion() {
+function addNewEmptyClosedQuestion() {
     questionsCount++;
 
-    addNewClosedQuestion.counter++;
+    addNewEmptyClosedQuestion.counter++;
     let newDiv = document.createElement("div");
     newDiv.className = "question_div";
     let id = "q" + questionsCount.toString();
@@ -105,10 +105,10 @@ function addNewClosedQuestion() {
     questionHr.appendChild(newDiv);
 }
 
-function addNewOpenQuestion() {
+function addNewEmptyOpenQuestion() {
     questionsCount++;
 
-    addNewOpenQuestion.counter++;
+    addNewEmptyOpenQuestion.counter++;
     let newDiv = document.createElement("div");
     newDiv.className = "question_div";
     let id = "q" + questionsCount.toString();
@@ -127,10 +127,10 @@ function addNewOpenQuestion() {
     questionHr.appendChild(newDiv);
 }
 
-function addNewNumericQuestion() {
+function addNewEmptyNumericQuestion() {
     questionsCount++;
 
-    addNewOpenQuestion.counter++;
+    addNewEmptyOpenQuestion.counter++;
     let newDiv = document.createElement("div");
     newDiv.className = "question_div";
     let id = "q" + questionsCount.toString();
